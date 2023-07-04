@@ -51,7 +51,7 @@ function App() {
             </ul>
           </div>
 
-          <div className="navbar" id="navbarResponsive">
+          <div className="navbar-socials" id="navbarResponsive">
             <ul className="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
               <li className="nav-item"><a className="nav-link" href="#contact"><i className="fab fa-instagram"></i></a></li>
               <li className="nav-item"><a className="nav-link" href="#contact"><i className="fab fa-facebook"></i></a></li>
