@@ -42,8 +42,8 @@ function Header (){
                         </Nav>
 
                         <Nav>
-                            <Nav.Link href="#deets"><FaInstagram/></Nav.Link>
-                            <Nav.Link href="#deets"><FaFacebook/></Nav.Link>
+                            <Nav.Link href="https://www.instagram.com/carvasound" target="_blank" rel="noreferrer noopener"><FaInstagram/></Nav.Link>
+                            <Nav.Link href="https://www.facebook.com/carvasound" target="_blank" rel="noreferrer noopener"><FaFacebook/></Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
 
