@@ -1,3 +1,8 @@
+.carousel{
+    height: calc(100vh - 86px);
+    overflow-y: hidden;
+}
+
 .carousel-item {
     height: 100vh;
     background-size: cover;
