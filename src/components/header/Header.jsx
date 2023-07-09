@@ -11,7 +11,7 @@ import {FaFacebook, FaInstagram} from "react-icons/fa"
 function Header (){
     return (
         <>
-            <Navbar collapseOnSelect expand="lg" className="bg-body-tertiary">
+            <Navbar sticky={"top"} collapseOnSelect expand="lg" className="bg-body-tertiary">
                 <Container>
                     <Navbar.Brand as={Link} to="/">
                         <img
