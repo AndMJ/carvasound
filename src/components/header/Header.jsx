@@ -11,7 +11,7 @@ import {FaFacebook, FaInstagram} from "react-icons/fa"
 function Header (){
     return (
         <>
-            <Navbar sticky={"top"} collapseOnSelect expand="lg" className="bg-body-tertiary">
+            <Navbar sticky={"top"} collapseOnSelect={true} expand="lg" className="bg-body-tertiary">
                 <Container>
                     <Navbar.Brand as={Link} to="/">
                         <img
@@ -26,10 +26,10 @@ function Header (){
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link as={Link} to="/">Home</Nav.Link>
-                            <Nav.Link as={Link} to="/events">Events</Nav.Link>
-                            <Nav.Link as={Link} to="/gallery">Gallery</Nav.Link>
-                            <Nav.Link as={Link} to="/contact">Contact</Nav.Link>
+                            <Nav.Link as={Link} eventKey="1" to="/">Home</Nav.Link>
+                            <Nav.Link as={Link} eventKey="2" to="/events">Events</Nav.Link>
+                            <Nav.Link as={Link} eventKey="3" to="/gallery">Gallery</Nav.Link>
+                            <Nav.Link as={Link} eventKey="4" to="/contact">Contact</Nav.Link>
 
                             {/*<NavDropdown title="Dropdown" id="collasible-nav-dropdown">*/}
                             {/*    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}
