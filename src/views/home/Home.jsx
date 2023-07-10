@@ -1,8 +1,8 @@
 import "./home.css";
 
-import {Carousel, Container, Row} from "react-bootstrap";
+import {Carousel} from "react-bootstrap";
 
-import carousel1 from "../../assets/img/carousel/carousel1.jpg";
+//import carousel1 from "../../assets/img/carousel/carousel1.jpg";
 import carousel2 from "../../assets/img/carousel/carousel2.jpg";
 import carousel3 from "../../assets/img/carousel/carousel3.jpg";
 import carousel4 from "../../assets/img/carousel/carousel4.jpg";
