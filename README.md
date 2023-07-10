@@ -1,5 +1,5 @@
 # carvasound_frontend
 Carvasound frontend + backoffice 
 
-## DJ/Event maker
+## DJ New
 https://www.instagram.com/carvasound/
