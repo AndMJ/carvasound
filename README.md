@@ -1,5 +1,5 @@
 # carvasound_frontend
-Carvasound frontend + backoffice 
+Carvasound frontend + backoffice | backend using appwrite.io
 
 ## DJ New
 https://www.instagram.com/carvasound/
