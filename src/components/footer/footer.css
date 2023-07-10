@@ -1,5 +1,28 @@
+/*@media (min-width: 992px){*/
+/*    footer {*/
+/*        transform: none!important;*/
+/*        left: unset!important;*/
+/*        right: 0!important;*/
+/*    }*/
+/*}*/
+
 footer {
-    position: sticky;
+    position: fixed;
+    bottom: 0;
+    /*right: 0;*/
+    /*left: 0;*/
+    z-index: 1;
+    font-size: 13px;
+
+    /*background: rgb(248 249 250 / 80%);*/
+    border-radius: 20px;
+
+    margin-bottom: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+footer p {
+    margin: 0;
 }
 
 footer a {

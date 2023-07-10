@@ -1,15 +1,13 @@
 import "./footer.css"
-import {Container} from "react-bootstrap";
-
-//TODO: fix footer position and make it hidden when on home page
+import {useLocation} from "react-router-dom";
 
 function Footer(){
+    const location = useLocation();
+
     return(
-        <Container>
-            <footer className="py-3 my-4">
-                <p className="text-center text-muted">&copy; {new Date().getFullYear()} Carvasound - Made by <a href="https://github.com/AndMJ">AndMJ</a></p>
-            </footer>
-        </Container>
+        <footer className="p-2 bottom-0 start-50 translate-middle-x">
+            <p className={(location.pathname === '/') ? 'text-center text-white' : 'text-center text-muted'}> &copy; {new Date().getFullYear()} Carvasound - Made by <a href="https://github.com/AndMJ" target={"_blank"} rel="noreferrer noopener">AndMJ</a></p>
+        </footer>
     )
 }
 
