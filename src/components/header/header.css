@@ -6,3 +6,25 @@
 .navbar-nav .nav-link:hover {
     color: var(--custom-color-secondary) !important;
 }
+
+.navbar .nav-link:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    /*bottom: -4px;*/
+    /*left: 0;*/
+    background-color: var(--custom-color-primary);
+    visibility: hidden;
+    width: 0px;
+    transition: all 0.3s ease-in-out 0s;
+
+    margin-top: 25px;
+}
+
+.navbar .nav-link:hover:before,
+.navbar li:hover>.nav-link:before,
+.navbar .active:before {
+    visibility: visible;
+    width: 25px;
+}

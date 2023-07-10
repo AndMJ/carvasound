@@ -9,7 +9,9 @@ import {FaFacebook, FaInstagram} from "react-icons/fa"
 import {useEffect, useState} from "react";
 import Footer from "../footer/Footer.jsx";
 
-//TODO: convert header into a layout
+/*TODO:
+   convert header into a layout
+   remove :before animation from socials navbar links*/
 
 function Header (){
 
