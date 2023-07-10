@@ -13,7 +13,7 @@ function NotFound (){
                 <Container>
                     <Row className={"text-center pt-5"}>
                         <Col sm={12}>
-                            <Image src={image404} rounded />
+                            <Image src={image404} rounded fluid />
                         </Col>
                         <Col sm={12} className={"py-5"}>
                             <Link to={"/"}> <FaArrowLeft/> Go back to Home</Link>

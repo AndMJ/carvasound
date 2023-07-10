@@ -7,7 +7,8 @@ import carousel2 from "../../assets/img/carousel/carousel2.jpg";
 import carousel3 from "../../assets/img/carousel/carousel3.jpg";
 import carousel4 from "../../assets/img/carousel/carousel4.jpg";
 
-//TODO: implement lazy loading on images
+//TODO: - implement lazy loading on images
+//      - fix slide delay on carousel
 
 function Home(){
     return(
