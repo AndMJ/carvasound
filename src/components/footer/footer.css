@@ -1,0 +1,11 @@
+footer {
+    position: sticky;
+}
+
+footer a {
+    color: var(--custom-color-primary);
+}
+
+footer a:hover {
+    color: var(--custom-color-secondary);
+}
