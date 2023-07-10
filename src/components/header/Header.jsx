@@ -7,11 +7,7 @@ import appLogo from "/logo.svg"
 //ICONS
 import {FaFacebook, FaInstagram} from "react-icons/fa"
 import {useEffect, useState} from "react";
-import Footer from "../footer/Footer.jsx";
 
-/*TODO:
-   convert header into a layout
-   remove :before animation from socials navbar links*/
 
 function Header (){
 
@@ -63,17 +59,13 @@ function Header (){
                         </Nav>
 
                         <Nav>
-                            <Nav.Link href="https://www.instagram.com/carvasound" target="_blank" rel="noreferrer noopener"><FaInstagram/></Nav.Link>
-                            <Nav.Link href="https://www.facebook.com/carvasound" target="_blank" rel="noreferrer noopener"><FaFacebook/></Nav.Link>
+                            <Nav.Link name={"socials"} href="https://www.instagram.com/carvasound" target="_blank" rel="noreferrer noopener"><FaInstagram/></Nav.Link>
+                            <Nav.Link name={"socials"} href="https://www.facebook.com/carvasound" target="_blank" rel="noreferrer noopener"><FaFacebook/></Nav.Link>
                         </Nav>
                     </Navbar.Collapse>
 
                 </Container>
             </Navbar>
-
-            <Outlet></Outlet>
-
-            <Footer></Footer>
         </>
     )
 }
