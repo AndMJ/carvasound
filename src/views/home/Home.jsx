@@ -7,6 +7,8 @@ import carousel2 from "../../assets/img/carousel/carousel2.jpg";
 import carousel3 from "../../assets/img/carousel/carousel3.jpg";
 import carousel4 from "../../assets/img/carousel/carousel4.jpg";
 
+//TODO: implement lazy loading on images
+
 function Home(){
     return(
         <Carousel fade={true}>

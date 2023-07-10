@@ -1,0 +1,8 @@
+/* Navbar */
+.active {
+    color: var(--custom-color-primary) !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--custom-color-secondary) !important;
+}

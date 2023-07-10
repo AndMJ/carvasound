@@ -1,17 +1,33 @@
 import "./header.css"
 import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
-import {Link, Outlet} from "react-router-dom";
+import {Link, Outlet, useLocation} from "react-router-dom";
 
 import appLogo from "/logo.svg"
 
 //ICONS
 import {FaFacebook, FaInstagram} from "react-icons/fa"
+import {useEffect, useState} from "react";
+import Footer from "../footer/Footer.jsx";
 
+//TODO: convert header into a layout
 
 function Header (){
+
+    const location = useLocation();
+    const [url, setUrl] = useState(null);
+
+    useEffect(() => { //each time location changes, saves it in "url"
+        setUrl(location.pathname);
+    }, [location]);
+
     return (
         <>
-            <Navbar sticky={"top"} collapseOnSelect={true} expand="lg" className="bg-body-tertiary">
+            <Navbar
+                sticky={"top"}
+                collapseOnSelect={true}
+                expand="lg"
+                className="bg-body-tertiary"
+            >
                 <Container>
                     <Navbar.Brand as={Link} to="/">
                         <img
@@ -26,10 +42,10 @@ function Header (){
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link as={Link} eventKey="1" to="/">Home</Nav.Link>
-                            <Nav.Link as={Link} eventKey="2" to="/events">Events</Nav.Link>
-                            <Nav.Link as={Link} eventKey="3" to="/gallery">Gallery</Nav.Link>
-                            <Nav.Link as={Link} eventKey="4" to="/contact">Contact</Nav.Link>
+                            <Nav.Link as={Link} className={(url === "/") ? "active" : ""} eventKey="1" to="/">Home</Nav.Link>
+                            <Nav.Link as={Link} className={(url === "/events") ? "active" : ""} eventKey="2" to="/events">Events</Nav.Link>
+                            <Nav.Link as={Link} className={(url === "/gallery") ? "active" : ""} eventKey="3" to="/gallery">Gallery</Nav.Link>
+                            <Nav.Link as={Link} className={(url === "/contact") ? "active" : ""} eventKey="4" to="/contact">Contact</Nav.Link>
 
                             {/*<NavDropdown title="Dropdown" id="collasible-nav-dropdown">*/}
                             {/*    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}
@@ -54,6 +70,8 @@ function Header (){
             </Navbar>
 
             <Outlet></Outlet>
+
+            <Footer></Footer>
         </>
     )
 }
