@@ -13,3 +13,8 @@
     top: 40%;
     bottom: unset;
 }
+
+.carousel-indicators {
+    bottom: 3rem !important;
+}
+
