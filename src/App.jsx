@@ -28,6 +28,8 @@ const NotFound = React.lazy(()=> import("./views/user/not_found/NotFound.jsx"))
 const AdminLayout = React.lazy(()=> import("./components/admin/layout/Layout.jsx"))
 const AdminHome = React.lazy(()=> import("./views/admin/home/Home.jsx"))
 
+//TODO: implement React.Suspence - https://blog.logrocket.com/lazy-loading-components-in-react-16-6-6cea535c0b52/
+
 function App() {
 
   return (
