@@ -2,10 +2,10 @@ import "./home.css";
 
 import {Carousel} from "react-bootstrap";
 
-//import carousel1 from "../../assets/img/carousel/carousel1.jpg";
-import carousel2 from "../../assets/img/carousel/carousel2.jpg";
-import carousel3 from "../../assets/img/carousel/carousel3.jpg";
-import carousel4 from "../../assets/img/carousel/carousel4.jpg";
+//import carousel1 from "../../../assets/img/carousel/carousel1.jpg";
+import carousel2 from "../../../assets/img/carousel/carousel2.jpg";
+import carousel3 from "../../../assets/img/carousel/carousel3.jpg";
+import carousel4 from "../../../assets/img/carousel/carousel4.jpg";
 
 //TODO: - implement lazy loading on images
 //      - fix slide delay on carousel
