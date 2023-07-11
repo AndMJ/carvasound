@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import {FaArrowLeft} from "react-icons/fa";
 
 //assets
-import image404 from "../../assets/img/not_found/page-not-found.png"
+import image404 from "../../../assets/img/not_found/page-not-found.png"
 
 function NotFound (){
     return (
