@@ -1,0 +1,17 @@
+body{
+    height: 100%;
+    overflow-x: hidden;
+}
+
+#root {
+    height: 100%;
+}
+
+:root {
+    --custom-color-primary: #ff8f51;
+    --custom-color-secondary: #b05928;
+}
+
+a {
+    text-decoration: none !important;
+}
