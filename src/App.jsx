@@ -27,8 +27,9 @@ const NotFound = React.lazy(()=> import("./views/user/not_found/NotFound.jsx"))
 
 const AdminLayout = React.lazy(()=> import("./components/admin/layout/Layout.jsx"))
 const AdminHome = React.lazy(()=> import("./views/admin/home/Home.jsx"))
+const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
 
-//TODO: implement React.Suspence - https://blog.logrocket.com/lazy-loading-components-in-react-16-6-6cea535c0b52/
+//TODO: implement React.Suspense - https://blog.logrocket.com/lazy-loading-components-in-react-16-6-6cea535c0b52/
 
 function App() {
 
@@ -41,9 +42,10 @@ function App() {
                   <Route path={"gallery"} element={<Gallery />}></Route>
                   <Route path={"contact"} element={<Contact />}></Route>
               </Route>
-              <Route path={"/admin"} element={<AdminLayout />}>
+
+              <Route path={"/admin/login"} element={<AdminLogin />}></Route>
+              <Route path={"/admin/"} element={<AdminLayout />}>
                   <Route index element={<AdminHome />} />
-                  {/*<Route path={"/login"} element={<Login />}></Route>*/}
                   {/*<Route path={"*"} element={<NotFound />} />*/}
               </Route>
               <Route path={"*"} element={<NotFound />}></Route>
