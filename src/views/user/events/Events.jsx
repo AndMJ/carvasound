@@ -2,7 +2,7 @@ import "./events.css";
 import {Col, Container, Image, Row} from "react-bootstrap";
 
 import appLogo from "/logo.svg"
-import eventImage_casamento from "../../assets/img/events/casamento.jpg"
+import eventImage_casamento from "../../../assets/img/events/casamento.jpg"
 
 function Events(){
     return(
