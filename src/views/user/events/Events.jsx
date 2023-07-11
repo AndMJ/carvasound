@@ -35,7 +35,7 @@ function Events(){
                             <Image src={appLogo} rounded fluid />
                         </Col>
                         <Col md={6} className={"event-text"}>
-                            <h2>Festas temáticas</h2>
+                            <h2>Batizados</h2>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
                         </Col>
                     </Row>
@@ -63,7 +63,7 @@ function Events(){
                             <Image src={appLogo} rounded fluid />
                         </Col>
                         <Col md={6} className={"event-text"}>
-                            <h2>Palestras</h2>
+                            <h2>Festas temáticas</h2>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
                         </Col>
                     </Row>
@@ -74,53 +74,11 @@ function Events(){
                 <Container>
                     <Row>
                         <Col md={6} className={"event-text"}>
-                            <h2>Workshops</h2>
+                            <h2>Eventos Corporativos</h2>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
                         </Col>
                         <Col md={6}>
                             <Image src={appLogo} rounded fluid />
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
-
-            <section className={"bg-light mt-5 py-5"}>
-                <Container>
-                    <Row>
-                        <Col md={6}>
-                            <Image src={appLogo} rounded fluid />
-                        </Col>
-                        <Col md={6} className={"event-text"}>
-                            <h2>Apresentações</h2>
-                            <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
-
-            <section className={"mt-5 py-5"}>
-                <Container>
-                    <Row>
-                        <Col md={6} className={"event-text"}>
-                            <h2>Batizados</h2>
-                            <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
-                        </Col>
-                        <Col md={6}>
-                            <Image src={appLogo} rounded fluid />
-                        </Col>
-                    </Row>
-                </Container>
-            </section>
-
-            <section className={"bg-light mt-5 py-5"}>
-                <Container>
-                    <Row>
-                        <Col md={6}>
-                            <Image src={appLogo} rounded fluid />
-                        </Col>
-                        <Col md={6} className={"event-text"}>
-                            <h2>Eventos online</h2>
-                            <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
                         </Col>
                     </Row>
                 </Container>
