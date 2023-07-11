@@ -1,5 +1,5 @@
 .carousel{
-    height: calc(100vh - 86px);
+    height: calc(100vh - 86px); /*view height - navbar height*/
     overflow-y: hidden;
 }
 
