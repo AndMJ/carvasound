@@ -1,6 +1,6 @@
 import('./App.css')
 import {Route, Routes} from "react-router-dom";
-import React from 'react'
+import React, {useEffect} from 'react'
 
 //react boostrap components
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -29,9 +29,17 @@ const AdminLayout = React.lazy(()=> import("./components/admin/layout/Layout.jsx
 const AdminHome = React.lazy(()=> import("./views/admin/home/Home.jsx"))
 const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
 
+import AOS from "aos";
+import 'aos/dist/aos.css';
+
 //TODO: implement React.Suspense - https://blog.logrocket.com/lazy-loading-components-in-react-16-6-6cea535c0b52/
+//      AOS animations not working properly
 
 function App() {
+
+    useEffect(()=>{
+        AOS.init()
+    },[]);
 
   return (
       <>
