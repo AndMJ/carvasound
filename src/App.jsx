@@ -37,6 +37,8 @@ const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
 //TODO: see about translations, and main language has to be Portuguese
 //      use React Motion Framer for animations
 //      Gallery onClick modal zoom up
+//      add a title to each page ex: "Eventos", "Galeria"
+//      fix footer @medias and styles
 
 function App() {
 
