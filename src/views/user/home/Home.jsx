@@ -7,29 +7,28 @@ import carousel2 from "../../../assets/img/carousel/carousel2.jpg";
 import carousel3 from "../../../assets/img/carousel/carousel3.jpg";
 import carousel4 from "../../../assets/img/carousel/carousel4.jpg";
 
-//TODO: - implement lazy loading on images
-//      - fix slide delay on carousel
+//TODO: - change carousel for better one (use swiperjs.com)
 
 function Home(){
     return(
         <Carousel fade={true}>
             <Carousel.Item style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel4 + ")"}}>
                 <Carousel.Caption>
-                    <h1>Som profissional</h1>
+                    <h1 className={"text-uppercase"}>Som profissional</h1>
                     <h4>Escolha a sua musica para um momento especifico</h4>
                 </Carousel.Caption>
             </Carousel.Item>
 
             <Carousel.Item style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel3 + ")"}}>
                 <Carousel.Caption>
-                    <h1>Som profissional</h1>
+                    <h1 className={"text-uppercase"}>Som profissional</h1>
                     <h4>Escolha a sua musica para um momento especifico</h4>
                 </Carousel.Caption>
             </Carousel.Item>
 
             <Carousel.Item style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel2 + ")"}}>
                 <Carousel.Caption>
-                    <h1>Som profissional</h1>
+                    <h1 className={"text-uppercase"}>Som profissional</h1>
                     <h4>Escolha a sua musica para um momento especifico</h4>
                 </Carousel.Caption>
             </Carousel.Item>

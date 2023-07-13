@@ -1,7 +1,13 @@
 body{
     height: 100%;
     overflow-x: hidden;
+
+    font-family: "Nunito", -apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif !important;
 }
+
+/*h1 {*/
+/*    font-family: "Varela Round", -apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif !important;*/
+/*}*/
 
 #root {
     height: 100%;
@@ -12,6 +18,12 @@ body{
     --custom-color-secondary: #b05928;
 }
 
+
 a {
     text-decoration: none !important;
+}
+
+/*smooth transitions between screen sizes*/
+section, div {
+    transition: ease-in-out 0.3s;
 }

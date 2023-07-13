@@ -18,3 +18,8 @@
     bottom: 3rem !important;
 }
 
+
+.carousel-caption h1{
+    font-size: calc(2.375rem + 1.5vw);
+}
+

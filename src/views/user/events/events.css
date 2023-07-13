@@ -1,3 +1,14 @@
 .event-text {
     margin: auto 0;
 }
+
+.col-order{
+    order: -1!important;
+}
+
+@media (max-width: 768px) {
+    .col-order{
+        order: unset!important;
+    }
+}
+

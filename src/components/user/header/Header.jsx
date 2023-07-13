@@ -20,12 +20,7 @@ function Header (){
 
     return (
         <>
-            <Navbar
-                sticky={"top"}
-                collapseOnSelect={true}
-                expand="lg"
-                className="bg-body-tertiary"
-            >
+            <Navbar sticky={"top"} collapseOnSelect={true} expand="lg" className="shadow-sm bg-body-tertiary">
                 <Container>
                     <Navbar.Brand as={Link} to="/">
                         <img

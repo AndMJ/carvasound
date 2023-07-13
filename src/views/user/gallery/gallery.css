@@ -1,0 +1,39 @@
+/*title orange underline*/
+.category h2:before {
+    content: "";
+    position: absolute;
+    background-color: var(--custom-color-primary);
+    height: 2px;
+    width: 5rem;
+    margin-top: 3rem;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    left: 0;
+    right: 0;
+}
+
+@media (max-width: 992px) {
+    .category h2:before {
+        width: 4.5rem!important;
+        margin-top: 2.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .category h2:before {
+        width: 4rem!important;
+        margin-top: 2.5rem;
+    }
+}
+
+/*image zoom on hover*/
+.category img {
+    transition: transform .2s;
+    cursor: pointer;
+}
+
+.category img:hover {
+    transform: scale(1.15);
+}
