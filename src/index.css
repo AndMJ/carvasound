@@ -22,3 +22,8 @@ body{
 a {
     text-decoration: none !important;
 }
+
+/*smooth transitions between screen sizes*/
+section, div {
+    transition: ease-in-out 0.3s;
+}
