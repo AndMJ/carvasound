@@ -1,38 +1,57 @@
 import "./home.css";
 
-import {Carousel} from "react-bootstrap";
+import {Carousel, Col, Container, Image, Row} from "react-bootstrap";
 
 //import carousel1 from "../../../assets/img/carousel/carousel1.jpg";
 import carousel2 from "../../../assets/img/carousel/carousel2.jpg";
 import carousel3 from "../../../assets/img/carousel/carousel3.jpg";
 import carousel4 from "../../../assets/img/carousel/carousel4.jpg";
 
-//TODO: - change carousel for better one (use swiperjs.com)
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+// import required modules
+import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
 function Home(){
     return(
-        <Carousel fade={true}>
-            <Carousel.Item style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel4 + ")"}}>
-                <Carousel.Caption>
-                    <h1 className={"text-uppercase"}>Som profissional</h1>
-                    <h4>Escolha a sua musica para um momento especifico</h4>
-                </Carousel.Caption>
-            </Carousel.Item>
-
-            <Carousel.Item style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel3 + ")"}}>
-                <Carousel.Caption>
-                    <h1 className={"text-uppercase"}>Som profissional</h1>
-                    <h4>Escolha a sua musica para um momento especifico</h4>
-                </Carousel.Caption>
-            </Carousel.Item>
-
-            <Carousel.Item style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel2 + ")"}}>
-                <Carousel.Caption>
-                    <h1 className={"text-uppercase"}>Som profissional</h1>
-                    <h4>Escolha a sua musica para um momento especifico</h4>
-                </Carousel.Caption>
-            </Carousel.Item>
-        </Carousel>
+        <>
+            <section className={"home"}>
+                <Container className={"position-absolute top-50 start-50 translate-middle z-3"}>
+                    <Col md={8} className={"mx-auto text-center"}>
+                        <div className={"caption"}>
+                            <h1>som profissional</h1>
+                            <p className={"lead"}>escolha a sua música para um momento especifico</p>
+                        </div>
+                    </Col>
+                </Container>
+                <Swiper
+                    slidesPerView={1}
+                    // spaceBetween={8}
+                    // effect={'fade'}
+                    centeredSlides={true}
+                    loop={true}
+                    autoplay={{
+                        delay: 5500,
+                        disableOnInteraction: false,
+                    }}
+                    pagination={{
+                        clickable: true,
+                    }}
+                    navigation={false}
+                    modules={[Autoplay, Pagination, Navigation]}
+                    className="home-swiper"
+                >
+                    <SwiperSlide style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel4 + ")"}}></SwiperSlide>
+                    <SwiperSlide style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel3 + ")"}}></SwiperSlide>
+                    <SwiperSlide style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel2 + ")"}}></SwiperSlide>
+                </Swiper>
+            </section>
+        </>
     )
 }
 
