@@ -10,7 +10,7 @@ form.contactForm textarea {
 
 /*give a mb-3 to the name input*/
 @media (max-width: 768px) {
-    .contactForm #formGridName{
+    .contactForm #formGridName {
         margin-bottom: 1rem!important;
     }
 }
