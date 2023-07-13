@@ -17,6 +17,9 @@ body{
     --custom-color-primary: #ff8f51;
     --custom-color-secondary: #b05928;
     --custom-color-darkgrey: #2f2f2f;
+    
+    --custom-form-input-focus-bordercolor: #FFB285FF;
+    --custom-form-input-focus-boxshadow: 0 0 0 0.25rem rgba(255, 143, 81, 0.25);
 }
 
 
