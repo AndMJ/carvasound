@@ -1,0 +1,47 @@
+form.contactForm textarea {
+    /*height: 7rem;*/
+    max-height: 20rem;
+    min-height: 7rem!important;
+}
+
+.contact-wrapper {
+    max-width: 60rem;
+}
+
+/*give a mb-3 to the name input*/
+@media (max-width: 768px) {
+    .contactForm #formGridName{
+        margin-bottom: 1rem!important;
+    }
+}
+
+
+/*title orange underline*/
+.contact-wrapper h2:before {
+    content: "";
+    position: absolute;
+    background-color: var(--custom-color-primary);
+    height: 2px;
+    width: 5rem;
+    margin-top: 3rem;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    left: 0;
+    right: 0;
+}
+
+@media (max-width: 992px) {
+    .contact-wrapper h2:before {
+        width: 4.5rem!important;
+        margin-top: 2.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-wrapper h2:before {
+        width: 4rem!important;
+        margin-top: 2.5rem;
+    }
+}
