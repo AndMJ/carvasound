@@ -16,6 +16,10 @@ body{
 :root {
     --custom-color-primary: #ff8f51;
     --custom-color-secondary: #b05928;
+    --custom-color-darkgrey: #2f2f2f;
+    
+    --custom-form-input-focus-bordercolor: #FFB285FF;
+    --custom-form-input-focus-boxshadow: 0 0 0 0.25rem rgba(255, 143, 81, 0.25);
 }
 
 
@@ -24,6 +28,9 @@ a {
 }
 
 /*smooth transitions between screen sizes*/
-section, div {
+/*.category .row > *{*/
+/*    transition: ease-in-out 0.1s!important;*/
+/*}*/
+section, div/*, h1, h2, h3, h4*/{
     transition: ease-in-out 0.3s;
 }

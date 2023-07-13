@@ -4,29 +4,29 @@ import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 function Contact(){
     return(
         <>
-            <section className={"my-3"}>
-                <Container className={"contact-wrapper py-5 justify-content-center"}>
+            <section className={"my-5"}>
+                <Container className={"contact-wrapper mb-5 justify-content-center"}>
                     <Row className={"title text-center mb-5"}>
                         <h2>Contact me</h2>
                     </Row>
 
-                    <Row className={"mb-5"}>
-                        <Col>
+                    <Row className={"mb-3"}>
+                        <Col sm={12} md={6} className={"mb-3"}>
                             <Card>
-                                <Card.Body>
+                                <Card.Body >
                                     <Card.Title>Phone</Card.Title>
                                     {/*<Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>*/}
-                                    <Card.Text>+351 967 208 626</Card.Text>
+                                    <Card.Text><a href={"tel:+351967208626"}>+351 967 208 626</a></Card.Text>
                                     {/*<Card.Link href="#">Card Link</Card.Link>*/}
                                 </Card.Body>
                             </Card>
                         </Col>
-                        <Col>
+                        <Col sm={12} md={6} className={"mb-3"}>
                             <Card>
-                                <Card.Body>
+                                <Card.Body >
                                     <Card.Title>Email</Card.Title>
                                     {/*<Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>*/}
-                                    <Card.Text>geral.carvasound@hotmail.com</Card.Text>
+                                    <Card.Text><a href={"mailto:geral.carvasound@hotmail.com"}>geral.carvasound@hotmail.com</a></Card.Text>
                                     {/*<Card.Link href="#">Card Link</Card.Link>*/}
                                 </Card.Body>
                             </Card>
@@ -59,7 +59,7 @@ function Contact(){
                             <Form.Control as={"textarea"} placeholder="Message" required />
                         </Form.Group>
 
-                        <Button variant="primary" type="submit">
+                        <Button variant="primary" type="submit" className={"d-block mx-auto"}>
                             Submit
                         </Button>
                     </Form>

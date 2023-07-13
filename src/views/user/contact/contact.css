@@ -1,8 +1,38 @@
+form.contactForm input:focus, form.contactForm textarea:focus {
+    /*color: var(--bs-body-color);*/
+    /*background-color: var(--bs-body-bg);*/
+    border-color: var(--custom-form-input-focus-bordercolor);
+    outline: 0;
+    box-shadow: var(--custom-form-input-focus-boxshadow);
+}
+
+/*contact card links*/
+.contact-wrapper .card a{
+    color: var(--custom-color-primary);
+}
+.contact-wrapper .card a:hover{
+    color: var(--custom-color-secondary);
+}
+
+/*limit to message textarea height*/
 form.contactForm textarea {
     /*height: 7rem;*/
     max-height: 20rem;
     min-height: 7rem!important;
 }
+form.contactForm button {
+    background-color: var(--custom-color-darkgrey);
+    border-color: var(--custom-color-darkgrey);
+}
+form.contactForm button:hover {
+    background-color: var(--custom-color-primary);
+    border-color: var(--custom-color-primary);
+}
+form.contactForm button:active {
+    background-color: var(--custom-color-secondary) !important;
+    border-color: var(--custom-color-secondary) !important;
+}
+
 
 .contact-wrapper {
     max-width: 60rem;
@@ -10,7 +40,7 @@ form.contactForm textarea {
 
 /*give a mb-3 to the name input*/
 @media (max-width: 768px) {
-    .contactForm #formGridName{
+    .contactForm #formGridName {
         margin-bottom: 1rem!important;
     }
 }

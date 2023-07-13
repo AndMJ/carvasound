@@ -6,6 +6,8 @@ import React, {Suspense} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //my components/views
+// import loader from "./components/user/loader/loader.jsx";
+const Loader = React.lazy(()=> import("./components/user/loader/Loader.jsx"))
 //USER
 // import Layout from "./components/user/layout/Layout.jsx";
 // import Home from "./views/user/home/Home.jsx";
@@ -32,35 +34,34 @@ const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
 
 
 
-//TODO: implement React.Suspense properly - https://blog.logrocket.com/lazy-loading-components-in-react-16-6-6cea535c0b52/
-//      AOS animations not working properly
-//      restructure routes?, not sure
+//TODO: see about translations, and main language has to be Portuguese
+//      use React Motion Framer for animations
+//      Gallery onClick modal zoom up
+//      add a title to each page ex: "Eventos", "Galeria"
+//      fix footer @medias and styles
 
 function App() {
 
   return (
       <>
-      <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-              <Route path={"/"} element={<Layout />}>
-                  <Route index element={<Home />} />
-                  <Route path={"events"} element={<Events />}></Route>
-                  <Route path={"gallery"} element={<Gallery />}></Route>
-                  <Route path={"contact"} element={<Contact />}></Route>
-              </Route>
+          {/*<loader />*/}
+          <Suspense fallback={<Loader />}>
+              <Routes>
+                  <Route path={"/"} element={<Layout />}>
+                      <Route index element={<Home />} />
+                      <Route path={"events"} element={<Events />}></Route>
+                      <Route path={"gallery"} element={<Gallery />}></Route>
+                      <Route path={"contact"} element={<Contact />}></Route>
+                  </Route>
 
-              <Route path={"/admin/login"} element={<AdminLogin />}></Route>
-              <Route path={"/admin/"} element={<AdminLayout />}>
-                  <Route index element={<AdminHome />} />
-                  {/*<Route path={"*"} element={<NotFound />} />*/}
-              </Route>
-              <Route path={"*"} element={<NotFound />}></Route>
-          </Routes>
-          {/*<Routes>*/}
-          {/*    <Route to={"/"} element={<User/>}></Route>*/}
-          {/*    <Route to={"/admin"} element={<Admin/>}></Route>*/}
-          {/*</Routes>*/}
-      </Suspense>
+                  <Route path={"/admin/login"} element={<AdminLogin />}></Route>
+                  <Route path={"/admin/"} element={<AdminLayout />}>
+                      <Route index element={<AdminHome />} />
+                      {/*<Route path={"*"} element={<NotFound />} />*/}
+                  </Route>
+                  <Route path={"*"} element={<NotFound />}></Route>
+              </Routes>
+          </Suspense>
       </>
   )
 }

@@ -4,12 +4,15 @@ import {Col, Container, Image, Row} from "react-bootstrap";
 // import appLogo from "/logo.svg"
 import eventImage_casamento from "../../../assets/img/events/casamento.jpg"
 import {Link} from "react-router-dom";
+import {useEffect} from "react";
 
 function Events(){
+    /*scroll to top to reset scroll*/
+    useEffect(() => window.scrollTo(0, 0), []);
 
     return(
         <>
-            <section className={"py-5"}>
+            <section className={"events py-5"}>
                 <Container>
                     {/*<div className={"text-center mb-5"}>*/}
                     {/*    <h2>Events</h2>*/}
