@@ -7,7 +7,7 @@ import carousel2 from "../../../assets/img/carousel/carousel2.jpg";
 import carousel3 from "../../../assets/img/carousel/carousel3.jpg";
 import carousel4 from "../../../assets/img/carousel/carousel4.jpg";
 
-//TODO: - fix slide delay on carousel
+//TODO: - change carousel for better one (use swiperjs.com)
 
 function Home(){
     return(
