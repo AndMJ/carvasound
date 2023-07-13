@@ -9,7 +9,7 @@ function Events(){
 
     return(
         <>
-            <section className={"py-5"}>
+            <section className={"events py-5"}>
                 <Container>
                     {/*<div className={"text-center mb-5"}>*/}
                     {/*    <h2>Events</h2>*/}

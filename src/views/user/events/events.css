@@ -1,8 +1,16 @@
-.event-text {
+/*events category links*/
+.events a{
+    color: var(--custom-color-primary);
+}
+.events a:hover{
+    color: var(--custom-color-secondary);
+}
+
+.events .event-text {
     margin: auto 0;
 }
 
-.col-order{
+.events .col-order{
     order: -1!important;
 }
 
