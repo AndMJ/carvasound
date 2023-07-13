@@ -9,7 +9,7 @@ function Events(){
 
     return(
         <>
-            <section className={"py-5"} data-aos="fade-up-left">
+            <section className={"py-5"}>
                 <Container>
                     {/*<div className={"text-center mb-5"}>*/}
                     {/*    <h2>Events</h2>*/}
@@ -26,9 +26,7 @@ function Events(){
                         </Col>
                     </Row>
                 </Container>
-            </section>
 
-            <section className={"py-5"} data-aos="fade-up-right">
                 <Container>
                     <Row className={"align-items-center"}>
                         <Col md={6} xxl={7} className={"text-start px-5 py-3"}>
@@ -41,9 +39,7 @@ function Events(){
                         </Col>
                     </Row>
                 </Container>
-            </section>
 
-            <section className={"py-5"} data-aos="fade-up-left">
                 <Container>
                     <Row className={"align-items-center"}>
                         <Col md={6} xxl={7} className={"text-start px-5 py-3 col-order"}>
@@ -56,9 +52,7 @@ function Events(){
                         </Col>
                     </Row>
                 </Container>
-            </section>
 
-            <section className={"py-5"} data-aos="fade-up-right">
                 <Container>
                     <Row className={"align-items-center"}>
                         <Col md={6} xxl={7} className={"text-start px-5 py-3"}>
@@ -71,9 +65,7 @@ function Events(){
                         </Col>
                     </Row>
                 </Container>
-            </section>
 
-            <section className={"py-5"} data-aos="fade-up-left">
                 <Container>
                     <Row className={"align-items-center"}>
                         <Col md={6} xxl={7} className={"text-start px-5 py-3 col-order"}>
