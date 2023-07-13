@@ -6,8 +6,8 @@ import React, {Suspense} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //my components/views
-// import Loader from "./components/user/Loader/Loader.jsx";
-const Loader = React.lazy(()=> import("./components/user/Loader/Loader.jsx"))
+// import loader from "./components/user/loader/loader.jsx";
+const Loader = React.lazy(()=> import("./components/user/loader/Loader.jsx"))
 //USER
 // import Layout from "./components/user/layout/Layout.jsx";
 // import Home from "./views/user/home/Home.jsx";
@@ -42,7 +42,7 @@ function App() {
 
   return (
       <>
-          {/*<Loader />*/}
+          {/*<loader />*/}
           <Suspense fallback={<Loader />}>
               <Routes>
                   <Route path={"/"} element={<Layout />}>
