@@ -35,7 +35,7 @@ const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
 
 
 //TODO: see about translations, and main language has to be Portuguese
-//      AOS animations not working properly, use React Motion Framer
+//      use React Motion Framer for animations
 //      Gallery onClick modal zoom up
 
 function App() {
