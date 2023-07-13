@@ -2,9 +2,11 @@ import "./gallery.css";
 import {Col, Container, Row, Image} from "react-bootstrap";
 
 import eventImage_casamento from "../../../assets/img/events/casamento.jpg"
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 function Gallery(){
+    /*scroll to top to reset scroll*/
+    useEffect(() => window.scrollTo(0, 0), []);
 
     const [GalleryImages,setGalleryImages] = useState([
         {

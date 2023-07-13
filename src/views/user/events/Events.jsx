@@ -4,8 +4,11 @@ import {Col, Container, Image, Row} from "react-bootstrap";
 // import appLogo from "/logo.svg"
 import eventImage_casamento from "../../../assets/img/events/casamento.jpg"
 import {Link} from "react-router-dom";
+import {useEffect} from "react";
 
 function Events(){
+    /*scroll to top to reset scroll*/
+    useEffect(() => window.scrollTo(0, 0), []);
 
     return(
         <>
