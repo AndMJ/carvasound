@@ -1,7 +1,6 @@
 import "./gallery.css";
 import {Col, Container, Row, Image} from "react-bootstrap";
 
-import appLogo from "/logo.svg"
 import eventImage_casamento from "../../../assets/img/events/casamento.jpg"
 import React, {useState} from "react";
 

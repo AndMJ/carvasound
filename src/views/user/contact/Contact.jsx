@@ -4,8 +4,8 @@ import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 function Contact(){
     return(
         <>
-            <section className={"my-3"}>
-                <Container className={"contact-wrapper py-5 justify-content-center"}>
+            <section className={"my-5"}>
+                <Container className={"contact-wrapper mb-5 justify-content-center"}>
                     <Row className={"title text-center mb-5"}>
                         <h2>Contact me</h2>
                     </Row>
