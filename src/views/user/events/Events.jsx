@@ -3,8 +3,8 @@ import {Col, Container, Image, Row} from "react-bootstrap";
 
 // import appLogo from "/logo.svg"
 import eventImage_casamento from "../../../assets/img/events/casamento.jpg"
-import {Link} from "react-router-dom";
 import {useEffect} from "react";
+import {HashLink} from "react-router-hash-link";
 
 function Events(){
     /*scroll to top to reset scroll*/
@@ -22,7 +22,7 @@ function Events(){
                         <Col md={6} xxl={7} className={"text-start px-5 py-3 col-order"}>
                             <h1>Casamentos</h1>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
-                            <Link to={"/gallery"} >See more</Link>
+                            <HashLink to={"/gallery#Casamentos"} >See more</HashLink>
                         </Col>
                         <Col md={6} xxl={5} className={"px-5 py-3"}>
                             <Image src={eventImage_casamento} className={"shadow"} rounded fluid />
@@ -35,7 +35,7 @@ function Events(){
                         <Col md={6} xxl={7} className={"text-start px-5 py-3"}>
                             <h1>Batizados</h1>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
-                            <Link to={"/gallery"} >See more</Link>
+                            <HashLink to={"/gallery#Batizados"} >See more</HashLink>
                         </Col>
                         <Col md={6} xxl={5} className={"px-5 py-3 col-order"}>
                             <Image src={eventImage_casamento} className={"shadow"} rounded fluid />
@@ -48,7 +48,7 @@ function Events(){
                         <Col md={6} xxl={7} className={"text-start px-5 py-3 col-order"}>
                             <h1>Aniversários</h1>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
-                            <Link to={"/gallery"} >See more</Link>
+                            <HashLink to={"/gallery"} >See more</HashLink>
                         </Col>
                         <Col md={6} xxl={5} className={"px-5 py-3"}>
                             <Image src={eventImage_casamento} className={"shadow"} rounded fluid />
@@ -61,7 +61,7 @@ function Events(){
                         <Col md={6} xxl={7} className={"text-start px-5 py-3"}>
                             <h1>Festas temáticas</h1>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
-                            <Link to={"/gallery"} >See more</Link>
+                            <HashLink to={"/gallery"} >See more</HashLink>
                         </Col>
                         <Col md={6} xxl={5} className={"px-5 py-3 col-order"}>
                             <Image src={eventImage_casamento} className={"shadow"} rounded fluid />
@@ -74,7 +74,7 @@ function Events(){
                         <Col md={6} xxl={7} className={"text-start px-5 py-3 col-order"}>
                             <h1>Eventos Corporativos</h1>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
-                            <Link to={"/gallery"} >See more</Link>
+                            <HashLink to={"/gallery"} >See more</HashLink>
                         </Col>
                         <Col md={6} xxl={5} className={"px-5 py-3"}>
                             <Image src={eventImage_casamento} className={"shadow"} rounded fluid />

@@ -1,6 +1,6 @@
 import('./App.css')
-import {Route, Routes} from "react-router-dom";
-import React, {Suspense} from 'react'
+import {Route, Routes, useLocation} from "react-router-dom";
+import React, {Suspense, useEffect, useState} from 'react'
 
 //react boostrap components
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -39,17 +39,27 @@ const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
 //      Gallery onClick modal zoom up
 //      add a title to each page ex: "Eventos", "Galeria"
 //      fix footer @medias and styles
+//      use Suspense on all routes
+//      make a "scrollTo" function so it goes to sayed category from the events page
+//      use icons
 
 function App() {
+
+    // const location = useLocation();
+    // const [url, setUrl] = useState(null);
+    //
+    // useEffect(() => { //each time location changes, saves it in "url"
+    //     setUrl(location.pathname);
+    // }, [location]);
 
   return (
       <>
           {/*<loader />*/}
           <Suspense fallback={<Loader />}>
               <Routes>
-                  <Route path={"/"} element={<Layout />}>
-                      <Route index element={<Home />} />
-                      <Route path={"events"} element={<Events />}></Route>
+                  <Route exact path={"/"} element={<Layout />}>
+                      <Route index element={ <Suspense fallback={<Loader />}> <Home /> </Suspense> } />
+                      <Route path={"events"} element={ <Suspense fallback={<Loader />}> <Events /> </Suspense> }></Route>
                       <Route path={"gallery"} element={<Gallery />}></Route>
                       <Route path={"contact"} element={<Contact />}></Route>
                   </Route>
