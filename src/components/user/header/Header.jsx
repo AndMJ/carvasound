@@ -1,6 +1,6 @@
 import "./header.css"
 import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
-import {Link, Outlet, useLocation} from "react-router-dom";
+import {Link, NavLink, Outlet, useLocation} from "react-router-dom";
 
 import appLogo from "/logo.svg"
 
@@ -11,18 +11,11 @@ import {useEffect, useState} from "react";
 
 function Header (){
 
-    const location = useLocation();
-    const [url, setUrl] = useState(null);
-
-    useEffect(() => { //each time location changes, saves it in "url"
-        setUrl(location.pathname);
-    }, [location]);
-
     return (
         <>
             <Navbar sticky={"top"} collapseOnSelect={true} expand="lg" className="shadow-sm bg-body-tertiary">
                 <Container>
-                    <Navbar.Brand as={Link} to="/">
+                    <Navbar.Brand as={NavLink} to="/">
                         <img
                             src={appLogo}
                             width="60"
@@ -35,10 +28,10 @@ function Header (){
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link as={Link} className={(url === "/") ? "active" : ""} eventKey="1" to="/">Home</Nav.Link>
-                            <Nav.Link as={Link} className={(url === "/events") ? "active" : ""} eventKey="2" to="/events">Events</Nav.Link>
-                            <Nav.Link as={Link} className={(url === "/gallery") ? "active" : ""} eventKey="3" to="/gallery">Gallery</Nav.Link>
-                            <Nav.Link as={Link} className={(url === "/contact") ? "active" : ""} eventKey="4" to="/contact">Contact</Nav.Link>
+                            <Nav.Link as={NavLink} className={(isActive) => {isActive ? "active" : ""}} to="/">Home</Nav.Link>
+                            <Nav.Link as={NavLink} className={(isActive) => {isActive ? "active" : ""}} to="/events">Events</Nav.Link>
+                            <Nav.Link as={NavLink} className={(isActive) => {isActive ? "active" : ""}} to="/gallery">Gallery</Nav.Link>
+                            <Nav.Link as={NavLink} className={(isActive) => {isActive ? "active" : ""}} to="/contact">Contact</Nav.Link>
 
                             {/*<NavDropdown title="Dropdown" id="collasible-nav-dropdown">*/}
                             {/*    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}
