@@ -105,9 +105,9 @@ function Gallery(){
 
                 {GalleryImages.map(category => {
                     return (
-                        <Container key={category.categoryId} className={"category mb-5"}>
+                        <Container id={category.categoryName} key={category.categoryId} className={"category mb-5"}>
                             <Row className={"title text-center mb-3"}>
-                                <h2 id={category.categoryName}>{category.categoryName}</h2>
+                                <h2>{category.categoryName}</h2>
                             </Row>
                             <Row className={"justify-content-evenly"}>
                                 {category.images.map(image => {
