@@ -1,8 +1,3 @@
-@font-face {
-    font-family: Nunito;
-    src: url("https://github.com/googlefonts/nunito/blob/main/fonts/variable/Nunito%5Bwght%5D.ttf");
-}
-
 body{
     height: 100%;
     overflow-x: hidden;
