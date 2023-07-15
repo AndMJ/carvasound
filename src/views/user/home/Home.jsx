@@ -17,10 +17,17 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 // import required modules
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 
+import { motion } from "framer-motion"
+
 function Home(){
     return(
         <>
-            <section className={"home"}>
+            <motion.section
+                className={"home"}
+                initial={{ opacity: 0}}
+                animate={{ opacity: 1}}
+                transition={{ delay: 0.5 }}
+            >
                 <Container className={"position-absolute top-50 start-50 translate-middle z-3"}>
                     <Col md={8} className={"mx-auto text-center"}>
                         <div className={"caption"}>
@@ -46,11 +53,13 @@ function Home(){
                     modules={[Autoplay, Pagination, Navigation]}
                     className="home-swiper"
                 >
+
                     <SwiperSlide style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel4 + ")"}}></SwiperSlide>
                     <SwiperSlide style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel3 + ")"}}></SwiperSlide>
                     <SwiperSlide style={{backgroundImage:"linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(" + carousel2 + ")"}}></SwiperSlide>
+
                 </Swiper>
-            </section>
+            </motion.section>
         </>
     )
 }
