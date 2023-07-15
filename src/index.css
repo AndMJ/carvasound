@@ -1,8 +1,13 @@
+@font-face {
+    font-family: Nunito;
+    src: url("https://github.com/googlefonts/nunito/blob/main/fonts/variable/Nunito%5Bwght%5D.ttf");
+}
+
 body{
     height: 100%;
     overflow-x: hidden;
 
-    font-family: "Nunito", -apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif !important;
+    font-family: Nunito, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif !important;
 }
 
 /*h1 {*/
