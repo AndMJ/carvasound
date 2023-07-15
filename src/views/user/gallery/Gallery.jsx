@@ -119,7 +119,7 @@ function Gallery(){
                                         category.images.map(image => {
                                             return (
                                                 <Col key={image.id} xs={12} sm={12} md={6} lg={4} className={"p-3"}>
-                                                    <Image src={image.path} rounded fluid onClick={()=>{setImgToModal(image.path)}} />
+                                                    <Image src={image.path} rounded fluid className={"shadow"} onClick={()=>{setImgToModal(image.path)}} />
                                                 </Col>
                                             )
                                         })
