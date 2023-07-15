@@ -41,7 +41,6 @@ const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
 //      - make a "scrollTo" function so it goes to sayed category from the events page
 //      - use icons
 //      - center modal image on gallery page
-//      - fix font-family not working on chrome browser
 
 function App() {
 
