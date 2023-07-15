@@ -1,10 +1,17 @@
 import "./contact.css";
 import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 
+import { motion } from "framer-motion"
+
 function Contact(){
     return(
         <>
-            <section className={"my-5"}>
+            <motion.section
+                className={"my-5"}
+                initial={{ opacity: 0}}
+                animate={{ opacity: 1}}
+                transition={{ delay: 0.5 }}
+            >
                 <Container className={"contact-wrapper mb-5 justify-content-center"}>
                     <Row className={"title text-center mb-5"}>
                         <h2>Contact me</h2>
@@ -64,7 +71,7 @@ function Contact(){
                         </Button>
                     </Form>
                 </Container>
-            </section>
+            </motion.section>
         </>
     )
 }
