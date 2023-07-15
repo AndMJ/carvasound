@@ -11,6 +11,13 @@ import {useEffect, useState} from "react";
 
 function Header (){
 
+    const location = useLocation();
+    const [url, setUrl] = useState(null);
+
+    useEffect(() => { //each time location changes, saves it in "url"
+        setUrl(location.pathname);
+    }, [location]);
+
     return (
         <>
             <Navbar sticky={"top"} collapseOnSelect={true} expand="lg" className="shadow-sm bg-body-tertiary">
@@ -27,11 +34,22 @@ function Header (){
 
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link as={NavLink} className={(isActive) => {isActive ? "active" : ""}} to="/">Home</Nav.Link>
-                            <Nav.Link as={NavLink} className={(isActive) => {isActive ? "active" : ""}} to="/events">Events</Nav.Link>
-                            <Nav.Link as={NavLink} className={(isActive) => {isActive ? "active" : ""}} to="/gallery">Gallery</Nav.Link>
-                            <Nav.Link as={NavLink} className={(isActive) => {isActive ? "active" : ""}} to="/contact">Contact</Nav.Link>
+                        <Nav activeKey={url} className="me-auto">
+
+                            <Nav.Link as={Link} eventKey="/" to="/">Home</Nav.Link>
+                            <Nav.Link as={Link} eventKey="/events" to="/events">Events</Nav.Link>
+                            <Nav.Link as={Link} eventKey="/gallery" to="/gallery">Gallery</Nav.Link>
+                            <Nav.Link as={Link} eventKey="/contact" to="/contact">Contact</Nav.Link>
+
+                            {/*<Nav.Link as={NavLink} eventKey="/home" className={(isActive) => {isActive ? "active" : ""}} to="/">Home</Nav.Link>*/}
+                            {/*<Nav.Link as={NavLink} eventKey="/events" className={(isActive) => {isActive ? "active" : ""}} to="/events">Events</Nav.Link>*/}
+                            {/*<Nav.Link as={NavLink} eventKey="/gallery" className={(isActive) => {isActive ? "active" : ""}} to="/gallery">Gallery</Nav.Link>*/}
+                            {/*<Nav.Link as={NavLink} eventKey="/contact" className={(isActive) => {isActive ? "active" : ""}} to="/contact">Contact</Nav.Link>*/}
+
+                            {/*<NavLink to={"/"} className={ "nav-link " + ((isActive) => {isActive ? "active" : ""})}>Home</NavLink>*/}
+                            {/*<NavLink to={"/events"} className={ "nav-link " + ((isActive) => {isActive ? "active" : ""})}>Events</NavLink>*/}
+                            {/*<NavLink to={"/gallery"} className={ "nav-link " + ((isActive) => {isActive ? "active" : ""})}>Gallery</NavLink>*/}
+                            {/*<NavLink to={"/contact"} className={ "nav-link " + ((isActive) => {isActive ? "active" : ""})}>Contact</NavLink>*/}
 
                             {/*<NavDropdown title="Dropdown" id="collasible-nav-dropdown">*/}
                             {/*    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}
