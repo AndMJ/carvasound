@@ -34,14 +34,13 @@ const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
 
 
 
-//TODO: see about translations, and main language has to be Portuguese
-//      use React Motion Framer for animations
-//      Gallery onClick modal zoom up
-//      add a title to each page ex: "Eventos", "Galeria"
-//      fix footer @medias and styles
-//      use Suspense on all routes
-//      make a "scrollTo" function so it goes to sayed category from the events page
-//      use icons
+//TODO: - see about translations, and main language has to be Portuguese
+//      - use React Motion Framer for animations
+//      - add a title to each page ex: "Eventos", "Galeria"
+//      - fix footer @medias and styles
+//      - make a "scrollTo" function so it goes to sayed category from the events page
+//      - use icons
+//      - center modal image on gallery page
 
 function App() {
 
@@ -58,10 +57,26 @@ function App() {
           <Suspense fallback={<Loader />}>
               <Routes>
                   <Route exact path={"/"} element={<Layout />}>
-                      <Route index element={ <Suspense fallback={<Loader />}> <Home /> </Suspense> } />
-                      <Route path={"events"} element={ <Suspense fallback={<Loader />}> <Events /> </Suspense> }></Route>
-                      <Route path={"gallery"} element={<Gallery />}></Route>
-                      <Route path={"contact"} element={<Contact />}></Route>
+                      <Route index element={
+                          <Suspense fallback={<Loader />}>
+                              <Home />
+                          </Suspense>
+                      } />
+                      <Route path={"events"} element={
+                          <Suspense fallback={<Loader />}>
+                              <Events />
+                          </Suspense>
+                      } />
+                      <Route path={"gallery"} element={
+                          <Suspense fallback={<Loader />}>
+                              <Gallery />
+                          </Suspense>
+                      } />
+                      <Route path={"contact"} element={
+                          <Suspense fallback={<Loader />}>
+                              <Contact />
+                          </Suspense>
+                      } />
                   </Route>
 
                   <Route path={"/admin/login"} element={<AdminLogin />}></Route>
