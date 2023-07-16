@@ -1,21 +1,46 @@
 import "./layout.css"
 
-// import Header from "../header/Header.jsx";
 import {Navigate, Outlet} from "react-router-dom";
-// import Footer from "../footer/Footer.jsx";
+import Header from "../header/Header.jsx";
+import Sidebar from "../sidebar/Sidebar.jsx";
+import Footer from "../Footer/Footer.jsx";
+import {useEffect, useState} from "react";
 
-function Layout(){
+function Layout(props){
+    const user = props.user;
 
-    //simple user login condition for testing
-    const user = true
+    const [Auth, setAuth] = useState(() => {
+        if(!user){
+            return false;
+        }
+
+        if (user.password === "pw"){
+            return true;
+        }
+
+        return false;
+    });
 
     return(
         <>
-            {/*<Header></Header>*/}
+            {Auth ?
+                    <>
+                        <Header></Header>
 
-            {(user === true ? <Outlet></Outlet> : <Navigate to={"/admin/login"}></Navigate>)}
+                        <div id="layoutSidenav">
 
-            {/*<Footer></Footer>*/}
+                            <Sidebar user={user ? user : null}></Sidebar>
+
+                            <div id="layoutSidenav_content">
+                                <main>
+                                    <Outlet context={user ? user : null}></Outlet>
+                                </main>
+                                <Footer></Footer>
+                            </div>
+                        </div>
+                    </>
+                    : <Navigate to={"/admin/login"}></Navigate>
+            }
         </>
     )
 }
