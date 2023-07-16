@@ -6,16 +6,9 @@ import React, {Suspense, useEffect, useState} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 //my components/views
-// import loader from "./components/user/loader/loader.jsx";
-const Loader = React.lazy(()=> import("./components/user/loader/Loader.jsx"))
-//USER
-// import Layout from "./components/user/layout/Layout.jsx";
-// import Home from "./views/user/home/Home.jsx";
-// import Events from "./views/user/events/Events.jsx";
-// import Gallery from "./views/user/gallery/Gallery.jsx";
-// import Contact from "./views/user/contact/Contact.jsx";
-// import NotFound from "./views/user/not_found/NotFound.jsx";
+const Loader = React.lazy(()=> import("./components/loader/Loader.jsx"))
 
+//USER
 const Layout = React.lazy(()=> import("./components/user/layout/Layout.jsx"))
 const Home = React.lazy(()=> import("./views/user/home/Home.jsx"))
 const Events = React.lazy(()=> import("./views/user/events/Events.jsx"))
@@ -24,19 +17,15 @@ const Contact = React.lazy(()=> import("./views/user/contact/Contact.jsx"))
 const NotFound = React.lazy(()=> import("./views/user/not_found/NotFound.jsx"))
 
 //ADMIN
-// import AdminLayout from "./components/admin/layout/Layout.jsx";
-// import AdminHome from "./views/admin/home/Home.jsx";
-// import AdminLogin from "./views/admin/login/Login.jsx";
-
-const AdminLayout = React.lazy(()=> import("./components/admin/layout/Layout.jsx"))
-const AdminHome = React.lazy(()=> import("./views/admin/home/Home.jsx"))
 const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
-
+const AdminLayout = React.lazy(()=> import("./components/admin/layout/Layout.jsx"))
+const AdminDashboard = React.lazy(()=> import("./views/admin/dashboard/Dashboard.jsx"))
+const AdminUsers = React.lazy(()=> import("./views/admin/users/Users.jsx"))
+const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx"))
 
 
 //TODO: - see about translations, and main language has to be Portuguese
-//      - use React Motion Framer for animations
-//      - add a title to each page ex: "Eventos", "Galeria"
+//      - use React Motion Framer for animations, used some already
 //      - fix footer @medias and styles
 //      - make a "scrollTo" function so it goes to sayed category from the events page
 //      - use icons
@@ -44,12 +33,12 @@ const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
 
 function App() {
 
-    // const location = useLocation();
-    // const [url, setUrl] = useState(null);
-    //
-    // useEffect(() => { //each time location changes, saves it in "url"
-    //     setUrl(location.pathname);
-    // }, [location]);
+    //really simple authentication for testing
+    const [user, setUser] = useState(null)
+
+    useEffect(() => {
+        setUser({name:"André João", email: "andre@email.com", password: "pw"})
+    }, [])
 
   return (
       <>
@@ -79,9 +68,13 @@ function App() {
                       } />
                   </Route>
 
-                  <Route path={"/admin/login"} element={<AdminLogin />}></Route>
-                  <Route path={"/admin/"} element={<AdminLayout />}>
-                      <Route index element={<AdminHome />} />
+                  <Route path={"/admin/login"} element={<AdminLogin user={user} />}></Route>
+                  <Route path={"/admin/"} element={<AdminLayout user={user} />}>
+                      <Route index element={<AdminDashboard />} />
+                      <Route path={"/admin/users"} element={<AdminUsers />}></Route>
+                      <Route path={"/admin/gallery"} element={<AdminGallery />}></Route>
+                      {/*<Route path={"/admin/gallery/upload"} element={<AdminGalleryUpload />}></Route>*/}
+                      {/*<Route path={"/admin/gallery/delete"} element={<AdminGalleryDelete />}></Route>*/}
                       {/*<Route path={"*"} element={<NotFound />} />*/}
                   </Route>
                   <Route path={"*"} element={<NotFound />}></Route>
