@@ -5,10 +5,6 @@ body{
     font-family: Nunito, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif !important;
 }
 
-/*h1 {*/
-/*    font-family: "Varela Round", -apple-system,"Segoe UI",Roboto,"Helvetica Neue","Noto Sans","Liberation Sans",Arial,sans-serif !important;*/
-/*}*/
-
 #root {
     height: 100%;
 }
@@ -31,6 +27,6 @@ a {
 /*.category .row > *{*/
 /*    transition: ease-in-out 0.1s!important;*/
 /*}*/
-/*section, div!*, h1, h2, h3, h4*!{*/
-/*    transition: ease-in-out 0.3s;*/
-/*}*/
+section, div/*, h1, h2, h3, h4*/{
+    transition: ease-in-out 0.3s;
+}
