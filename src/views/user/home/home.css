@@ -81,6 +81,9 @@ section.home .lead {
 .swiper-pagination {
     bottom: 3rem !important;
 }
+.swiper-pagination-bullet {
+    background: white !important;
+}
 .swiper-pagination-bullet-active{
     background-color: var(--custom-color-primary) !important;
 }

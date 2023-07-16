@@ -37,3 +37,22 @@
 .category img:hover {
     transform: scale(1.05);
 }
+
+/*image show modal styles*/
+.backdrop {
+    z-index: 2000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+.backdrop img{
+    display: block;
+    max-width: 90%;
+    max-height: 90%;
+    margin: 2rem auto;
+    box-shadow: 3px 5px 7px rgba(0, 0, 0, 0.5);
+    border: 3px solid white;
+}

@@ -1,14 +1,13 @@
 import "./login.css"
 import {Navigate} from "react-router-dom";
 
-function Login () {
+function Login (props) {
 
-    //simple user login condition for testing
-    const user = true
+    // const user = props.user
 
     return (
         <>
-            {(user === true ? <Navigate to={"/admin"}/> :
+            {/*{(user ? <Navigate to={"/admin"}/> :*/}
                 <div id="layoutAuthentication">
                     <div id="layoutAuthentication_content">
                         <main>
@@ -68,7 +67,7 @@ function Login () {
                         </footer>
                     </div>
                 </div>
-            )}
+            {/*)}*/}
         </>
     )
 }
