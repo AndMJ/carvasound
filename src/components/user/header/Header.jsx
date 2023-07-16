@@ -41,27 +41,6 @@ function Header (){
                             <Nav.Link as={Link} eventKey="/gallery" to="/gallery">Gallery</Nav.Link>
                             <Nav.Link as={Link} eventKey="/contact" to="/contact">Contact</Nav.Link>
 
-                            {/*<Nav.Link as={NavLink} eventKey="/home" className={(isActive) => {isActive ? "active" : ""}} to="/">Home</Nav.Link>*/}
-                            {/*<Nav.Link as={NavLink} eventKey="/events" className={(isActive) => {isActive ? "active" : ""}} to="/events">Events</Nav.Link>*/}
-                            {/*<Nav.Link as={NavLink} eventKey="/gallery" className={(isActive) => {isActive ? "active" : ""}} to="/gallery">Gallery</Nav.Link>*/}
-                            {/*<Nav.Link as={NavLink} eventKey="/contact" className={(isActive) => {isActive ? "active" : ""}} to="/contact">Contact</Nav.Link>*/}
-
-                            {/*<NavLink to={"/"} className={ "nav-link " + ((isActive) => {isActive ? "active" : ""})}>Home</NavLink>*/}
-                            {/*<NavLink to={"/events"} className={ "nav-link " + ((isActive) => {isActive ? "active" : ""})}>Events</NavLink>*/}
-                            {/*<NavLink to={"/gallery"} className={ "nav-link " + ((isActive) => {isActive ? "active" : ""})}>Gallery</NavLink>*/}
-                            {/*<NavLink to={"/contact"} className={ "nav-link " + ((isActive) => {isActive ? "active" : ""})}>Contact</NavLink>*/}
-
-                            {/*<NavDropdown title="Dropdown" id="collasible-nav-dropdown">*/}
-                            {/*    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}
-                            {/*    <NavDropdown.Item href="#action/3.2">*/}
-                            {/*        Another action*/}
-                            {/*    </NavDropdown.Item>*/}
-                            {/*    <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>*/}
-                            {/*    <NavDropdown.Divider />*/}
-                            {/*    <NavDropdown.Item href="#action/3.4">*/}
-                            {/*        Separated link*/}
-                            {/*    </NavDropdown.Item>*/}
-                            {/*</NavDropdown>*/}
                         </Nav>
 
                         <Nav>
