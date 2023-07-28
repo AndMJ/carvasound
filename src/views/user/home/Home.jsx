@@ -27,6 +27,7 @@ function Home(){
                 initial={{ opacity: 0}}
                 animate={{ opacity: 1}}
                 transition={{ delay: 0.5 }}
+                exit={{ opacity: 0 }}
             >
                 <Container className={"position-absolute top-50 start-50 translate-middle z-3"}>
                     <Col md={8} className={"mx-auto text-center"}>

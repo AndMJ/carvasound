@@ -103,7 +103,7 @@ function Gallery(){
 
                 <Container className={"category mb-5"}>
                     <Row className={"text-center"}>
-                        <h2>Gallery</h2>
+                        <h2>Galeria</h2>
                     </Row>
                 </Container>
 

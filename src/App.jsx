@@ -1,3 +1,5 @@
+import {AnimatePresence} from "framer-motion";
+
 import('./App.css')
 import {Route, Routes, useLocation} from "react-router-dom";
 import React, {Suspense, useEffect, useState} from 'react'
@@ -26,6 +28,7 @@ const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx")
 
 //TODO: - see about translations, and main language has to be Portuguese
 //      - use React Motion Framer for animations, used some already
+//          - fix motion animations on firefox
 //      - fix footer @medias and styles
 //      - make a "scrollTo" function so it goes to sayed category from the events page
 //      - use icons
@@ -44,41 +47,43 @@ function App() {
       <>
           {/*<loader />*/}
           <Suspense fallback={<Loader />}>
-              <Routes>
-                  <Route exact path={"/"} element={<Layout />}>
-                      <Route index element={
-                          <Suspense fallback={<Loader />}>
-                              <Home />
-                          </Suspense>
-                      } />
-                      <Route path={"events"} element={
-                          <Suspense fallback={<Loader />}>
-                              <Events />
-                          </Suspense>
-                      } />
-                      <Route path={"gallery"} element={
-                          <Suspense fallback={<Loader />}>
-                              <Gallery />
-                          </Suspense>
-                      } />
-                      <Route path={"contact"} element={
-                          <Suspense fallback={<Loader />}>
-                              <Contact />
-                          </Suspense>
-                      } />
-                  </Route>
+              <AnimatePresence mode={"wait"}>
+                  <Routes>
+                      <Route exact path={"/"} element={<Layout />}>
+                          <Route index element={
+                              <Suspense fallback={<Loader />}>
+                                  <Home />
+                              </Suspense>
+                          } />
+                          <Route path={"events"} element={
+                              <Suspense fallback={<Loader />}>
+                                  <Events />
+                              </Suspense>
+                          } />
+                          <Route path={"gallery"} element={
+                              <Suspense fallback={<Loader />}>
+                                  <Gallery />
+                              </Suspense>
+                          } />
+                          <Route path={"contact"} element={
+                              <Suspense fallback={<Loader />}>
+                                  <Contact />
+                              </Suspense>
+                          } />
+                      </Route>
 
-                  <Route path={"/admin/login"} element={<AdminLogin user={user} />}></Route>
-                  <Route path={"/admin/"} element={<AdminLayout user={user} />}>
-                      <Route index element={<AdminDashboard />} />
-                      <Route path={"/admin/users"} element={<AdminUsers />}></Route>
-                      <Route path={"/admin/gallery"} element={<AdminGallery />}></Route>
-                      {/*<Route path={"/admin/gallery/upload"} element={<AdminGalleryUpload />}></Route>*/}
-                      {/*<Route path={"/admin/gallery/delete"} element={<AdminGalleryDelete />}></Route>*/}
-                      {/*<Route path={"*"} element={<NotFound />} />*/}
-                  </Route>
-                  <Route path={"*"} element={<NotFound />}></Route>
-              </Routes>
+                      <Route path={"/admin/login"} element={<AdminLogin user={user} />}></Route>
+                      <Route path={"/admin/"} element={<AdminLayout user={user} />}>
+                          <Route index element={<AdminDashboard />} />
+                          <Route path={"/admin/users"} element={<AdminUsers />}></Route>
+                          <Route path={"/admin/gallery"} element={<AdminGallery />}></Route>
+                          {/*<Route path={"/admin/gallery/upload"} element={<AdminGalleryUpload />}></Route>*/}
+                          {/*<Route path={"/admin/gallery/delete"} element={<AdminGalleryDelete />}></Route>*/}
+                          {/*<Route path={"*"} element={<NotFound />} />*/}
+                      </Route>
+                      <Route path={"*"} element={<NotFound />}></Route>
+                  </Routes>
+              </AnimatePresence>
           </Suspense>
       </>
   )

@@ -22,7 +22,7 @@ function Events(){
 
                 <Container className={"title mb-5"}>
                     <Row className={"text-center"}>
-                        <h2>Events</h2>
+                        <h2>Eventos</h2>
                     </Row>
                 </Container>
 
@@ -32,7 +32,7 @@ function Events(){
                             <h1>Casamentos</h1>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
                             {/*<HashLink to={"/gallery#Casamentos"} >See more</HashLink>*/}
-                            <HashLink to={"/gallery"} >See more</HashLink>
+                            <HashLink to={"/gallery"} >Ver mais</HashLink>
                         </Col>
                         <Col md={6} xxl={5} className={"px-5 py-3"}>
                             <Image src={eventImage_casamento} className={"shadow"} rounded fluid />
@@ -45,7 +45,7 @@ function Events(){
                         <Col md={6} xxl={7} className={"text-start px-5 py-3"}>
                             <h1>Batizados</h1>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
-                            <HashLink to={"/gallery"} >See more</HashLink>
+                            <HashLink to={"/gallery"} >Ver mais</HashLink>
                         </Col>
                         <Col md={6} xxl={5} className={"px-5 py-3 col-order"}>
                             <Image src={eventImage_casamento} className={"shadow"} rounded fluid />
@@ -58,7 +58,7 @@ function Events(){
                         <Col md={6} xxl={7} className={"text-start px-5 py-3 col-order"}>
                             <h1>Aniversários</h1>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
-                            <HashLink to={"/gallery"} >See more</HashLink>
+                            <HashLink to={"/gallery"} >Ver mais</HashLink>
                         </Col>
                         <Col md={6} xxl={5} className={"px-5 py-3"}>
                             <Image src={eventImage_casamento} className={"shadow"} rounded fluid />
@@ -71,7 +71,7 @@ function Events(){
                         <Col md={6} xxl={7} className={"text-start px-5 py-3"}>
                             <h1>Festas temáticas</h1>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
-                            <HashLink to={"/gallery"} >See more</HashLink>
+                            <HashLink to={"/gallery"} >Ver mais</HashLink>
                         </Col>
                         <Col md={6} xxl={5} className={"px-5 py-3 col-order"}>
                             <Image src={eventImage_casamento} className={"shadow"} rounded fluid />
@@ -84,7 +84,7 @@ function Events(){
                         <Col md={6} xxl={7} className={"text-start px-5 py-3 col-order"}>
                             <h1>Eventos Corporativos</h1>
                             <p>Adipiscing enim eu turpis egestas pretium aenean pharetra magna. Nisi est sit amet facilisis magna etiam tempor. Proin fermentum leo vel orci porta non pulvinar.</p>
-                            <HashLink to={"/gallery"} >See more</HashLink>
+                            <HashLink to={"/gallery"} >Ver mais</HashLink>
                         </Col>
                         <Col md={6} xxl={5} className={"px-5 py-3"}>
                             <Image src={eventImage_casamento} className={"shadow"} rounded fluid />

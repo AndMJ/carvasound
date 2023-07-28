@@ -1,14 +1,3 @@
-body{
-    height: 100%;
-    overflow-x: hidden;
-
-    font-family: Nunito, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif !important;
-}
-
-#root {
-    height: 100%;
-}
-
 :root {
     --custom-color-primary: #ff8f51;
     --custom-color-secondary: #b05928;
@@ -18,6 +7,17 @@ body{
     --custom-form-input-focus-boxshadow: 0 0 0 0.25rem rgba(255, 143, 81, 0.25);
 }
 
+body, #root{
+    height: 100%;
+    overflow-x: hidden;
+}
+
+h1,h2,h3,h4,h5,h6,
+p, a {
+    font-family: "Nunito", sans-serif !important;
+    font-weight: normal;
+    font-style: normal;
+}
 
 a {
     text-decoration: none !important;
