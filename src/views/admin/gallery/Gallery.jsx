@@ -6,6 +6,9 @@ const Gallery = () => {
         <>
             <div className="container-fluid px-4">
                 <h1 className="mt-4 mb-4">Galeria</h1>
+                <ol className="breadcrumb mb-4">
+                    <li className="breadcrumb-item active">Galeria</li>
+                </ol>
                 <div className="card mb-4">
                     <div className="card-header">
                         <FaTable className={"me-1"}></FaTable>

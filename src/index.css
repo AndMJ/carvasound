@@ -27,6 +27,6 @@ a {
 /*.category .row > *{*/
 /*    transition: ease-in-out 0.1s!important;*/
 /*}*/
-section, div/*, h1, h2, h3, h4*/{
-    transition: ease-in-out 0.3s;
-}
+/*section, div!*, h1, h2, h3, h4*!{*/
+/*    transition: ease-in-out 0.3s;*/
+/*}*/
