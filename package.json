@@ -11,6 +11,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.14.2",
+    "@mui/x-data-grid": "^6.10.2",
     "bootstrap": "^5.3.0",
     "framer-motion": "^10.12.21",
     "jquery": "^3.7.0",
