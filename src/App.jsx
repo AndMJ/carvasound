@@ -26,13 +26,17 @@ const AdminUsers = React.lazy(()=> import("./views/admin/users/Users.jsx"))
 const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx"))
 
 
-//TODO: - see about translations, and main language has to be Portuguese
-//      - use React Motion Framer for animations, used some already
-//          - fix motion animations on firefox
-//      - fix footer @medias and styles
-//      - make a "scrollTo" function so it goes to sayed category from the events page
-//      - use icons
-//      - center modal image on gallery page
+//TODO:
+// GENERAL/USER
+//  - see about translations, and main language has to be Portuguese
+//  - use React Motion Framer for animations, used some already
+//      - fix motion animations on firefox
+//  - fix USER footer @medias and styles
+//  - make a "scrollTo" function so it goes to sayed category from the events page
+//  - use icons
+//  - center modal image on gallery page
+// ADMIN
+//  - use Material UI DataGrid table for all tables, see https://mui.com/x/react-data-grid/editing/
 
 function App() {
 
@@ -40,7 +44,7 @@ function App() {
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        setUser({name:"André João", email: "andre@email.com", password: "pw"})
+        setUser({id: crypto.randomUUID(), name:"André João", email: "andre@email.com", password: "pw", permissions: "Admin"})
     }, [])
 
   return (
