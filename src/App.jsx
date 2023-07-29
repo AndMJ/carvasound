@@ -6,6 +6,7 @@ import React, {Suspense, useEffect, useState} from 'react'
 
 //react boostrap components
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {AuthProvider} from "./utils/authContext.jsx";
 
 //my components/views
 const Loader = React.lazy(()=> import("./components/loader/Loader.jsx"))
@@ -28,6 +29,7 @@ const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx")
 
 //TODO:
 // GENERAL/USER
+//  - use favicon.ico
 //  - see about translations, and main language has to be Portuguese
 //  - use React Motion Framer for animations, used some already
 //      - fix motion animations on firefox
@@ -37,56 +39,56 @@ const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx")
 //  - center modal image on gallery page
 // ADMIN
 //  - use Material UI DataGrid table for all tables, see https://mui.com/x/react-data-grid/editing/
+//  - authentication with appwrite
 
 function App() {
-
-    //really simple authentication for testing
-    const [user, setUser] = useState(null)
-
-    useEffect(() => {
-        setUser({id: crypto.randomUUID(), name:"André João", email: "andre@email.com", password: "pw", permissions: "Admin"})
-    }, [])
 
   return (
       <>
           {/*<loader />*/}
           <Suspense fallback={<Loader />}>
               <AnimatePresence mode={"wait"}>
-                  <Routes>
-                      <Route exact path={"/"} element={<Layout />}>
-                          <Route index element={
-                              <Suspense fallback={<Loader />}>
-                                  <Home />
-                              </Suspense>
-                          } />
-                          <Route path={"events"} element={
-                              <Suspense fallback={<Loader />}>
-                                  <Events />
-                              </Suspense>
-                          } />
-                          <Route path={"gallery"} element={
-                              <Suspense fallback={<Loader />}>
-                                  <Gallery />
-                              </Suspense>
-                          } />
-                          <Route path={"contact"} element={
-                              <Suspense fallback={<Loader />}>
-                                  <Contact />
-                              </Suspense>
-                          } />
-                      </Route>
+                  <AuthProvider>
+                      <Routes>
+                          {/*USER PUBLIC ROUTES*/}
+                          <Route exact path={"/"} element={<Layout />}>
+                              <Route index element={
+                                  <Suspense fallback={<Loader />}>
+                                      <Home />
+                                  </Suspense>
+                              } />
+                              <Route path={"events"} element={
+                                  <Suspense fallback={<Loader />}>
+                                      <Events />
+                                  </Suspense>
+                              } />
+                              <Route path={"gallery"} element={
+                                  <Suspense fallback={<Loader />}>
+                                      <Gallery />
+                                  </Suspense>
+                              } />
+                              <Route path={"contact"} element={
+                                  <Suspense fallback={<Loader />}>
+                                      <Contact />
+                                  </Suspense>
+                              } />
+                          </Route>
 
-                      <Route path={"/admin/login"} element={<AdminLogin user={user} />}></Route>
-                      <Route path={"/admin/"} element={<AdminLayout user={user} />}>
-                          <Route index element={<AdminDashboard />} />
-                          <Route path={"/admin/users"} element={<AdminUsers />}></Route>
-                          <Route path={"/admin/gallery"} element={<AdminGallery />}></Route>
-                          {/*<Route path={"/admin/gallery/upload"} element={<AdminGalleryUpload />}></Route>*/}
-                          {/*<Route path={"/admin/gallery/delete"} element={<AdminGalleryDelete />}></Route>*/}
-                          {/*<Route path={"*"} element={<NotFound />} />*/}
-                      </Route>
-                      <Route path={"*"} element={<NotFound />}></Route>
-                  </Routes>
+                          {/*ADMIN PRIVATE ROUTES*/}
+                          <Route path={"/admin/login"} element={<AdminLogin/>}></Route>
+
+                              <Route path={"/admin/"} element={<AdminLayout/>}>
+                                  <Route index element={<AdminDashboard />} />
+                                  <Route path={"/admin/users"} element={<AdminUsers />}></Route>
+                                  <Route path={"/admin/gallery"} element={<AdminGallery />}></Route>
+                                  {/*<Route path={"/admin/gallery/upload"} element={<AdminGalleryUpload />}></Route>*/}
+                                  {/*<Route path={"/admin/gallery/delete"} element={<AdminGalleryDelete />}></Route>*/}
+                                  {/*<Route path={"*"} element={<NotFound />} />*/}
+                              </Route>
+
+                          <Route path={"*"} element={<NotFound />}></Route>
+                      </Routes>
+                  </AuthProvider>
               </AnimatePresence>
           </Suspense>
       </>
