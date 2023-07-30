@@ -10,6 +10,7 @@ import {AuthProvider} from "./utils/authContext.jsx";
 
 //my components/views
 const Loader = React.lazy(()=> import("./components/loader/Loader.jsx"))
+const PageNotFound = React.lazy(()=> import("./views/not_found/NotFound.jsx"))
 
 //USER
 const Layout = React.lazy(()=> import("./components/user/layout/Layout.jsx"))
@@ -17,7 +18,6 @@ const Home = React.lazy(()=> import("./views/user/home/Home.jsx"))
 const Events = React.lazy(()=> import("./views/user/events/Events.jsx"))
 const Gallery = React.lazy(()=> import("./views/user/gallery/Gallery.jsx"))
 const Contact = React.lazy(()=> import("./views/user/contact/Contact.jsx"))
-const NotFound = React.lazy(()=> import("./views/user/not_found/NotFound.jsx"))
 
 //ADMIN
 const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
@@ -39,7 +39,7 @@ const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx")
 //  - center modal image on gallery page
 // ADMIN
 //  - use Material UI DataGrid table for all tables, see https://mui.com/x/react-data-grid/editing/
-//  - authentication with appwrite
+//  - use Modals for user action verification
 
 function App() {
 
@@ -72,21 +72,22 @@ function App() {
                                       <Contact />
                                   </Suspense>
                               } />
+                              {/*<Route path={"*"} element={<UserPageNotFound />}></Route>*/}
                           </Route>
 
-                          {/*ADMIN PRIVATE ROUTES*/}
+                          {/*ADMIN PUBLIC ROUTE*/}
                           <Route path={"/admin/login"} element={<AdminLogin/>}></Route>
 
-                              <Route path={"/admin/"} element={<AdminLayout/>}>
-                                  <Route index element={<AdminDashboard />} />
-                                  <Route path={"/admin/users"} element={<AdminUsers />}></Route>
-                                  <Route path={"/admin/gallery"} element={<AdminGallery />}></Route>
-                                  {/*<Route path={"/admin/gallery/upload"} element={<AdminGalleryUpload />}></Route>*/}
-                                  {/*<Route path={"/admin/gallery/delete"} element={<AdminGalleryDelete />}></Route>*/}
-                                  {/*<Route path={"*"} element={<NotFound />} />*/}
-                              </Route>
-
-                          <Route path={"*"} element={<NotFound />}></Route>
+                          {/*ADMIN PRIVATE ROUTES*/}
+                          <Route path={"/admin/"} element={<AdminLayout/>}>
+                              <Route index element={<AdminDashboard />} />
+                              <Route path={"/admin/users"} element={<AdminUsers />}></Route>
+                              <Route path={"/admin/gallery"} element={<AdminGallery />}></Route>
+                              {/*<Route path={"/admin/gallery/upload"} element={<AdminGalleryUpload />}></Route>*/}
+                              {/*<Route path={"/admin/gallery/delete"} element={<AdminGalleryDelete />}></Route>*/}
+                              {/*<Route path={"*"} element={<AdminPageNotFound />}></Route>*/}
+                          </Route>
+                          <Route path={"*"} element={<PageNotFound />}></Route>
                       </Routes>
                   </AuthProvider>
               </AnimatePresence>
