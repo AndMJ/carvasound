@@ -3,8 +3,9 @@ import {FaColumns, FaImage, FaUpload, FaUser} from "react-icons/fa";
 import {Nav} from "react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
+import {useAuth} from "../../../utils/authContext.jsx";
 
-const Sidebar = (props) => {
+const Sidebar = () => {
 
     const location = useLocation();
     const [url, setUrl] = useState(null);
@@ -12,6 +13,8 @@ const Sidebar = (props) => {
     useEffect(() => { //each time location changes, saves it in "url"
         setUrl(location.pathname);
     }, [location]);
+
+    const {user} = useAuth()
 
     return (
         <>
@@ -39,7 +42,7 @@ const Sidebar = (props) => {
                     </div>
                     <div className="sb-sidenav-footer">
                         <div className="small">Logged in as:</div>
-                        {props.user ? props.user.name : "user"}
+                        {user ? user.name : "user"}
                         {/*<div className="small">{props.user.email}</div>*/}
                     </div>
                 </nav>

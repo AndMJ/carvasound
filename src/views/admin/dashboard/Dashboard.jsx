@@ -1,15 +1,20 @@
 import "./dashboard.css"
 import {useEffect, useState} from "react";
+import {useAuth} from "../../../utils/authContext.jsx";
+
 import {FaClock, FaPen, FaTable, FaUser} from "react-icons/fa";
 import {useOutletContext} from "react-router-dom";
 import {FaX} from "react-icons/fa6";
 
-import Clock from "../../../components/admin/Clock.jsx";
+import Clock from "../../../utils/Clock.jsx";
 import {Row} from "react-bootstrap";
+
 
 function Dashboard(){
 
-    const [user, allUsers] = useOutletContext();
+    const {user} = useAuth()
+
+    const [allUsers] = useOutletContext();
 
     return (
         <>
@@ -68,7 +73,7 @@ function Dashboard(){
                                 <FaUser className={"me-1"}></FaUser> Bem vindo
                             </div>
                             <div className="card-body">
-                                 {user ? user.name : "user"}
+                                 {user ? user.name: "user"}
                             </div>
                         </div>
                     </div>
@@ -102,25 +107,24 @@ function Dashboard(){
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {allUsers ?
-                                        allUsers.map(userdata => {
-                                            return (
-                                                <>
-                                                    <tr>
-                                                        <td>{userdata.id}</td>
-                                                        <td>{userdata.name}</td>
-                                                        <td>{userdata.email}</td>
-                                                        <td>{userdata.permissions}</td>
-                                                    </tr>
-                                                </>
-                                            )
-                                        })
+                                    {/*{allUsers ?*/}
+                                    {/*    allUsers.map(userdata => {*/}
+                                    {/*        return (*/}
+                                    {/*            <>*/}
+                                    {/*                <tr key={userdata.id}>*/}
+                                    {/*                    <td>{userdata.id}</td>*/}
+                                    {/*                    <td>{userdata.name}</td>*/}
+                                    {/*                    <td>{userdata.email}</td>*/}
+                                    {/*                    <td>{userdata.permissions}</td>*/}
+                                    {/*                </tr>*/}
+                                    {/*            </>*/}
+                                    {/*        )*/}
+                                    {/*    })*/}
 
-                                        :
+                                    {/*    :*/}
 
-                                        <tr>no data found</tr>
-                                    }
-
+                                    {/*    <tr>no data found</tr>*/}
+                                    {/*}*/}
                                     </tbody>
                                 </table>
                             </div>
