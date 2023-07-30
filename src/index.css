@@ -23,6 +23,19 @@ a {
     text-decoration: none !important;
 }
 
+.btn-primary {
+    background-color: var(--custom-color-darkgrey)!important;
+    border-color: var(--custom-color-darkgrey)!important;
+}
+.btn-primary:hover {
+    background-color: var(--custom-color-primary)!important;
+    border-color: var(--custom-color-primary)!important;
+}
+.btn-primary:active {
+    background-color: var(--custom-color-secondary) !important;
+    border-color: var(--custom-color-secondary) !important;
+}
+
 /*smooth transitions between screen sizes*/
 /*.category .row > *{*/
 /*    transition: ease-in-out 0.1s!important;*/
