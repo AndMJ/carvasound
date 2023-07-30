@@ -1,9 +1,10 @@
 import "./header.css"
 
 import {FaBars} from "react-icons/fa";
+import {useAuth} from "../../../utils/authContext.jsx";
 
 const Header = () => {
-
+    const {user, handleLogout} = useAuth()
     const handleEvent = (e) => {
         e.preventDefault();
         document.body.classList.toggle('sb-sidenav-toggled');
@@ -24,7 +25,7 @@ const Header = () => {
                 {/*// <!-- Navbar--> */}
                 <ul className="navbar-nav ms-auto  me-3 me-lg-4 md-go-to-end">
                     <li className="nav-item">
-                        <a className="nav-link" href="#">Logout</a>
+                        <button className="nav-link" onClick={handleLogout}>Logout</button>
                     </li>
                 </ul>
             </nav>

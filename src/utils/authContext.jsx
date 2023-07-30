@@ -12,8 +12,18 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        setLoading(false)
+        getUserOnLoad()
     },[])
+
+    const getUserOnLoad = async () => {
+        try {
+            const userdata = await account.get()
+            setUser(userdata)
+        } catch (error) {
+            console.log(error)
+        }
+        setLoading(false)
+    }
 
     const handleLogin = async (event, credentials) => {
         event.preventDefault()
@@ -23,8 +33,20 @@ export const AuthProvider = ({children}) => {
             const userdata = await account.get()
             setUser(userdata)
 
-            console.log(userdata)
             navigate("/admin")
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
+    const handleLogout = async (event, credentials) => {
+        event.preventDefault()
+
+        try {
+            await account.deleteSession("current")
+            setUser(null)
+
+            // navigate("/admin/login")
         } catch (error) {
             console.error(error)
         }
@@ -32,7 +54,8 @@ export const AuthProvider = ({children}) => {
 
     const contextData = {
         user,
-        handleLogin
+        handleLogin,
+        handleLogout
     }
 
     return (

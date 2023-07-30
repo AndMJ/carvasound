@@ -2,6 +2,7 @@ import "./login.css"
 import {Navigate, useNavigate} from "react-router-dom";
 import {useAuth} from "../../../utils/authContext.jsx";
 import {useEffect, useState} from "react";
+import { motion } from "framer-motion"
 
 function Login () {
     const {user, handleLogin} = useAuth()
@@ -22,15 +23,19 @@ function Login () {
     return (
         <>
             {(user ? <Navigate to={"/admin"}/> :
-                <div id="layoutAuthentication" className={"vh-100"}>
+                <div id="layoutAuthentication" className={"bg-dark vh-100"}>
                     <div id="layoutAuthentication_content">
                         <main>
                             <div className="container">
                                 <div className="row justify-content-center">
                                     <div className="col-lg-5">
-                                        <div className="card shadow-lg border-0 rounded-lg mt-5">
+                                        <motion.div className="card shadow-lg border-0 rounded-lg mt-5"
+                                            initial={{ opacity: 0}}
+                                            animate={{ opacity: 1}}
+                                            transition={{ delay: 0.3 }}
+                                        >
                                             <div className="card-header">
-                                                <h3 className="text-center font-weight-light my-4">Login</h3>
+                                                <h3 className="text-center font-weight-light my-4">Carvasound Login</h3>
                                             </div>
                                             <div className="card-body">
                                                 <form onSubmit={(event) => {handleLogin(event,credencials)}}>
@@ -59,24 +64,24 @@ function Login () {
                                             {/*        <a href="register.html">Need an account? Sign up!</a>*/}
                                             {/*    </div>*/}
                                             {/*</div>*/}
-                                        </div>
+                                        </motion.div>
                                     </div>
                                 </div>
                             </div>
                         </main>
                     </div>
-                    {/*<div id="layoutAuthentication_footer">*/}
-                    {/*    <footer className="py-4 bg-light mt-auto">*/}
-                    {/*        <div className="container-fluid px-4">*/}
-                    {/*            <div className="d-flex align-items-center justify-content-between small">*/}
-                    {/*                <div className="text-muted">Copyright &copy; Your Website 2023</div>*/}
-                    {/*                <div>*/}
-                    {/*                    <a href="#">Privacy Policy</a> &middot; <a href="#">Terms &amp; Conditions</a>*/}
-                    {/*                </div>*/}
-                    {/*            </div>*/}
-                    {/*        </div>*/}
-                    {/*    </footer>*/}
-                    {/*</div>*/}
+                    <div id="layoutAuthentication_footer">
+                        <footer className="py-4 bg-dark mt-auto">
+                            <div className="container-fluid px-4">
+                                <div className="d-flex align-items-center justify-content-between small">
+                                    <div className="text-muted">Copyright &copy; Carvasound {new Date().getFullYear()}</div>
+                                    <div className="text-muted">
+                                        Made by <a href="https://github.com/AndMJ" target={"_blank"} rel="noreferrer noopener">AndMJ</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
+                    </div>
                 </div>
             )}
         </>
