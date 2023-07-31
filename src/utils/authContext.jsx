@@ -36,6 +36,7 @@ export const AuthProvider = ({children}) => {
             navigate("/admin")
         } catch (error) {
             console.error(error)
+            return error
         }
     }
 

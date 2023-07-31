@@ -40,6 +40,7 @@ const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx")
 // ADMIN
 //  - use Material UI DataGrid table for all tables, see https://mui.com/x/react-data-grid/editing/
 //  - use Modals for user action verification
+//  - login error message
 
 function App() {
 
