@@ -29,7 +29,7 @@ function Login () {
         let response = await handleLogin(event, credencials)
 
         console.log(response)
-        LiveAlert()
+        handleAlert()
     }
 
 
