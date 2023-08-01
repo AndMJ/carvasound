@@ -11,6 +11,6 @@
     min-width: 0;
 }
 
-.text-muted {
+#layoutAuthentication_footer .text-muted {
     color: rgba(255, 255, 255, 0.60) !important;
 }
