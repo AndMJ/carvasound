@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
+import {Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 import {
     GridRowModes,
     DataGrid,
@@ -25,47 +26,14 @@ import {
     randomArrayItem,
 } from '@mui/x-data-grid-generator';
 
-
-const roles = ['Market', 'Finance', 'Development'];
-const randomRole = () => {
-    return randomArrayItem(roles);
-};
-
 const initialRows = [
     {
-        id: randomId(),
-        name: randomTraderName(),
-        age: 25,
-        joinDate: randomCreatedDate(),
-        role: randomRole(),
-    },
-    {
-        id: randomId(),
-        name: randomTraderName(),
-        age: 36,
-        joinDate: randomCreatedDate(),
-        role: randomRole(),
-    },
-    {
-        id: randomId(),
-        name: randomTraderName(),
-        age: 19,
-        joinDate: randomCreatedDate(),
-        role: randomRole(),
-    },
-    {
-        id: randomId(),
-        name: randomTraderName(),
-        age: 28,
-        joinDate: randomCreatedDate(),
-        role: randomRole(),
-    },
-    {
-        id: randomId(),
-        name: randomTraderName(),
-        age: 23,
-        joinDate: randomCreatedDate(),
-        role: randomRole(),
+        id: "5e5ea5c16897e",
+        name: "John Doe",
+        email: "john@appwrite.io",
+        phone: "+4930901820",
+        $createdAt: new Date("2020-10-15T06:38:00.000+00:00"),
+        $updatedAt: new Date("2020-10-15T06:41:11.000+00:00"),
     },
 ];
 
@@ -74,7 +42,7 @@ function EditToolbar(props) {
 
     const handleClick = () => {
         const id = randomId();
-        setRows((oldRows) => [...oldRows, { id, name: '', age: '', isNew: true }]);
+        setRows((oldRows) => [...oldRows, {id, name: '', email: '', isNew: true }]);
         setRowModesModel((oldModel) => ({
             ...oldModel,
             [id]: { mode: GridRowModes.Edit, fieldToFocus: 'name' },
@@ -94,8 +62,7 @@ function EditToolbar(props) {
 const Users = () => {
 
     const {user} = useAuth()
-
-    const [allUsers] = useOutletContext();
+    // const [allUsers] = useOutletContext();
 
 
     const [rows, setRows] = useState(initialRows);
@@ -117,7 +84,10 @@ const Users = () => {
     };
 
     const handleDeleteClick = (id) => () => {
-        setRows(rows.filter((row) => row.id !== id));
+        setState( () => {
+            return true
+        });
+        //setRows(rows.filter((row) => row.id !== id));
     };
 
     const handleCancelClick = (id) => () => {
@@ -133,8 +103,23 @@ const Users = () => {
     };
 
     const processRowUpdate = (newRow) => {
+        console.log(rows)
+        console.log(newRow)
+
+        if (newRow.isNew === true){
+            console.log("new user")
+            delete newRow.isNew;
+            setRows(rows.map((row) => (row.id === newRow.id ? newRow : row)));
+            return newRow;
+        }
+
         const updatedRow = { ...newRow, isNew: false };
+
+        console.log(updatedRow)
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+
+        console.log(rows)
+        console.log(updatedRow)
         return updatedRow;
     };
 
@@ -143,31 +128,48 @@ const Users = () => {
     };
 
     const columns = [
+        { field: 'id', headerName: 'ID', width: 180, editable: false },
         { field: 'name', headerName: 'Name', width: 180, editable: true },
         {
-            field: 'age',
-            headerName: 'Age',
-            type: 'number',
-            width: 80,
+            field: 'email',
+            headerName: 'Email',
+            type: 'email',
+            width: 180,
             align: 'left',
             headerAlign: 'left',
             editable: true,
         },
         {
-            field: 'joinDate',
-            headerName: 'Join date',
-            type: 'date',
+            field: 'phone',
+            headerName: 'Phone',
+            type: 'text',
             width: 180,
+            align: 'left',
+            headerAlign: 'left',
             editable: true,
         },
         {
+            field: '$createdAt',
+            headerName: 'Created At',
+            type: 'date',
+            width: 180,
+            editable: false,
+        },
+        {
+            field: '$updatedAt',
+            headerName: 'Updated At',
+            type: 'date',
+            width: 180,
+            editable: false,
+        },
+        /*{
             field: 'role',
             headerName: 'Department',
             width: 220,
             editable: true,
             type: 'singleSelect',
             valueOptions: ['Market', 'Finance', 'Development'],
-        },
+        },*/
         {
             field: 'actions',
             type: 'actions',
@@ -216,6 +218,64 @@ const Users = () => {
         },
     ];
 
+
+    const handleNo = () => {
+        // const { oldRow, resolve } = promiseArguments;
+        // resolve(oldRow); // Resolve with the old row to not update the internal state
+        // setPromiseArguments(null);
+
+        setState( () => {
+            return false
+        });
+    };
+
+    const handleYes = async () => {
+        // const { newRow, oldRow, reject, resolve } = promiseArguments;
+        //
+        // try {
+        //     // Make the HTTP request to save in the backend
+        //     const response = await mutateRow(newRow);
+        //     setSnackbar({ children: 'User successfully saved', severity: 'success' });
+        //     resolve(response);
+        //     setPromiseArguments(null);
+        // } catch (error) {
+        //     setSnackbar({ children: "Name can't be empty", severity: 'error' });
+        //     reject(oldRow);
+        //     setPromiseArguments(null);
+        // }
+
+        setState( () => {
+            return false
+        });
+    };
+
+    const [state, setState ] = useState(false);
+    const renderConfirmDialog = () => {
+
+        if (!state) {
+            return null;
+        }
+
+        return (
+            <Dialog
+                maxWidth="xs"
+                TransitionProps={{ onEntered: () => {} }}
+                open={open}
+            >
+                <DialogTitle>Are you sure?</DialogTitle>
+                <DialogContent dividers>
+                    Pressing 'Yes' will delete this user.
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleNo}>
+                        No
+                    </Button>
+                    <Button onClick={handleYes}>Yes</Button>
+                </DialogActions>
+            </Dialog>
+        );
+    };
+
     return (
         <>
             <div className="container-fluid px-4">
@@ -230,6 +290,8 @@ const Users = () => {
                         Table users
                     </div>
                     <div className="card-body">
+
+                        {renderConfirmDialog()}
 
                         <Box
                             sx={{
