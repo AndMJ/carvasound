@@ -37,7 +37,7 @@ const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx")
 //  - use icons
 //  - center modal image on gallery page
 // ADMIN
-//  - see solution for gallery image order definition
+//  - see solution for gallery image categories, create a datatable for each category?, to separate images by category?
 //  - use Material UI DataGrid table for all tables, see https://mui.com/x/react-data-grid/editing/
 //      - save, edit and delete confirmations, see https://mui.com/x/react-data-grid/editing/#confirm-before-saving
 //  - login error message
