@@ -56,7 +56,7 @@ export const AuthProvider = ({children}) => {
     const contextData = {
         user,
         handleLogin,
-        handleLogout
+        handleLogout,
     }
 
     return (
