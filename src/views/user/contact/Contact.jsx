@@ -14,14 +14,14 @@ function Contact(){
             >
                 <Container className={"contact-wrapper mb-5 justify-content-center"}>
                     <Row className={"title text-center mb-5"}>
-                        <h2>Contact me</h2>
+                        <h2>Contactos</h2>
                     </Row>
 
                     <Row className={"mb-3"}>
                         <Col sm={12} md={6} className={"mb-3"}>
                             <Card>
                                 <Card.Body >
-                                    <Card.Title>Phone</Card.Title>
+                                    <Card.Title>Telemóvel</Card.Title>
                                     {/*<Card.Subtitle className="mb-2 text-muted">Card Subtitle</Card.Subtitle>*/}
                                     <Card.Text><a href={"tel:+351967208626"}>+351 967 208 626</a></Card.Text>
                                     {/*<Card.Link href="#">Card Link</Card.Link>*/}
@@ -41,33 +41,38 @@ function Contact(){
                     </Row>
 
                     <Form className={"contactForm"} method={"POST"}>
+                        <Form.Group className="mb-3" controlId="formGridName" >
+                            <Form.Label>Nome</Form.Label>
+                            <Form.Control type="text" placeholder="Seu nome" required />
+                        </Form.Group>
+
                         <Row className="mb-3">
-                            <Col md={6}>
-                                <Form.Group controlId="formGridName">
-                                    <Form.Label>Your Name</Form.Label>
-                                    <Form.Control type="text" placeholder="Your name" required />
+                            <Col md={6} className="mb-3 mb-md-0">
+                                <Form.Group controlId="formGridEmail">
+                                    <Form.Label>Email</Form.Label>
+                                    <Form.Control type="email" placeholder="exemplo@email.com" required />
                                 </Form.Group>
                             </Col>
                             <Col md={6}>
-                                <Form.Group controlId="formGridEmail">
-                                    <Form.Label>Your Email</Form.Label>
-                                    <Form.Control type="email" placeholder="Enter your email" required />
+                                <Form.Group controlId="formGridPhoneNumber">
+                                    <Form.Label>Telemóvel</Form.Label>
+                                    <Form.Control type="tel" placeholder="912 345 678" minLength={9} maxLength={16} required />
                                 </Form.Group>
                             </Col>
                         </Row>
 
                         <Form.Group className="mb-3" controlId="formGridSubject">
-                            <Form.Label>Subject</Form.Label>
-                            <Form.Control placeholder="Subject" required />
+                            <Form.Label>Assunto</Form.Label>
+                            <Form.Control placeholder="casamento, batizado..." required />
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formGridAddress2">
-                            <Form.Label>Message</Form.Label>
-                            <Form.Control as={"textarea"} placeholder="Message" required />
+                            <Form.Label>Mensagem</Form.Label>
+                            <Form.Control as={"textarea"} placeholder="Mensagem" required />
                         </Form.Group>
 
                         <Button variant="primary" type="submit" className={"d-block mx-auto"}>
-                            Submit
+                            Enviar
                         </Button>
                     </Form>
                 </Container>

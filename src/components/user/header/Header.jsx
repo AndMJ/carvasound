@@ -37,9 +37,9 @@ function Header (){
                         <Nav activeKey={url} className="me-auto">
 
                             <Nav.Link as={Link} eventKey="/" to="/">Home</Nav.Link>
-                            <Nav.Link as={Link} eventKey="/events" to="/events">Events</Nav.Link>
-                            <Nav.Link as={Link} eventKey="/gallery" to="/gallery">Gallery</Nav.Link>
-                            <Nav.Link as={Link} eventKey="/contact" to="/contact">Contact</Nav.Link>
+                            <Nav.Link as={Link} eventKey="/events" to="/events">Eventos</Nav.Link>
+                            <Nav.Link as={Link} eventKey="/gallery" to="/gallery">Galeria</Nav.Link>
+                            <Nav.Link as={Link} eventKey="/contact" to="/contact">Contactos</Nav.Link>
 
                         </Nav>
 

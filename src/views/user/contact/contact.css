@@ -20,18 +20,18 @@ form.contactForm textarea {
     max-height: 20rem;
     min-height: 7rem!important;
 }
-form.contactForm button {
-    background-color: var(--custom-color-darkgrey);
-    border-color: var(--custom-color-darkgrey);
-}
-form.contactForm button:hover {
-    background-color: var(--custom-color-primary);
-    border-color: var(--custom-color-primary);
-}
-form.contactForm button:active {
-    background-color: var(--custom-color-secondary) !important;
-    border-color: var(--custom-color-secondary) !important;
-}
+/*form.contactForm button {*/
+/*    background-color: var(--custom-color-darkgrey);*/
+/*    border-color: var(--custom-color-darkgrey);*/
+/*}*/
+/*form.contactForm button:hover {*/
+/*    background-color: var(--custom-color-primary);*/
+/*    border-color: var(--custom-color-primary);*/
+/*}*/
+/*form.contactForm button:active {*/
+/*    background-color: var(--custom-color-secondary) !important;*/
+/*    border-color: var(--custom-color-secondary) !important;*/
+/*}*/
 
 
 .contact-wrapper {
