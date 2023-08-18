@@ -29,7 +29,6 @@ const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx")
 
 //TODO:
 // GENERAL/USER
-//  - use favicon.ico
 //  - see about translations, and main language has to be Portuguese
 //  - use React Motion Framer for animations, used some already
 //      - fix motion animations on firefox
