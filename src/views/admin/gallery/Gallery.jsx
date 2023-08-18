@@ -86,7 +86,7 @@ const Gallery = () => {
         // { field: 'id', headerName: 'ID', width: 180, editable: false },
         //{ field: 'name', headerName: 'Name', width: 180, editable: false },
         { field: 'image', headerName: 'Image', width: 180, editable: false },
-        { field: 'order', headerName: 'Order', width: 180, editable: true },
+        //{ field: 'order', headerName: 'Order', width: 180, editable: true },
         { field: 'category', headerName: 'Category', width: 180, editable: false },
         { field: '$createdAt', headerName: 'Created At', type:"date", width: 180, editable: false },
         { field: '$updatedAt', headerName: 'Updated At', type:"date", width: 180, editable: false },
