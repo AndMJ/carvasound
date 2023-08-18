@@ -38,7 +38,7 @@ const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx")
 //  - center modal image on gallery page
 // ADMIN
 //  - use Material UI DataGrid table for all tables, see https://mui.com/x/react-data-grid/editing/
-//  - use Modals for user action verification
+//      - save, edit and delete confirmations, see https://mui.com/x/react-data-grid/editing/#confirm-before-saving
 //  - login error message
 
 function App() {
