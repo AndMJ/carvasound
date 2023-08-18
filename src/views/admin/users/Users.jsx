@@ -287,7 +287,7 @@ const Users = () => {
                 <div className="card mb-4">
                     <div className="card-header">
                         <FaTable className={"me-1"}></FaTable>
-                        Table users
+                        Tabela Users
                     </div>
                     <div className="card-body">
 

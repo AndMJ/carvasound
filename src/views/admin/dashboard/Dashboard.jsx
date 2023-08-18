@@ -332,10 +332,11 @@ function Dashboard(){
                     <div className={"col-xl-3 col-md-6"}>
                         <div className="card mb-4">
                             <div className="card-header">
-                                <FaUser className={"me-1"}></FaUser> Bem vindo
+                                <FaUser className={"me-1"}></FaUser> Welcome
                             </div>
                             <div className="card-body">
-                                 {user ? user.name: "user"}
+                                <p>user: <span>{user ? user.name : "user"}</span></p>
+                                <p>email: <span>{user ? user.email : "email"}</span></p>
                             </div>
                         </div>
                     </div>

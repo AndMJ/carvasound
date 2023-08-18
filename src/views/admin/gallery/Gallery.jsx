@@ -75,10 +75,18 @@ const Gallery = () => {
         // });
     };
 
+    /*const processRowUpdate = (newRow) => {
+        alert("row edited")
+        /!*const updatedRow = { ...newRow, isNew: false };
+        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        return updatedRow;*!/
+    };*/
+
     const columns = [
         // { field: 'id', headerName: 'ID', width: 180, editable: false },
         //{ field: 'name', headerName: 'Name', width: 180, editable: false },
         { field: 'image', headerName: 'Image', width: 180, editable: false },
+        { field: 'order', headerName: 'Order', width: 180, editable: true },
         { field: 'category', headerName: 'Category', width: 180, editable: false },
         { field: '$createdAt', headerName: 'Created At', type:"date", width: 180, editable: false },
         { field: '$updatedAt', headerName: 'Updated At', type:"date", width: 180, editable: false },
@@ -177,7 +185,7 @@ const Gallery = () => {
                 <div className="card mb-4">
                     <div className="card-header">
                         <FaTable className={"me-1"}></FaTable>
-                        Tabela de imagens
+                        Tabela Galeria
                     </div>
                     <div className="card-body p-0">
 
@@ -195,6 +203,7 @@ const Gallery = () => {
                                     color: 'text.primary',
                                 },
                             }}
+                            //processRowUpdate={processRowUpdate}
                             rows={rows}
                             columns={columns}
                             autoPageSize
