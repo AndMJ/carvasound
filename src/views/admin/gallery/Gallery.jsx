@@ -60,7 +60,7 @@ const ToolbarButtons = () => {
 }
 
 const Gallery = () => {
-    const { getGallery } = useAuth();
+    const { getGallery, getImagesByID } = useAuth();
 
     const [rows, setRows] = useState([]);
 
@@ -74,10 +74,11 @@ const Gallery = () => {
         let dataArray = []
 
         for (let row of images.documents){
+            let image_path = await getImagesByID(row.image_id)
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
-                image_id: row.image_id,
+                image_id: image_path,
                 createdAt: new Date(row.$createdAt),
                 updatedAt: new Date(row.$updatedAt),
             })
@@ -108,7 +109,11 @@ const Gallery = () => {
     const columns = [
         { field: 'id', headerName: 'ID', width: 180, editable: false },
         //{ field: 'name', headerName: 'Name', width: 180, editable: false },
-        { field: 'image_id', headerName: 'Image', width: 180, editable: false },
+        { field: 'image_id', headerName: 'Image', width: 180, editable: false,
+            renderCell: (params) => (
+                <img src={params.row.image_id.href}/> //TODO: appwrite says it needs user permissions to view file, but i already have permissions
+            )
+        },
         //{ field: 'order', headerName: 'Order', width: 180, editable: true },
         { field: 'category_id', headerName: 'Category', width: 180, editable: false },
         { field: 'createdAt', headerName: 'Created At', type:"date", width: 180, editable: false },
@@ -208,7 +213,7 @@ const Gallery = () => {
                 <div className="card mb-4">
                     <div className="card-header">
                         <FaTable className={"me-1"}></FaTable>
-                        Tabela Galeria
+                        Gallery table
                     </div>
                     <div className="card-body p-0">
 

@@ -69,12 +69,12 @@ export const AuthProvider = ({children}) => {
     }
 
     //GET STORAGE IMAGE LIST
-    const getImages = async () => {
+    const getImagesByID = async (image_id) => {
         //event.preventDefault()
 
         let promise = "";
         try {
-            promise = await storage.listFiles(STORAGE_BUCKET_ID);
+            promise = await storage.getFileView(STORAGE_BUCKET_ID, image_id);
 
         } catch (error) {
             console.error(error)
@@ -88,7 +88,7 @@ export const AuthProvider = ({children}) => {
         handleLogin,
         handleLogout,
 
-        getImages,
+        getImagesByID,
         getGallery,
     }
 
