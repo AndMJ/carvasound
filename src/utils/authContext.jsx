@@ -1,6 +1,6 @@
 import {useContext, useState, createContext, useEffect} from "react";
 import Loader from "../components/loader/Loader.jsx";
-import {account} from "../appwrite/appwrite.config.jsx";
+import {account, storage, database, STORAGE_BUCKET_ID, DATABASE_ID, COLLECTION_GALLERY_ID} from "../appwrite/appwrite.config.jsx";
 import {useNavigate} from "react-router-dom";
 
 
@@ -53,10 +53,43 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+    //GET GALLERY
+    const getGallery = async () => {
+        //event.preventDefault()
+
+        let promise = "";
+        try {
+            promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID);
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        return promise
+    }
+
+    //GET STORAGE IMAGE LIST
+    const getImages = async () => {
+        //event.preventDefault()
+
+        let promise = "";
+        try {
+            promise = await storage.listFiles(STORAGE_BUCKET_ID);
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        return promise
+    }
+
     const contextData = {
         user,
         handleLogin,
         handleLogout,
+
+        getImages,
+        getGallery,
     }
 
     return (
