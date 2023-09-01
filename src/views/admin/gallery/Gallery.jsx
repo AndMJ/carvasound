@@ -1,6 +1,7 @@
 import "./gallery.css"
 import {FaTable} from "react-icons/fa";
-import {useState} from "react";
+import {useAuth} from "../../../utils/authContext.jsx";
+import {useEffect, useState} from "react";
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -24,17 +25,16 @@ import {
     randomArrayItem,
 } from '@mui/x-data-grid-generator';
 
-
-const initialRows = [
-    {
-        id: "5e5ea5c16897e",
-        name: "John Doe",
-        email: "john@appwrite.io",
-        phone: "+4930901820",
-        $createdAt: new Date("2020-10-15T06:38:00.000+00:00"),
-        $updatedAt: new Date("2020-10-15T06:41:11.000+00:00"),
-    },
-];
+// const initialRows = [
+//     {
+//         id: "5e5ea5c16897e",
+//         name: "John Doe",
+//         email: "john@appwrite.io",
+//         phone: "+4930901820",
+//         $createdAt: new Date("2020-10-15T06:38:00.000+00:00"),
+//         $updatedAt: new Date("2020-10-15T06:41:11.000+00:00"),
+//     },
+// ];
 
 const ToolbarButtons = () => {
     const AddNewImage = () => {
@@ -60,8 +60,31 @@ const ToolbarButtons = () => {
 }
 
 const Gallery = () => {
+    const { getGallery } = useAuth();
 
-    const [rows, setRows] = useState(initialRows);
+    const [rows, setRows] = useState([]);
+
+    useEffect(() =>  {
+        getGalleryData()
+    },[])
+
+    const getGalleryData = async () => {
+        const images = await getGallery()
+
+        let dataArray = []
+
+        for (let row of images.documents){
+            dataArray.push({
+                id: row.$id,
+                category_id: row.category_id,
+                image_id: row.image_id,
+                createdAt: new Date(row.$createdAt),
+                updatedAt: new Date(row.$updatedAt),
+            })
+        }
+        setRows(dataArray)
+    }
+
     const [rowModesModel, setRowModesModel] = useState({});
 
     const handleEditClick = (id) => () => {
@@ -70,9 +93,9 @@ const Gallery = () => {
 
     const handleDeleteClick = (id) => () => {
         alert("delete")
-        // setState( () => {
-        //     return true
-        // });
+        setState( () => {
+            return true
+        });
     };
 
     /*const processRowUpdate = (newRow) => {
@@ -83,13 +106,13 @@ const Gallery = () => {
     };*/
 
     const columns = [
-        // { field: 'id', headerName: 'ID', width: 180, editable: false },
+        { field: 'id', headerName: 'ID', width: 180, editable: false },
         //{ field: 'name', headerName: 'Name', width: 180, editable: false },
-        { field: 'image', headerName: 'Image', width: 180, editable: false },
+        { field: 'image_id', headerName: 'Image', width: 180, editable: false },
         //{ field: 'order', headerName: 'Order', width: 180, editable: true },
-        { field: 'category', headerName: 'Category', width: 180, editable: false },
-        { field: '$createdAt', headerName: 'Created At', type:"date", width: 180, editable: false },
-        { field: '$updatedAt', headerName: 'Updated At', type:"date", width: 180, editable: false },
+        { field: 'category_id', headerName: 'Category', width: 180, editable: false },
+        { field: 'createdAt', headerName: 'Created At', type:"date", width: 180, editable: false },
+        { field: 'updatedAt', headerName: 'Updated At', type:"date", width: 180, editable: false },
         {
             field: 'actions',
             type: 'actions',
@@ -177,9 +200,9 @@ const Gallery = () => {
     return (
         <>
             <div className="container-fluid px-4">
-                <h1 className="mt-4 mb-4">Galeria</h1>
+                <h1 className="mt-4 mb-4">Gallery</h1>
                 <ol className="breadcrumb mb-4">
-                    <li className="breadcrumb-item active">Galeria</li>
+                    <li className="breadcrumb-item active">Gallery</li>
                 </ol>
 
                 <div className="card mb-4">
@@ -204,6 +227,8 @@ const Gallery = () => {
                                 },
                             }}
                             //processRowUpdate={processRowUpdate}
+                            //getRowId={(row) => row.$id}
+                            columnVisibilityModel={ {id: false} }
                             rows={rows}
                             columns={columns}
                             autoPageSize
