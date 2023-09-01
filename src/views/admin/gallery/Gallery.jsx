@@ -18,23 +18,6 @@ import {
     GridActionsCellItem,
     GridRowEditStopReasons,
 } from '@mui/x-data-grid';
-import {
-    randomCreatedDate,
-    randomTraderName,
-    randomId,
-    randomArrayItem,
-} from '@mui/x-data-grid-generator';
-
-// const initialRows = [
-//     {
-//         id: "5e5ea5c16897e",
-//         name: "John Doe",
-//         email: "john@appwrite.io",
-//         phone: "+4930901820",
-//         $createdAt: new Date("2020-10-15T06:38:00.000+00:00"),
-//         $updatedAt: new Date("2020-10-15T06:41:11.000+00:00"),
-//     },
-// ];
 
 const ToolbarButtons = () => {
     const AddNewImage = () => {
@@ -68,7 +51,21 @@ const Gallery = () => {
         getGalleryData()
     },[])
 
+    const RowImage = (props) => {
+
+        const handleImgClick = () => {
+            alert("zoom image")
+        }
+
+        return (
+            <div className={"w-100 p-1"} onClick={handleImgClick}>
+                <img src={props.image_path} width={"100%"} height={"100%"}/>
+            </div>
+        )
+    }
+
     const getGalleryData = async () => {
+
         const images = await getGallery()
 
         let dataArray = []
@@ -78,15 +75,13 @@ const Gallery = () => {
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
-                image_id: image_path,
+                image: image_path,
                 createdAt: new Date(row.$createdAt),
                 updatedAt: new Date(row.$updatedAt),
             })
         }
         setRows(dataArray)
     }
-
-    const [rowModesModel, setRowModesModel] = useState({});
 
     const handleEditClick = (id) => () => {
         alert("edit")
@@ -99,19 +94,12 @@ const Gallery = () => {
         });
     };
 
-    /*const processRowUpdate = (newRow) => {
-        alert("row edited")
-        /!*const updatedRow = { ...newRow, isNew: false };
-        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-        return updatedRow;*!/
-    };*/
-
     const columns = [
         { field: 'id', headerName: 'ID', width: 180, editable: false },
         //{ field: 'name', headerName: 'Name', width: 180, editable: false },
-        { field: 'image_id', headerName: 'Image', width: 180, editable: false,
+        { field: 'image', headerName: 'Image', width: 180, editable: false,
             renderCell: (params) => (
-                <img src={params.row.image_id.href}/> //TODO: appwrite says it needs user permissions to view file, but i already have permissions
+                <RowImage image_path={params.row.image.href}></RowImage>
             )
         },
         //{ field: 'order', headerName: 'Order', width: 180, editable: true },
@@ -233,6 +221,8 @@ const Gallery = () => {
                             }}
                             //processRowUpdate={processRowUpdate}
                             //getRowId={(row) => row.$id}
+                            //onCellClick={handleOnCellClick}
+                            rowHeight={180}
                             columnVisibilityModel={ {id: false} }
                             rows={rows}
                             columns={columns}
