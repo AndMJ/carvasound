@@ -4,6 +4,7 @@ import {Nav} from "react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useAuth} from "../../../utils/authContext.jsx";
+import Gallery from "../../../views/admin/gallery/Gallery.jsx";
 
 const Sidebar = () => {
 
@@ -35,7 +36,7 @@ const Sidebar = () => {
                                 <div className="sb-sidenav-menu-heading">Imagens</div>
                                 <Nav.Link as={Link} to={"/admin/gallery"} eventKey={"/admin/gallery"}>
                                     <div className="sb-nav-link-icon"><FaImage/></div>
-                                    Galeria
+                                    Gallery
                                 </Nav.Link>
                             </Nav>
                         </div>
