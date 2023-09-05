@@ -69,6 +69,7 @@ const Gallery = () => {
         )
     }
 
+    //TODO: view a better way of loading data to datagrid, it works on dev but not on server side
     const formatGalleryData = async () => {
 
         const gallery_data = await getGalleryList()
