@@ -205,20 +205,16 @@ const Gallery = () => {
 
                 <div className="card mb-4">
                     <div className="card-header">
-                        <FaImages className={"me-1"}></FaImages>
-                        Upload images
+                        <FaImages className={"me-1"}></FaImages> Upload images
                     </div>
                     <div className="card-body">
                         <Fileupload></Fileupload>
                     </div>
-
-
                 </div>
 
                 <div className="card mb-4">
                     <div className="card-header">
-                        <FaTable className={"me-1"}></FaTable>
-                        Gallery table
+                        <FaTable className={"me-1"}></FaTable> Gallery table
                     </div>
                     <div className="card-body p-0">
 
