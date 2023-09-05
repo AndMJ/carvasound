@@ -1,6 +1,13 @@
 import {useContext, useState, createContext, useEffect} from "react";
 import Loader from "../components/loader/Loader.jsx";
-import {account, storage, database, STORAGE_BUCKET_ID, DATABASE_ID, COLLECTION_GALLERY_ID} from "../appwrite/appwrite.config.jsx";
+
+import {account, storage, database,
+    STORAGE_BUCKET_ID,
+    DATABASE_ID,
+    COLLECTION_GALLERY_ID,
+    COLLECTION_CATEGORY_ID,
+} from "../appwrite/appwrite.config.jsx";
+
 import {useNavigate} from "react-router-dom";
 
 
@@ -53,8 +60,11 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-    //GET GALLERY
-    const getGallery = async () => {
+    /*
+     * Database > Production
+     * Collection > gallery
+     */
+    const getGalleryList = async () => {
         //event.preventDefault()
 
         let promise = "";
@@ -68,7 +78,40 @@ export const AuthProvider = ({children}) => {
         return promise
     }
 
-    //GET STORAGE IMAGE LIST
+    /*
+     * Database > Production
+     * Collection > category
+     */
+    const getCategoryList = async () => {
+        //event.preventDefault()
+
+        let promise = "";
+        try {
+            promise = database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID);
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        return promise
+    }
+    const getCategoryByID = async (category_id) => {
+        //event.preventDefault()
+
+        let promise = "";
+        try {
+            promise = database.getDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id);
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        return promise
+    }
+
+    /*
+     * Storage > Buckets > gallery_images
+     */
     const getImagesByID = async (image_id) => {
         //event.preventDefault()
 
@@ -89,7 +132,8 @@ export const AuthProvider = ({children}) => {
         handleLogout,
 
         getImagesByID,
-        getGallery,
+        getGalleryList,
+        getCategoryByID,
     }
 
     return (
