@@ -1,5 +1,5 @@
 import "./gallery.css"
-import {FaTable} from "react-icons/fa";
+import {FaImages, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
 import {useEffect, useState} from "react";
 
@@ -10,7 +10,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
-import {Dialog, DialogActions, DialogContent, DialogTitle, Toolbar} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, Toolbar} from "@mui/material";
 import {
     GridRowModes,
     DataGrid,
@@ -18,6 +18,10 @@ import {
     GridActionsCellItem,
     GridRowEditStopReasons,
 } from '@mui/x-data-grid';
+
+import BsButton from 'react-bootstrap/Button';
+import Collapse from 'react-bootstrap/Collapse';
+import Fileupload from "../../../components/upload/fileupload.jsx";
 
 const ToolbarButtons = () => {
     const AddNewImage = () => {
@@ -97,7 +101,7 @@ const Gallery = () => {
     const columns = [
         { field: 'id', headerName: 'ID', width: 180, editable: false },
         //{ field: 'name', headerName: 'Name', width: 180, editable: false },
-        { field: 'image', headerName: 'Image', width: 180, editable: false,
+        { field: 'image', headerName: 'Image', width: 100, editable: false,
             renderCell: (params) => (
                 <RowImage image_path={params.row.image.href}></RowImage>
             )
@@ -190,6 +194,7 @@ const Gallery = () => {
         );
     };
 
+
     return (
         <>
             <div className="container-fluid px-4">
@@ -197,6 +202,18 @@ const Gallery = () => {
                 <ol className="breadcrumb mb-4">
                     <li className="breadcrumb-item active">Gallery</li>
                 </ol>
+
+                <div className="card mb-4">
+                    <div className="card-header">
+                        <FaImages className={"me-1"}></FaImages>
+                        Upload images
+                    </div>
+                    <div className="card-body">
+                        <Fileupload></Fileupload>
+                    </div>
+
+
+                </div>
 
                 <div className="card mb-4">
                     <div className="card-header">
@@ -222,15 +239,18 @@ const Gallery = () => {
                             //processRowUpdate={processRowUpdate}
                             //getRowId={(row) => row.$id}
                             //onCellClick={handleOnCellClick}
-                            rowHeight={180}
+                            //loading={rows}
+                            rowHeight={100}
                             columnVisibilityModel={ {id: false} }
                             rows={rows}
                             columns={columns}
                             autoPageSize
                             slots={{
-                                toolbar: ToolbarButtons
+                                toolbar: ToolbarButtons,
+                                loadingOverlay: LinearProgress,
                             }}
                             disableRowSelectionOnClick
+
                         />
                     </div>
                 </div>
