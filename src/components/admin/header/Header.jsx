@@ -1,7 +1,8 @@
 import "./header.css"
-
+import {Link} from "react-router-dom";
 import {FaBars} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
+
 
 const Header = () => {
     const {user, handleLogout} = useAuth()
@@ -15,7 +16,7 @@ const Header = () => {
             <nav className="sb-topnav navbar navbar-expand navbar-dark bg-dark">
 
                 {/*// <!-- Navbar Brand-->*/}
-                <a className="navbar-brand ps-3" href="index.html">Carvasound</a>
+                <Link className="navbar-brand ps-3" to={"/admin"}>Carvasound</Link>
 
                 {/*// <!-- Sidebar Toggle-->*/}
                 <button className="btn btn-link btn-sm me-4 me-lg-0 order-1 order-lg-0" id="sidebarToggle" onClick={handleEvent} >
