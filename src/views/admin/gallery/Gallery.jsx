@@ -1,6 +1,11 @@
 import "./gallery.css"
-import {FaTable} from "react-icons/fa";
-import {useState} from "react";
+
+import {FaImages, FaTable} from "react-icons/fa";
+import {useAuth} from "../../../utils/authContext.jsx";
+import {useEffect, useState} from "react";
+import dateFormat from "dateformat";
+import Fileupload from "../../../components/upload/fileupload.jsx";
+
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -9,7 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
-import {Dialog, DialogActions, DialogContent, DialogTitle, Toolbar} from "@mui/material";
+import {Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, Toolbar} from "@mui/material";
 import {
     GridRowModes,
     DataGrid,
@@ -17,24 +22,8 @@ import {
     GridActionsCellItem,
     GridRowEditStopReasons,
 } from '@mui/x-data-grid';
-import {
-    randomCreatedDate,
-    randomTraderName,
-    randomId,
-    randomArrayItem,
-} from '@mui/x-data-grid-generator';
 
 
-const initialRows = [
-    {
-        id: "5e5ea5c16897e",
-        name: "John Doe",
-        email: "john@appwrite.io",
-        phone: "+4930901820",
-        $createdAt: new Date("2020-10-15T06:38:00.000+00:00"),
-        $updatedAt: new Date("2020-10-15T06:41:11.000+00:00"),
-    },
-];
 
 const ToolbarButtons = () => {
     const AddNewImage = () => {
@@ -60,36 +49,73 @@ const ToolbarButtons = () => {
 }
 
 const Gallery = () => {
+    const { getGalleryList, getImagesByID, getCategoryByID } = useAuth();
 
-    const [rows, setRows] = useState(initialRows);
-    const [rowModesModel, setRowModesModel] = useState({});
+    const [rows, setRows] = useState([]);
 
-    const handleEditClick = (id) => () => {
-        alert("edit")
-    };
+    useEffect(() =>  {
+        formatGalleryData()
+    },[])
 
-    const handleDeleteClick = (id) => () => {
-        alert("delete")
-        // setState( () => {
-        //     return true
-        // });
-    };
+    const RenderCellImage = (props) => {
+        const handleImgClick = () => {
+            alert("zoom image")
+        }
 
-    /*const processRowUpdate = (newRow) => {
-        alert("row edited")
-        /!*const updatedRow = { ...newRow, isNew: false };
-        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-        return updatedRow;*!/
-    };*/
+        return (
+            <div className={"w-100 p-1"} onClick={handleImgClick}>
+                <img src={props.image_path} width={"100%"} height={"100%"}/>
+            </div>
+        )
+    }
+
+    //TODO: view a better way of loading data to datagrid, it works on dev but not on server side
+    const formatGalleryData = async () => {
+
+        const gallery_data = await getGalleryList()
+
+        let dataArray = []
+
+        for (let row of gallery_data.documents){
+            const image_path = await getImagesByID(row.image_id)
+            const category = await getCategoryByID(row.category_id)
+
+            const creAt= new Date(row.$createdAt)
+            const upAt= new Date(row.$updatedAt)
+
+            dataArray.push({
+                id: row.$id,
+                category_id: row.category_id,
+                category: category.name,
+                image_id: row.image_id,
+                image: image_path,
+                createdAt: creAt,
+                updatedAt: upAt,
+            })
+        }
+        setRows(dataArray)
+    }
 
     const columns = [
-        // { field: 'id', headerName: 'ID', width: 180, editable: false },
-        //{ field: 'name', headerName: 'Name', width: 180, editable: false },
-        { field: 'image', headerName: 'Image', width: 180, editable: false },
-        { field: 'order', headerName: 'Order', width: 180, editable: true },
-        { field: 'category', headerName: 'Category', width: 180, editable: false },
-        { field: '$createdAt', headerName: 'Created At', type:"date", width: 180, editable: false },
-        { field: '$updatedAt', headerName: 'Updated At', type:"date", width: 180, editable: false },
+        { field: 'id', headerName: 'ID', width: 180, editable: false },
+        { field: 'image_id', headerName: 'Image ID', width: 180, editable: false},
+        { field: 'image', headerName: 'Image', width: 100, editable: false,
+            renderCell: (params) => (
+                <RenderCellImage image_path={params.row.image.href}></RenderCellImage>
+            )
+        },
+        { field: 'category_id', headerName: 'Category ID', width: 180, editable: false},
+        { field: 'category', headerName: 'Category', width: 180, editable: false},
+        { field: 'createdAt', headerName: 'Created At', type:"date", width: 180, editable: false,
+            renderCell: (params) => {
+                return dateFormat(params.row.date, "dd/mm/yyyy HH:MM:ss")
+            }
+        },
+        { field: 'updatedAt', headerName: 'Updated At', type:"date", width: 180, editable: false,
+            renderCell: (params) => {
+                return dateFormat(params.row.date, "dd/mm/yyyy HH:MM:ss")
+            }
+        },
         {
             field: 'actions',
             type: 'actions',
@@ -115,6 +141,17 @@ const Gallery = () => {
             },
         },
     ];
+
+    const handleEditClick = (id) => () => {
+        alert("edit")
+    };
+
+    const handleDeleteClick = (id) => () => {
+        alert("delete")
+        setState( () => {
+            return true
+        });
+    };
 
 
     const handleNo = () => {
@@ -174,18 +211,27 @@ const Gallery = () => {
         );
     };
 
+
     return (
         <>
             <div className="container-fluid px-4">
-                <h1 className="mt-4 mb-4">Galeria</h1>
+                <h1 className="mt-4 mb-4">Gallery</h1>
                 <ol className="breadcrumb mb-4">
-                    <li className="breadcrumb-item active">Galeria</li>
+                    <li className="breadcrumb-item active">Gallery</li>
                 </ol>
 
                 <div className="card mb-4">
                     <div className="card-header">
-                        <FaTable className={"me-1"}></FaTable>
-                        Tabela Galeria
+                        <FaImages className={"me-1"}></FaImages> Upload images
+                    </div>
+                    <div className="card-body">
+                        <Fileupload></Fileupload>
+                    </div>
+                </div>
+
+                <div className="card mb-4">
+                    <div className="card-header">
+                        <FaTable className={"me-1"}></FaTable> Gallery table
                     </div>
                     <div className="card-body p-0">
 
@@ -203,14 +249,27 @@ const Gallery = () => {
                                     color: 'text.primary',
                                 },
                             }}
-                            //processRowUpdate={processRowUpdate}
+                            //getRowId={(row) => row.$id}
+                            //onCellClick={handleOnCellClick}
+                            //loading={rows}
+                            rowHeight={100}
+                            columnVisibilityModel={ {
+                                id: false,
+                                image_id: false,
+                                category_id: false
+                            } }
                             rows={rows}
                             columns={columns}
                             autoPageSize
                             slots={{
-                                toolbar: ToolbarButtons
+                                toolbar: ToolbarButtons,
+                                loadingOverlay: LinearProgress,
                             }}
                             disableRowSelectionOnClick
+                            disableColumnSelector
+                            //disableColumnMenu
+
+
                         />
                     </div>
                 </div>

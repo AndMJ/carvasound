@@ -6,9 +6,11 @@ import React, {Suspense, useEffect, useState} from 'react'
 
 //react boostrap components
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+//Authentication + DB queries
 import {AuthProvider} from "./utils/authContext.jsx";
 
-//my components/views
+//components/views
 const Loader = React.lazy(()=> import("./components/loader/Loader.jsx"))
 const PageNotFound = React.lazy(()=> import("./views/not_found/NotFound.jsx"))
 
@@ -27,21 +29,23 @@ const AdminUsers = React.lazy(()=> import("./views/admin/users/Users.jsx"))
 const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx"))
 
 
-//TODO:
-// GENERAL/USER
-//  - see about translations, and main language has to be Portuguese
-//  - use React Motion Framer for animations, used some already
-//      - fix motion animations on firefox
-//  - fix USER footer @medias and styles
-//  - make a "scrollTo" function so it goes to sayed category from the events page
-//  - use icons
-//  - center modal image on gallery page
-// ADMIN
-//  - see solution for gallery image order definition
-//  - use Material UI DataGrid table for all tables, see https://mui.com/x/react-data-grid/editing/
-//      - save, edit and delete confirmations, see https://mui.com/x/react-data-grid/editing/#confirm-before-saving
-//  - login error message
-
+/*
+TODO:
+    - FIX RENDER.COM IMPORT CHUNKS BIGGER THAN 500Mb
+    GENERAL/USER
+    - see about translations, and main language has to be Portuguese, see https://react.i18next.com/
+    - see React Motion Framer for animations
+    - fix USER footer @medias and styles
+    - make a "scrollTo" function so it goes to sayed category from the events page
+    - use icons
+    - center zoom modal image on gallery page
+    ADMIN
+    - use Material UI DataGrid table for all tables, see https://mui.com/x/react-data-grid/editing/
+        - save, edit and delete confirmations, see https://mui.com/x/react-data-grid/editing/#confirm-before-saving
+        - use Snackbar from '@mui/material/Snackbar' for action confirmation
+    - login error message
+        - maybe use Snackbar from '@mui/material/Snackbar' for action confirmation/error?
+*/
 function App() {
 
   return (

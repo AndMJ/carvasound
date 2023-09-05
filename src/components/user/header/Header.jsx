@@ -2,7 +2,7 @@ import "./header.css"
 import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
 import {Link, NavLink, Outlet, useLocation} from "react-router-dom";
 
-import appLogo from "/logo.svg"
+import appLogo from "/public/logo.png"
 
 //ICONS
 import {FaFacebook, FaInstagram} from "react-icons/fa"
