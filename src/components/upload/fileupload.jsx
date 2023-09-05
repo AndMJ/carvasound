@@ -2,7 +2,7 @@ import "./fileupload.css"
 
 import {useDropzone} from 'react-dropzone'
 import {useCallback, useEffect, useRef, useState} from "react";
-import {FaArrowUp, FaImages, FaTrashAlt} from "react-icons/fa";
+import {FaArrowUp, FaImages, FaTrashAlt, FaUpload} from "react-icons/fa";
 import {RiCheckLine, RiFileWarningLine} from "react-icons/ri";
 
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -10,7 +10,6 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 
 function Fileupload() {
     const [files, setFiles] = useState([])
-    console.log(files)
 
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
         //const mappedAcceptedFiles = acceptedFiles.map((file) => ({file, errors: []}))
@@ -26,13 +25,16 @@ function Fileupload() {
         }
     })
 
+    function handleImageUpload(files) {
+        alert(JSON.stringify(files) + " TOTAL FILES: " + files.length)
+    }
+
     function handleDelete(file){
         setFiles(curr => curr.filter(f => (f !== file)))
     }
 
     return (
         <>
-
             <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 {
@@ -49,6 +51,7 @@ function Fileupload() {
                             <div className={"container-fluid drag-area"}>
                                 <FaImages size={64}></FaImages>
                                 <p>Drag & drop some files here, or click to select files</p>
+                                <span className="support">Supports: JPEG, JPG, PNG</span>
                             </div>
                         </>
                 }
@@ -58,6 +61,9 @@ function Fileupload() {
             <ul className="list-group">
                 {files.length > 0 &&
                     <li className="list-group-item d-flex justify-content-between align-items-center">
+                        <div className="d-flex justify-content-start align-items-center">
+                            <button className={"d-flex align-items-center btn btn-success ms-3"} onClick={() => {handleImageUpload(files)}}><FaUpload className={"me-2"}></FaUpload> Upload</button>
+                        </div>
                         <div className="d-flex justify-content-end align-items-center ms-auto">
                             <select className="form-select" aria-label="Default select example">
                                 <option selected disabled>Category</option>
@@ -65,7 +71,7 @@ function Fileupload() {
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
                             </select>
-                            <button className={"btn btn-danger ms-3"} onClick={() => {setFiles([])}}><FaTrashAlt></FaTrashAlt> All</button>
+                            <button className={"d-flex align-items-center btn btn-danger ms-3"} onClick={() => {setFiles([])}}><FaTrashAlt className={"me-2"}></FaTrashAlt> All</button>
                         </div>
                     </li>
                 }
@@ -100,7 +106,7 @@ function Fileupload() {
                                 <div className="me-3">
                                     <RiCheckLine size={24}></RiCheckLine>
                                 </div>
-                                <img src={URL.createObjectURL(file)} width={90} height={90}/>
+                                <img src={URL.createObjectURL(file)} width={90} height={90} alt=""/>
                                 <div className="ms-3">
                                     <p className={"m-0"}>{file.name}</p>
                                 </div>

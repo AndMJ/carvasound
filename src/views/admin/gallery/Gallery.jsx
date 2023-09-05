@@ -1,7 +1,11 @@
 import "./gallery.css"
+
 import {FaImages, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
 import {useEffect, useState} from "react";
+import dateFormat from "dateformat";
+import Fileupload from "../../../components/upload/fileupload.jsx";
+
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -19,9 +23,7 @@ import {
     GridRowEditStopReasons,
 } from '@mui/x-data-grid';
 
-import BsButton from 'react-bootstrap/Button';
-import Collapse from 'react-bootstrap/Collapse';
-import Fileupload from "../../../components/upload/fileupload.jsx";
+
 
 const ToolbarButtons = () => {
     const AddNewImage = () => {
@@ -47,16 +49,15 @@ const ToolbarButtons = () => {
 }
 
 const Gallery = () => {
-    const { getGallery, getImagesByID } = useAuth();
+    const { getGalleryList, getImagesByID, getCategoryByID } = useAuth();
 
     const [rows, setRows] = useState([]);
 
     useEffect(() =>  {
-        getGalleryData()
+        formatGalleryData()
     },[])
 
-    const RowImage = (props) => {
-
+    const RenderCellImage = (props) => {
         const handleImgClick = () => {
             alert("zoom image")
         }
@@ -68,48 +69,52 @@ const Gallery = () => {
         )
     }
 
-    const getGalleryData = async () => {
+    const formatGalleryData = async () => {
 
-        const images = await getGallery()
+        const gallery_data = await getGalleryList()
 
         let dataArray = []
 
-        for (let row of images.documents){
-            let image_path = await getImagesByID(row.image_id)
+        for (let row of gallery_data.documents){
+            const image_path = await getImagesByID(row.image_id)
+            const category = await getCategoryByID(row.category_id)
+
+            const creAt= new Date(row.$createdAt)
+            const upAt= new Date(row.$updatedAt)
+
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
+                category: category.name,
+                image_id: row.image_id,
                 image: image_path,
-                createdAt: new Date(row.$createdAt),
-                updatedAt: new Date(row.$updatedAt),
+                createdAt: creAt,
+                updatedAt: upAt,
             })
         }
         setRows(dataArray)
     }
 
-    const handleEditClick = (id) => () => {
-        alert("edit")
-    };
-
-    const handleDeleteClick = (id) => () => {
-        alert("delete")
-        setState( () => {
-            return true
-        });
-    };
-
     const columns = [
         { field: 'id', headerName: 'ID', width: 180, editable: false },
-        //{ field: 'name', headerName: 'Name', width: 180, editable: false },
+        { field: 'image_id', headerName: 'Image ID', width: 180, editable: false},
         { field: 'image', headerName: 'Image', width: 100, editable: false,
             renderCell: (params) => (
-                <RowImage image_path={params.row.image.href}></RowImage>
+                <RenderCellImage image_path={params.row.image.href}></RenderCellImage>
             )
         },
-        //{ field: 'order', headerName: 'Order', width: 180, editable: true },
-        { field: 'category_id', headerName: 'Category', width: 180, editable: false },
-        { field: 'createdAt', headerName: 'Created At', type:"date", width: 180, editable: false },
-        { field: 'updatedAt', headerName: 'Updated At', type:"date", width: 180, editable: false },
+        { field: 'category_id', headerName: 'Category ID', width: 180, editable: false},
+        { field: 'category', headerName: 'Category', width: 180, editable: false},
+        { field: 'createdAt', headerName: 'Created At', type:"date", width: 180, editable: false,
+            renderCell: (params) => {
+                return dateFormat(params.row.date, "dd/mm/yyyy HH:MM:ss")
+            }
+        },
+        { field: 'updatedAt', headerName: 'Updated At', type:"date", width: 180, editable: false,
+            renderCell: (params) => {
+                return dateFormat(params.row.date, "dd/mm/yyyy HH:MM:ss")
+            }
+        },
         {
             field: 'actions',
             type: 'actions',
@@ -135,6 +140,17 @@ const Gallery = () => {
             },
         },
     ];
+
+    const handleEditClick = (id) => () => {
+        alert("edit")
+    };
+
+    const handleDeleteClick = (id) => () => {
+        alert("delete")
+        setState( () => {
+            return true
+        });
+    };
 
 
     const handleNo = () => {
@@ -232,12 +248,15 @@ const Gallery = () => {
                                     color: 'text.primary',
                                 },
                             }}
-                            //processRowUpdate={processRowUpdate}
                             //getRowId={(row) => row.$id}
                             //onCellClick={handleOnCellClick}
                             //loading={rows}
                             rowHeight={100}
-                            columnVisibilityModel={ {id: false} }
+                            columnVisibilityModel={ {
+                                id: false,
+                                image_id: false,
+                                category_id: false
+                            } }
                             rows={rows}
                             columns={columns}
                             autoPageSize
@@ -246,6 +265,9 @@ const Gallery = () => {
                                 loadingOverlay: LinearProgress,
                             }}
                             disableRowSelectionOnClick
+                            disableColumnSelector
+                            //disableColumnMenu
+
 
                         />
                     </div>
