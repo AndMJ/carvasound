@@ -26,7 +26,7 @@ function Fileupload() {
     })
 
     function handleImageUpload(files) {
-        alert(JSON.stringify(files) + " TOTAL FILES: " + files.length)
+        alert("TOTAL FILES: " + files.length + " " + JSON.stringify(files))
     }
 
     function handleDelete(file){
@@ -65,8 +65,8 @@ function Fileupload() {
                             <button className={"d-flex align-items-center btn btn-success ms-3"} onClick={() => {handleImageUpload(files)}}><FaUpload className={"me-2"}></FaUpload> Upload</button>
                         </div>
                         <div className="d-flex justify-content-end align-items-center ms-auto">
-                            <select className="form-select" aria-label="Default select example">
-                                <option selected disabled>Category</option>
+                            <select defaultValue="placeholder" className="form-select" aria-label="select category">
+                                <option value="placeholder" disabled>Select category</option>
                                 <option value="1">One</option>
                                 <option value="2">Two</option>
                                 <option value="3">Three</option>
@@ -106,15 +106,15 @@ function Fileupload() {
                                 <div className="me-3">
                                     <RiCheckLine size={24}></RiCheckLine>
                                 </div>
-                                <img src={URL.createObjectURL(file)} width={90} height={90} alt=""/>
+                                <img src={URL.createObjectURL(file)} height={52} alt=""/>
                                 <div className="ms-3">
                                     <p className={"m-0"}>{file.name}</p>
                                 </div>
                             </div>
 
                             <div className="d-flex justify-content-end align-items-center flex-shrink-0">
-                                <select className="form-select" aria-label="Default select example">
-                                    <option selected disabled>Category</option>
+                                <select defaultValue="placeholder" className="form-select" aria-label="select category">
+                                    <option value="placeholder" disabled>Select category</option>
                                     <option value="1">One</option>
                                     <option value="2">Two</option>
                                     <option value="3">Three</option>
