@@ -29,21 +29,23 @@ const AdminUsers = React.lazy(()=> import("./views/admin/users/Users.jsx"))
 const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx"))
 
 
-//TODO:
-// GENERAL/USER
-//  - see about translations, and main language has to be Portuguese, see https://react.i18next.com/
-//  - see React Motion Framer for animations
-//  - fix USER footer @medias and styles
-//  - make a "scrollTo" function so it goes to sayed category from the events page
-//  - use icons
-//  - center zoom modal image on gallery page
-// ADMIN
-//  - use Material UI DataGrid table for all tables, see https://mui.com/x/react-data-grid/editing/
-//      - save, edit and delete confirmations, see https://mui.com/x/react-data-grid/editing/#confirm-before-saving
-//      - use Snackbar from '@mui/material/Snackbar' for action confirmation
-//  - login error message
-//      - maybe use Snackbar from '@mui/material/Snackbar' for action confirmation/error?
-
+/*
+TODO:
+    - FIX RENDER.COM IMPORT CHUNKS BIGGER THAN 500Mb
+    GENERAL/USER
+    - see about translations, and main language has to be Portuguese, see https://react.i18next.com/
+    - see React Motion Framer for animations
+    - fix USER footer @medias and styles
+    - make a "scrollTo" function so it goes to sayed category from the events page
+    - use icons
+    - center zoom modal image on gallery page
+    ADMIN
+    - use Material UI DataGrid table for all tables, see https://mui.com/x/react-data-grid/editing/
+        - save, edit and delete confirmations, see https://mui.com/x/react-data-grid/editing/#confirm-before-saving
+        - use Snackbar from '@mui/material/Snackbar' for action confirmation
+    - login error message
+        - maybe use Snackbar from '@mui/material/Snackbar' for action confirmation/error?
+*/
 function App() {
 
   return (
