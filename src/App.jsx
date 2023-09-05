@@ -6,7 +6,6 @@ import React, {Suspense, useEffect, useState} from 'react'
 
 //react boostrap components
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 //Authentication + DB queries
 import {AuthProvider} from "./utils/authContext.jsx";
