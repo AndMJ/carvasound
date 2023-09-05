@@ -361,67 +361,6 @@ function Dashboard(){
                             </div>
                             <div className="card-body">
 
-                                {renderConfirmDialog()}
-
-                                <Box
-                                    sx={{
-                                        height: 500,
-                                        width: '100%',
-                                        '& .actions': {
-                                            color: 'text.secondary',
-                                        },
-                                        '& .textPrimary': {
-                                            color: 'text.primary',
-                                        },
-                                    }}
-                                >
-                                    <DataGrid
-                                        rows={rows}
-                                        columns={columns}
-                                        editMode="row"
-                                        rowModesModel={rowModesModel}
-                                        onRowModesModelChange={handleRowModesModelChange}
-                                        onRowEditStop={handleRowEditStop}
-                                        processRowUpdate={processRowUpdate}
-                                        slots={{
-                                            toolbar: EditToolbar,
-                                        }}
-                                        slotProps={{
-                                            toolbar: { setRows, setRowModesModel },
-                                        }}
-                                    />
-                                </Box>
-
-                                {/*<table id="datatablesSimple">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Username</th>
-                                        <th>Email</th>
-                                        <th>Permissions</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {allUsers ?
-                                        allUsers.map(userdata => {
-                                            return (
-                                                <>
-                                                    <tr key={userdata.id}>
-                                                        <td>{userdata.id}</td>
-                                                        <td>{userdata.name}</td>
-                                                        <td>{userdata.email}</td>
-                                                        <td>{userdata.permissions}</td>
-                                                    </tr>
-                                                </>
-                                            )
-                                        })
-
-                                        :
-
-                                        <tr>no data found</tr>
-                                    }
-                                    </tbody>
-                                </table>*/}
                             </div>
                         </div>
                     </div>
