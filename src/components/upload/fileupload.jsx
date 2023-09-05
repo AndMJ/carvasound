@@ -38,7 +38,7 @@ function Fileupload() {
                 {
                     isDragActive ?
                         <>
-                            <div className={"container drag-area active"}>
+                            <div className={"container-fluid drag-area active"}>
                                 <FaArrowUp size={64}></FaArrowUp>
                                 <p>Drop the files here ...</p>
                             </div>
@@ -46,7 +46,7 @@ function Fileupload() {
                         </>
                         :
                         <>
-                            <div className={"container drag-area"}>
+                            <div className={"container-fluid drag-area"}>
                                 <FaImages size={64}></FaImages>
                                 <p>Drag & drop some files here, or click to select files</p>
                             </div>
@@ -54,7 +54,22 @@ function Fileupload() {
                 }
             </div>
 
+
             <ul className="list-group">
+                {files.length > 0 &&
+                    <li className="list-group-item d-flex justify-content-between align-items-center">
+                        <div className="d-flex justify-content-end align-items-center ms-auto">
+                            <select className="form-select" aria-label="Default select example">
+                                <option selected disabled>Category</option>
+                                <option value="1">One</option>
+                                <option value="2">Two</option>
+                                <option value="3">Three</option>
+                            </select>
+                            <button className={"btn btn-danger ms-3"} onClick={() => {setFiles([])}}><FaTrashAlt></FaTrashAlt> All</button>
+                        </div>
+                    </li>
+                }
+
                 {files?.map((file, index) => {
                     if (file.errors?.length > 0){
                         return (
@@ -91,7 +106,7 @@ function Fileupload() {
                                 </div>
                             </div>
 
-                            <div className="d-flex justify-content-end align-items-center">
+                            <div className="d-flex justify-content-end align-items-center flex-shrink-0">
                                 <select className="form-select" aria-label="Default select example">
                                     <option selected disabled>Category</option>
                                     <option value="1">One</option>
@@ -104,6 +119,7 @@ function Fileupload() {
                     )
                 })}
             </ul>
+
         </>
     )
 }
