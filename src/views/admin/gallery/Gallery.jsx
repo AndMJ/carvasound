@@ -3,7 +3,6 @@ import "./gallery.css"
 import {FaImages, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
 import {useEffect, useState} from "react";
-import dateFormat from "dateformat";
 import Fileupload from "../../../components/upload/fileupload.jsx";
 
 
@@ -62,7 +61,7 @@ const Gallery = () => {
                     setLoadingState(false)
                 }
             })
-    })
+    }, [])
 
     const RenderCellImage = (props) => {
         const handleImgClick = () => {
@@ -96,8 +95,8 @@ const Gallery = () => {
                 category: category.name,
                 image_id: row.image_id,
                 image: image_path,
-                createdAt: creAt,
-                updatedAt: upAt,
+                createdAt: creAt.toLocaleString('en-GB'),
+                updatedAt: upAt.toLocaleString('en-GB'),
             })
         }
         return dataArray
@@ -113,16 +112,8 @@ const Gallery = () => {
         },
         { field: 'category_id', headerName: 'Category ID', width: 180, editable: false},
         { field: 'category', headerName: 'Category', width: 180, editable: false},
-        { field: 'createdAt', headerName: 'Created At', type:"date", width: 180, editable: false,
-            renderCell: (params) => {
-                return dateFormat(params.row.date, "dd/mm/yyyy HH:MM:ss")
-            }
-        },
-        { field: 'updatedAt', headerName: 'Updated At', type:"date", width: 180, editable: false,
-            renderCell: (params) => {
-                return dateFormat(params.row.date, "dd/mm/yyyy HH:MM:ss")
-            }
-        },
+        { field: 'createdAt', headerName: 'Created At', type:"text", width: 180, editable: false},
+        { field: 'updatedAt', headerName: 'Updated At', type:"text", width: 180, editable: false},
         {
             field: 'actions',
             type: 'actions',

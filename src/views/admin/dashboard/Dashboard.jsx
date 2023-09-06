@@ -1,10 +1,11 @@
 import "./dashboard.css"
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useAuth} from "../../../utils/authContext.jsx";
 import {FaClock, FaPen, FaTable, FaUser} from "react-icons/fa";
 
 
-import Clock from "../../../utils/Clock.jsx";
+// import Clock from "../../../utils/Clock.jsx";
+const Clock = React.lazy(()=> import("../../../utils/Clock.jsx"))
 import Row from "react-bootstrap/Row";
 
 
