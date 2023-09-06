@@ -4,7 +4,6 @@ import {Nav} from "react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useAuth} from "../../../utils/authContext.jsx";
-import Gallery from "../../../views/admin/gallery/Gallery.jsx";
 
 const Sidebar = () => {
 
