@@ -52,10 +52,17 @@ const Gallery = () => {
     const { getGalleryList, getImagesByID, getCategoryByID } = useAuth();
 
     const [rows, setRows] = useState([]);
+    const [LoadingState, setLoadingState] = useState(true);
 
     useEffect(() =>  {
         formatGalleryData()
-    },[])
+            .then((response) => {
+                if (response.length > 0){
+                    setRows(response)
+                    setLoadingState(false)
+                }
+            })
+    })
 
     const RenderCellImage = (props) => {
         const handleImgClick = () => {
@@ -76,12 +83,12 @@ const Gallery = () => {
 
         let dataArray = []
 
-        for (let row of gallery_data.documents){
+        for (let row of gallery_data.documents) {
             const image_path = await getImagesByID(row.image_id)
             const category = await getCategoryByID(row.category_id)
 
-            const creAt= new Date(row.$createdAt)
-            const upAt= new Date(row.$updatedAt)
+            const creAt = new Date(row.$createdAt)
+            const upAt = new Date(row.$updatedAt)
 
             dataArray.push({
                 id: row.$id,
@@ -93,7 +100,7 @@ const Gallery = () => {
                 updatedAt: upAt,
             })
         }
-        setRows(dataArray)
+        return dataArray
     }
 
     const columns = [
@@ -251,7 +258,7 @@ const Gallery = () => {
                             }}
                             //getRowId={(row) => row.$id}
                             //onCellClick={handleOnCellClick}
-                            //loading={rows}
+                            loading={LoadingState}
                             rowHeight={100}
                             columnVisibilityModel={ {
                                 id: false,
