@@ -79,12 +79,15 @@ const Gallery = () => {
     const formatGalleryData = async () => {
 
         const gallery_data = await getGalleryList()
-
+        console.log(gallery_data)
         let dataArray = []
 
         for (let row of gallery_data.documents) {
             const image_path = await getImagesByID(row.image_id)
             const category = await getCategoryByID(row.category_id)
+
+            console.log(image_path)
+            console.log(category)
 
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
@@ -264,6 +267,7 @@ const Gallery = () => {
                                 loadingOverlay: LinearProgress,
                             }}
                             disableRowSelectionOnClick
+
                             disableColumnSelector
                             //disableColumnMenu
 

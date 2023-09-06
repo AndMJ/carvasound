@@ -20,16 +20,21 @@ export const AuthProvider = ({children}) => {
 
     useEffect(() => {
         getUserOnLoad()
+            .then(response => {
+                setUser(response.user)
+                setLoading(false)
+            })
     },[])
 
-    const getUserOnLoad = async () => {
+    const getUserOnLoad = async () => { //TODO: handle all possible errors from API, like its done here, and make a way of showing errors popups, see @mui/material/Snackbar
+        let promise = {}
         try {
-            const userdata = await account.get()
-            setUser(userdata)
+            promise = { user: await account.get() }
         } catch (error) {
+            promise = { error: error }
             console.log(error)
         }
-        setLoading(false)
+        return promise
     }
 
     const handleLogin = async (event, credentials) => {
@@ -47,7 +52,7 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-    const handleLogout = async (event, credentials) => {
+    const handleLogout = async (event) => {
         event.preventDefault()
 
         try {
@@ -64,9 +69,11 @@ export const AuthProvider = ({children}) => {
      * Database > Production
      * Collection > gallery
      */
-    const getGalleryList = async () => {
-        //event.preventDefault()
+    const addGalleryImage = async () => {
 
+    }
+
+    const getGalleryList = async () => {
         let promise = "";
         try {
             promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID);
@@ -83,8 +90,6 @@ export const AuthProvider = ({children}) => {
      * Collection > category
      */
     const getCategoryList = async () => {
-        //event.preventDefault()
-
         let promise = "";
         try {
             promise = database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID);
@@ -96,8 +101,6 @@ export const AuthProvider = ({children}) => {
         return promise
     }
     const getCategoryByID = async (category_id) => {
-        //event.preventDefault()
-
         let promise = "";
         try {
             promise = database.getDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id);
@@ -113,8 +116,6 @@ export const AuthProvider = ({children}) => {
      * Storage > Buckets > gallery_images
      */
     const getImagesByID = async (image_id) => {
-        //event.preventDefault()
-
         let promise = "";
         try {
             promise = await storage.getFileView(STORAGE_BUCKET_ID, image_id);
