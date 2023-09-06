@@ -13,35 +13,58 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Close';
-import {Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, Toolbar} from "@mui/material";
+import {
+    Chip,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    LinearProgress, ToggleButton,
+    ToggleButtonGroup,
+    Toolbar
+} from "@mui/material";
 import {
     GridRowModes,
     DataGrid,
     GridToolbarContainer,
     GridActionsCellItem,
-    GridRowEditStopReasons,
 } from '@mui/x-data-grid';
 
 
 
 const ToolbarButtons = () => {
-    const AddNewImage = () => {
-        alert("add img")
+
+    const [SelectedButton, setSelectedButton] = useState();
+
+    const handleSelectedButton = (event, selected) => {
+        setSelectedButton(selected);
+        console.log(selected)
     };
 
-    const AddNewCategory = () => {
+    const handleNewCategory = () => {
         alert("add cat")
+    };
+
+    const handleCategoryFilter = () => {
+        alert("filter table")
+    };
+
+    const handleDelete = () => {
+
     };
 
     return (
         <>
             <GridToolbarContainer>
-                <Button color="primary" startIcon={<AddIcon />} onClick={AddNewImage}>
-                    Add Image
-                </Button>
-                <Button color="primary" startIcon={<AddIcon />} onClick={AddNewCategory}>
-                    Add Category
-                </Button>
+                <ToggleButtonGroup
+                    color="primary"
+                    value={SelectedButton}
+                    exclusive
+                    onChange={handleSelectedButton}
+                >
+                    <ToggleButton value="Casamentos">Casamentos</ToggleButton>
+                    <ToggleButton value="Batizados">Batizados</ToggleButton>
+                </ToggleButtonGroup>
             </GridToolbarContainer>
         </>
     );
