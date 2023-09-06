@@ -48,7 +48,7 @@ const ToolbarButtons = () => {
 }
 
 const Gallery = () => {
-    const { getGalleryList, getImagesByID, getCategoryByID } = useAuth();
+    const { getGalleryList, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID } = useAuth();
 
     const [rows, setRows] = useState([]);
     const [LoadingState, setLoadingState] = useState(true);
@@ -56,10 +56,10 @@ const Gallery = () => {
     useEffect(() =>  {
         formatGalleryData()
             .then((response) => {
-                if (response.length > 0){
+                if (response.length > 0 && response !== []){
                     setRows(response)
-                    setLoadingState(false)
                 }
+                setLoadingState(false)
             })
     }, [])
 
@@ -75,19 +75,20 @@ const Gallery = () => {
         )
     }
 
-    //TODO: view a better way of loading data to datagrid, it works on dev but not on server side
     const formatGalleryData = async () => {
-
         const gallery_data = await getGalleryList()
-        console.log(gallery_data)
+
         let dataArray = []
 
         for (let row of gallery_data.documents) {
-            const image_path = await getImagesByID(row.image_id)
-            const category = await getCategoryByID(row.category_id)
+            let category = null;
+            const image_path = await getStorageImagesByID(row.image_id)
 
-            console.log(image_path)
-            console.log(category)
+            //console.log("dsada " + row.category_id)
+            if(row.category_id !== null){
+                category = await getCategoryByID(row.category_id)
+                //console.log("IN: " + category)
+            }
 
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
@@ -95,7 +96,7 @@ const Gallery = () => {
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
-                category: category.name,
+                category: category !== null ? category.name : null,
                 image_id: row.image_id,
                 image: image_path,
                 createdAt: creAt.toLocaleString('en-GB'),
@@ -114,7 +115,13 @@ const Gallery = () => {
             )
         },
         { field: 'category_id', headerName: 'Category ID', width: 180, editable: false},
-        { field: 'category', headerName: 'Category', width: 180, editable: false},
+        { field: 'category', headerName: 'Category', width: 180, editable: false,
+            renderCell: (params) => {
+                if(params.row.category === null){
+                    return <span className={"text-muted"}>Sem categoria</span>
+                }
+            }
+        },
         { field: 'createdAt', headerName: 'Created At', type:"text", width: 180, editable: false},
         { field: 'updatedAt', headerName: 'Updated At', type:"text", width: 180, editable: false},
         {
@@ -123,19 +130,19 @@ const Gallery = () => {
             headerName: 'Actions',
             width: 100,
             cellClassName: 'actions',
-            getActions: ({ id }) => {
+            getActions: ({row}) => {
                 return [
                     <GridActionsCellItem
                         icon={<EditIcon />}
                         label="Edit"
                         className="textPrimary"
-                        onClick={handleEditClick(id)}
+                        onClick={handleEditClick(row.id)}
                         color="inherit"
                     />,
                     <GridActionsCellItem
                         icon={<DeleteIcon />}
                         label="Delete"
-                        onClick={handleDeleteClick(id)}
+                        onClick={handleDeleteClick(row.id, row.image_id)}
                         color="inherit"
                     />,
                 ];
@@ -147,11 +154,20 @@ const Gallery = () => {
         alert("edit")
     };
 
-    const handleDeleteClick = (id) => () => {
-        alert("delete")
-        setState( () => {
-            return true
-        });
+    const handleDeleteClick = (id, image_id) => async () => {
+        //console.log(id)
+        let response
+
+        response = await deleteGalleryByID(id)
+        console.log(response)
+
+        console.log(image_id)
+        response = await deleteStorageImagesByID(image_id)
+        console.log(response)
+
+        // setState( () => {
+        //     return true
+        // });
     };
 
 
@@ -160,9 +176,9 @@ const Gallery = () => {
         // resolve(oldRow); // Resolve with the old row to not update the internal state
         // setPromiseArguments(null);
 
-        setState( () => {
-            return false
-        });
+        // setState( () => {
+        //     return false
+        // });
     };
 
     const handleYes = async () => {
@@ -180,9 +196,9 @@ const Gallery = () => {
         //     setPromiseArguments(null);
         // }
 
-        setState( () => {
-            return false
-        });
+        // setState( () => {
+        //     return false
+        // });
     };
 
     const [state, setState ] = useState(false);
@@ -240,7 +256,7 @@ const Gallery = () => {
 
                         <DataGrid
                             sx={{
-                                height: 600,
+                                //height: 700,
                                 width: '100%',
                                 border: 0,
                                 '& .actions': {
@@ -250,18 +266,24 @@ const Gallery = () => {
                                     color: 'text.primary',
                                 },
                             }}
-                            //getRowId={(row) => row.$id}
-                            //onCellClick={handleOnCellClick}
+                            initialState={{
+                                sorting: {
+                                    sortModel: [{ field: 'createdAt', sort: 'desc' }], //TODO: get data already sorted DESC from API with Query
+                                },
+                                pagination: { paginationModel: { pageSize: 5 } },
+                            }}
+                            pageSizeOptions={[5, 10, 25]}
                             loading={LoadingState}
-                            rowHeight={100}
                             columnVisibilityModel={ {
                                 id: false,
                                 image_id: false,
                                 category_id: false
                             } }
+                            rowHeight={100}
                             rows={rows}
                             columns={columns}
-                            autoPageSize
+                            autoHeight
+                            //autoPageSize
                             slots={{
                                 toolbar: ToolbarButtons,
                                 loadingOverlay: LinearProgress,

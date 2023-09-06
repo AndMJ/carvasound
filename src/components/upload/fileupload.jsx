@@ -7,8 +7,12 @@ import {RiCheckLine, RiFileWarningLine} from "react-icons/ri";
 
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import {useAuth} from "../../utils/authContext.jsx";
+import {isReturningOnlyNull} from "eslint-plugin-react/lib/util/jsx.js";
 
 function Fileupload() {
+    const {addGalleryImages, addStorageImage} = useAuth();
+
     const [files, setFiles] = useState([])
 
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
@@ -25,8 +29,25 @@ function Fileupload() {
         }
     })
 
-    function handleImageUpload(files) {
-        alert("TOTAL FILES: " + files.length + " " + JSON.stringify(files))
+//TODO: - add category to images
+    async function handleImageUpload(files) {
+        let payload = {
+            image_id: ""
+        }
+
+        for(let file_image of files){
+            let response
+            if(!file_image.errors){
+                response = await addStorageImage(file_image)
+                payload.image_id = response.$id
+                console.log(response)
+                response = await addGalleryImages(JSON.parse(JSON.stringify(payload)))
+                console.log(response)
+            } else {
+                response = "Wrong file type"
+                console.log(response)
+            }
+        }
     }
 
     function handleDelete(file){

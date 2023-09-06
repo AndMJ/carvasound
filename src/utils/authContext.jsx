@@ -1,7 +1,7 @@
 import {useContext, useState, createContext, useEffect} from "react";
 import Loader from "../components/loader/Loader.jsx";
 
-import {account, storage, database,
+import {GenerateID,account, storage, database,
     STORAGE_BUCKET_ID,
     DATABASE_ID,
     COLLECTION_GALLERY_ID,
@@ -20,21 +20,21 @@ export const AuthProvider = ({children}) => {
 
     useEffect(() => {
         getUserOnLoad()
-            .then(response => {
-                setUser(response.user)
+            .then((response) => {
+                if (response)
+                setUser(response)
                 setLoading(false)
+            }, (error) => {
+                console.log(error)
             })
     },[])
 
     const getUserOnLoad = async () => { //TODO: handle all possible errors from API, like its done here, and make a way of showing errors popups, see @mui/material/Snackbar
-        let promise = {}
         try {
-            promise = { user: await account.get() }
+            return await account.get()
         } catch (error) {
-            promise = { error: error }
-            console.log(error)
+            return error
         }
-        return promise
     }
 
     const handleLogin = async (event, credentials) => {
@@ -69,14 +69,32 @@ export const AuthProvider = ({children}) => {
      * Database > Production
      * Collection > gallery
      */
-    const addGalleryImage = async () => {
-
+    const addGalleryImages = async (image_json) => {
+        let promise
+        try {
+            promise = database.createDocument(DATABASE_ID, COLLECTION_GALLERY_ID, GenerateID, image_json);
+        } catch (error) {
+            console.error(error)
+        }
+        return promise
     }
 
     const getGalleryList = async () => {
         let promise = "";
         try {
             promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID);
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        return promise
+    }
+
+    const deleteGalleryByID = async (gallery_id) => {
+        let promise = "";
+        try {
+            promise = database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id);
 
         } catch (error) {
             console.error(error)
@@ -115,10 +133,34 @@ export const AuthProvider = ({children}) => {
     /*
      * Storage > Buckets > gallery_images
      */
-    const getImagesByID = async (image_id) => {
+    const addStorageImage = async (image) => {
+        let promise = "";
+        try {
+            promise = storage.createFile(STORAGE_BUCKET_ID, GenerateID, image);
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        return promise
+    }
+
+    const getStorageImagesByID = async (image_id) => {
         let promise = "";
         try {
             promise = await storage.getFileView(STORAGE_BUCKET_ID, image_id);
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        return promise
+    }
+
+    const deleteStorageImagesByID = async (image_id) => {
+        let promise = "";
+        try {
+            promise = storage.deleteFile(STORAGE_BUCKET_ID, image_id);
 
         } catch (error) {
             console.error(error)
@@ -132,9 +174,15 @@ export const AuthProvider = ({children}) => {
         handleLogin,
         handleLogout,
 
-        getImagesByID,
+        addGalleryImages,
+        addStorageImage,
+
+        getStorageImagesByID,
         getGalleryList,
         getCategoryByID,
+
+        deleteGalleryByID,
+        deleteStorageImagesByID,
     }
 
     return (
