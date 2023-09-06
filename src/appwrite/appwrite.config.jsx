@@ -1,6 +1,6 @@
-import {Account, Client, Databases, Storage } from 'appwrite';
+import {ID, Account, Client, Databases, Storage } from 'appwrite';
 
-export const PROJECT_ID = import.meta.env.VITE_PROJECT_ID;
+export const GenerateID = ID.unique();
 export const DATABASE_ID = import.meta.env.VITE_DB_PRODUCTION_ID;
 export const COLLECTION_GALLERY_ID = import.meta.env.VITE_COLLECTION_GALLERY;
 export const COLLECTION_CATEGORY_ID = import.meta.env.VITE_COLLECTION_CATEGORY;
@@ -10,7 +10,7 @@ const client = new Client();
 
 client
     .setEndpoint(import.meta.env.VITE_END_POINT)
-    .setProject(PROJECT_ID);
+    .setProject(import.meta.env.VITE_PROJECT_ID);
 
 export const database = new Databases(client);
 export const account = new Account(client);
