@@ -33,7 +33,8 @@ export const AuthProvider = ({children}) => {
         try {
             return await account.get()
         } catch (error) {
-            return error
+            //return error
+            console.log(error)
         }
     }
 

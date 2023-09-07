@@ -79,7 +79,7 @@ const Gallery = () => {
     useEffect(() =>  {
         formatGalleryData()
             .then((response) => {
-                if (response.length > 0 && response !== []){
+                if (response.length > 0){
                     setRows(response)
                 }
                 setLoadingState(false)
