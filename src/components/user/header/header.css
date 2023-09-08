@@ -1,14 +1,22 @@
 a { /*force cursor pointer*/
     cursor: pointer;
+    text-decoration: none;
 }
 
-.socials {
+.back-to-top {
     bottom: 24px;
     right: 24px;
     z-index: 100;
 }
 
-.socials .btn-circle {
+.socials {
+    top: 50%;
+    transform: translate(0,-50%);
+    right: 24px;
+    z-index: 100;
+}
+
+.btn-circle {
     width: 45px;
     height: 45px;
     line-height: 45px;

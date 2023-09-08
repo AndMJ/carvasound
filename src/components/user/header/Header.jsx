@@ -2,25 +2,12 @@ import "./header.css"
 import {FaFacebook, FaInstagram} from "react-icons/fa";
 
 import appLogo from "/logo.png"
+import {BsArrowUpShort} from "react-icons/bs";
+
+import {scrollToElement} from "../../../utils/scrollToElement.jsx";
 
 
 function Header ({activeSection}){
-
-    function scrollToElement(elementId) {
-        const element = document.getElementById(elementId);
-
-        if (element) {
-            // Calculate the vertical position of the element
-            const offsetTop = element.getBoundingClientRect().top + window.scrollY;
-
-            // Scroll to the element's position
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth', // Add smooth scrolling for a smoother animation
-            });
-        }
-    }
-
 
     return (
         <>
@@ -36,7 +23,7 @@ function Header ({activeSection}){
                     <div className="collapse navbar-collapse" id="navbarResponsive">
                         <ul className="navbar-nav ms-auto my-2 my-lg-0">
                             <li className="nav-item">
-                                <a className={`nav-link ${activeSection === 'about' ? 'active' : ''}`} onClick={() => scrollToElement('about')}>About</a>
+                                <a className={`nav-link ${activeSection === 'about' ? 'active' : ''}`} onClick={() => scrollToElement('about')}>Sobre</a>
                             </li>
                             <li className="nav-item">
                                 <a className={`nav-link ${activeSection === 'services' ? 'active' : ''}`} onClick={() => scrollToElement('services')}>Eventos</a>
@@ -52,9 +39,13 @@ function Header ({activeSection}){
                 </div>
             </nav>
 
-            <div className="socials position-fixed d-flex">
+            <div className="socials position-fixed d-flex flex-column">
                 <a className="btn btn-primary btn-circle btn-lg m-1 d-flex justify-content-center align-items-center" href="https://www.instagram.com/carvasound" target="_blank" rel="noreferrer noopener"><FaInstagram/></a>
                 <a className="btn btn-primary btn-circle btn-lg m-1 d-flex justify-content-center align-items-center" href="https://www.facebook.com/carvasound" target="_blank" rel="noreferrer noopener"><FaFacebook/></a>
+            </div>
+
+            <div className="back-to-top position-fixed d-flex">
+                <a className="btn btn-primary btn-circle btn-lg m-1 d-flex justify-content-center align-items-center" onClick={() => scrollToElement('page-top')}><BsArrowUpShort/></a>
             </div>
         </>
     )
