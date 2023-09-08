@@ -11,20 +11,10 @@ const Loader = React.lazy(()=> import("./components/loader/Loader.jsx"))
 const PageNotFound = React.lazy(()=> import("./views/not_found/NotFound.jsx"))
 
 //USER
-const Layout = React.lazy(()=> import("./components/user/layout/Layout.jsx"))
-// const Home = React.lazy(()=> import("./views/user/home/Home.jsx"))
-// const Events = React.lazy(()=> import("./views/user/events/Events.jsx"))
-// const Gallery = React.lazy(()=> import("./views/user/gallery/Gallery.jsx"))
-// const Contact = React.lazy(()=> import("./views/user/contact/Contact.jsx"))
-const LandingPage = React.lazy(()=> import("./views/user/landing/LandingPage.jsx"))
+const UserApp = React.lazy(()=> import("./userApp.jsx"))
 
 //ADMIN
-const AdminLayout = React.lazy(()=> import("./components/admin/layout/Layout.jsx"))
-const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
-const AdminDashboard = React.lazy(()=> import("./views/admin/dashboard/Dashboard.jsx"))
-const AdminUsers = React.lazy(()=> import("./views/admin/users/Users.jsx"))
-const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx"))
-
+const AdminApp = React.lazy(()=> import("./adminApp.jsx"))
 
 /*
 TODO:
@@ -48,58 +38,10 @@ function App() {
           <Suspense fallback={<Loader />}>
               <AnimatePresence mode={"wait"}>
                   <AuthProvider>
-                      <Routes>
-                          {/*USER PUBLIC ROUTES*/}
-                          <Route exact path={"/"} element={<Layout />}>
-                              <Route index element={
-                                  <Suspense fallback={<Loader />}>
-                                      {/*<Home />*/}
-                                      <LandingPage></LandingPage>
-                                  </Suspense>
-                              } />
-                              {/*<Route path={"events"} element={
-                                  <Suspense fallback={<Loader />}>
-                                      <Events />
-                                  </Suspense>
-                              } />
-                              <Route path={"gallery"} element={
-                                  <Suspense fallback={<Loader />}>
-                                      <Gallery />
-                                  </Suspense>
-                              } />
-                              <Route path={"contact"} element={
-                                  <Suspense fallback={<Loader />}>
-                                      <Contact />
-                                  </Suspense>
-                              } />*/}
-                              {/*<Route path={"*"} element={<UserPageNotFound />}></Route>*/}
-                          </Route>
-
-                          {/*ADMIN PUBLIC ROUTE*/}
-                          <Route path={"/admin/login"} element={<AdminLogin/>}></Route>
-
-                          {/*ADMIN PRIVATE ROUTES*/}
-                          <Route path={"/admin/"} element={<AdminLayout/>}>
-                              <Route index element={
-                                  <Suspense fallback={<Loader />}>
-                                      <AdminDashboard />
-                                  </Suspense>
-                              } />
-                              <Route path={"/admin/users"} element={
-                                  <Suspense fallback={<Loader />}>
-                                      <AdminUsers />
-                                  </Suspense>
-                              }></Route>
-                              <Route path={"/admin/gallery"} element={
-                                  <Suspense fallback={<Loader />}>
-                                      <AdminGallery />
-                                  </Suspense>
-                              }></Route>
-                              {/*<Route path={"/admin/gallery/upload"} element={<AdminGalleryUpload />}></Route>*/}
-                              {/*<Route path={"/admin/gallery/delete"} element={<AdminGalleryDelete />}></Route>*/}
-                              {/*<Route path={"*"} element={<AdminPageNotFound />}></Route>*/}
-                          </Route>
-                          <Route path={"*"} element={<PageNotFound />}></Route>
+                          <UserApp></UserApp>
+                          <AdminApp></AdminApp>
+                      <Routes> {/* TODO: fix 404 page not found appearing will pages are loading */}
+                          <Route path={"/*"} element={<PageNotFound />}></Route>
                       </Routes>
                   </AuthProvider>
               </AnimatePresence>
