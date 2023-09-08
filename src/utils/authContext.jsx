@@ -1,5 +1,5 @@
-import {useContext, useState, createContext, useEffect} from "react";
-import Loader from "../components/loader/Loader.jsx";
+import React, {useContext, useState, createContext, useEffect} from "react";
+const Loader = React.lazy(()=> import("../components/loader/Loader.jsx"))
 
 import {GenerateID,account, storage, database,
     STORAGE_BUCKET_ID,
