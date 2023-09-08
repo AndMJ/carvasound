@@ -1,56 +1,61 @@
 import "./header.css"
-import {Container, Nav, Navbar, NavDropdown} from "react-bootstrap";
-import {Link, NavLink, Outlet, useLocation} from "react-router-dom";
+import {FaFacebook, FaInstagram} from "react-icons/fa";
 
-import appLogo from "/public/logo.png"
-
-//ICONS
-import {FaFacebook, FaInstagram} from "react-icons/fa"
-import {useEffect, useState} from "react";
+import appLogo from "/logo.png"
 
 
-function Header (){
+function Header ({activeSection}){
 
-    const location = useLocation();
-    const [url, setUrl] = useState(null);
+    function scrollToElement(elementId) {
+        const element = document.getElementById(elementId);
 
-    useEffect(() => { //each time location changes, saves it in "url"
-        setUrl(location.pathname);
-    }, [location]);
+        if (element) {
+            // Calculate the vertical position of the element
+            const offsetTop = element.getBoundingClientRect().top + window.scrollY;
+
+            // Scroll to the element's position
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth', // Add smooth scrolling for a smoother animation
+            });
+        }
+    }
+
 
     return (
         <>
-            <Navbar sticky={"top"} collapseOnSelect={true} expand="lg" className="shadow-sm bg-body-tertiary">
-                <Container>
-                    <Navbar.Brand as={NavLink} to="/">
-                        <img
-                            src={appLogo}
-                            width="60"
-                            height="60"
-                            className="d-inline-block align-top"
-                            alt="Carvasound"
-                        />
-                    </Navbar.Brand>
+            {/*<!-- Navigation-->*/}
+            <nav className="navbar navbar-expand-lg navbar-light fixed-top py-1" id="mainNav">
+                <div className="container px-4 px-lg-5">
+                    <a className="navbar-brand d-flex align-items-center" onClick={() => scrollToElement('page-top')}>
+                        <img src={appLogo} width="60" height="60" className="d-inline-block align-top" alt="Carvasound"/>
+                    </a>
+                    <button className="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <div className="collapse navbar-collapse" id="navbarResponsive">
+                        <ul className="navbar-nav ms-auto my-2 my-lg-0">
+                            <li className="nav-item">
+                                <a className={`nav-link ${activeSection === 'about' ? 'active' : ''}`} onClick={() => scrollToElement('about')}>About</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className={`nav-link ${activeSection === 'services' ? 'active' : ''}`} onClick={() => scrollToElement('services')}>Eventos</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className={`nav-link ${activeSection === 'gallery' ? 'active' : ''}`} onClick={() => scrollToElement('portfolio')}>Galeria</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`} onClick={() => scrollToElement('contact')}>Contactos</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
 
-                    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                    <Navbar.Collapse id="responsive-navbar-nav">
-                        <Nav activeKey={url} className="me-auto">
-
-                            <Nav.Link as={Link} eventKey="/" to="/">Home</Nav.Link>
-                            <Nav.Link as={Link} eventKey="/events" to="/events">Eventos</Nav.Link>
-                            <Nav.Link as={Link} eventKey="/gallery" to="/gallery">Galeria</Nav.Link>
-                            <Nav.Link as={Link} eventKey="/contact" to="/contact">Contactos</Nav.Link>
-
-                        </Nav>
-
-                        <Nav>
-                            <Nav.Link name={"socials"} href="https://www.instagram.com/carvasound" target="_blank" rel="noreferrer noopener"><FaInstagram/></Nav.Link>
-                            <Nav.Link name={"socials"} href="https://www.facebook.com/carvasound" target="_blank" rel="noreferrer noopener"><FaFacebook/></Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-
-                </Container>
-            </Navbar>
+            <div className="socials position-fixed d-flex">
+                <a className="btn btn-primary btn-circle btn-lg m-1 d-flex justify-content-center align-items-center" href="https://www.instagram.com/carvasound" target="_blank" rel="noreferrer noopener"><FaInstagram/></a>
+                <a className="btn btn-primary btn-circle btn-lg m-1 d-flex justify-content-center align-items-center" href="https://www.facebook.com/carvasound" target="_blank" rel="noreferrer noopener"><FaFacebook/></a>
+            </div>
         </>
     )
 }
