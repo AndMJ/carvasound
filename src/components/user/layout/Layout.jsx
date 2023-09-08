@@ -1,7 +1,6 @@
 //import custom css + bootstrap
 import "../../../assets/css/styles.scss"
 //import 'bootstrap/dist/css/bootstrap.min.css';
-//import boostrap/js
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import Header from "../header/Header.jsx";
