@@ -9,7 +9,7 @@ import {MdOutlineBusinessCenter, MdOutlineMail, MdOutlineMoreHoriz, MdOutlinePho
 import {RiHeartsLine} from "react-icons/ri";
 
 import {scrollToElement} from "../../../utils/scrollToElement.jsx";
-import Gallery from "../gallery/Gallery.jsx";
+import GalleryBox from "../gallery/Gallery.jsx";
 
 const LandingPage = () => {
 
@@ -194,7 +194,7 @@ const LandingPage = () => {
                     <a className="btn btn-primary btn-md mx-3" onClick={() => {alert("Casamentos")}}>Casamentos</a>
                     <a className="btn btn-primary btn-md" onClick={() => {alert("Batizados")}}>Batizados</a>
 
-                    <Gallery></Gallery>
+                    <GalleryBox></GalleryBox>
                 </div>
             </section>
             {/*<!-- Contact-->*/}

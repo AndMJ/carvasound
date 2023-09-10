@@ -1,18 +1,19 @@
 import "./gallery.css";
 import {useState} from "react";
 
+import { Gallery, Item } from 'react-photoswipe-gallery'
 import 'photoswipe/dist/photoswipe.css'
-import { Gallery as Photoswipe, Item } from 'react-photoswipe-gallery'
+
 
 //import { motion } from "framer-motion"
 
 //import eventImage_casamento from "../../../assets/img/events/casamento.jpg"
 
-function Gallery(){
+function GalleryBox(){
 
     return (
         <>
-            <Photoswipe>
+            <Gallery>
                 <div className="row mt-4">
                     <div className="col-lg-4 col-md-12 mb-4 mb-lg-0">
                         <Item
@@ -114,7 +115,7 @@ function Gallery(){
                         </Item>
                     </div>
                 </div>
-            </Photoswipe>
+            </Gallery>
         </>
     );
 }
