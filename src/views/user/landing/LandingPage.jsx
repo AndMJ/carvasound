@@ -58,9 +58,14 @@ const LandingPage = () => {
                 <div className="container px-4 px-lg-5">
                     <div className="row gx-4 gx-lg-5 justify-content-center">
                         <div className="col-lg-8 text-center">
-                            <h2 className="text-white mt-0">Personalização musical total!</h2>
+                            <h2 className="text-white mt-0">DJ Profissional para Eventos Inesquecíveis.</h2>
                             <hr className="divider divider-light" />
-                            <p className="text-white-75 mb-4">Nossa prioridade é atender aos seus desejos musicais. Com DJ NEW, você tem total liberdade para personalizar cada momento da sua festa com a música que mais ama.</p>
+                            <p className="text-white-75 mb-4">
+                                Especializados em eventos, nossa missão é criar experiências musicais inesquecíveis para cada ocasião.
+                                Com anos de experiência e um vasto repertório musical, trazemos vida e energia a casamentos, festas de aniversário, batizados, eventos corporativos e muito mais.
+                                Conosco, consegue esolher a trilha sonora perfeita, garantindo que sua celebração seja única, emocionante e repleta de momentos especiais.
+                                Deixe-nos transformar sua festa em um espetáculo musical que você e seus convidados lembrarão com carinho por anos a fio.
+                            </p>
                             <a className="btn btn-light btn-xl" onClick={() => scrollToElement('services')}>Ver Eventos</a>
                         </div>
                     </div>
@@ -71,36 +76,36 @@ const LandingPage = () => {
                 <div className="container px-4 px-lg-5">
                     <h2 className="text-center mt-0">Eventos</h2>
                     <hr className="divider" />
-                    <div className="row gx-4 gx-lg-5">
-                        <div className="col-lg-3 col-md-6 text-center">
+                    <div className="row gx-4 gx-lg-5 d-flex justify-content-center">
+                        <div className="col-lg-4 col-md-6 text-center">
                             <div className="mt-5">
                                 <div className="mb-2"><RiHeartsLine className={"fs-1 text-primary"}/></div>
                                 <h3 className="h4 mb-2">Casamentos</h3>
                                 <p className="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                             </div>
                         </div>
-                        <div className="col-lg-3 col-md-6 text-center">
+                        <div className="col-lg-4 col-md-6 text-center">
                             <div className="mt-5">
                                 <div className="mb-2"><TbCross className={"fs-1 text-primary"}/></div>
                                 <h3 className="h4 mb-2">Batizados</h3>
                                 <p className="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                             </div>
                         </div>
-                        <div className="col-lg-3 col-md-6 text-center">
+                        <div className="col-lg-4 col-md-6 text-center">
                             <div className="mt-5">
                                 <div className="mb-2"><LuCake className="fs-1 text-primary"/></div>
                                 <h3 className="h4 mb-2">Aniversários</h3>
                                 <p className="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                             </div>
                         </div>
-                        <div className="col-lg-3 col-md-6 text-center">
+                        <div className="col-lg-4 col-md-6 text-center">
                             <div className="mt-5">
                                 <div className="mb-2"><LuPartyPopper className="fs-1 text-primary"/></div>
                                 <h3 className="h4 mb-2">Festas Temáticas</h3>
                                 <p className="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                             </div>
                         </div>
-                        <div className="col-lg-3 col-md-6 text-center">
+                        <div className="col-lg-4 col-md-6 text-center">
                             <div className="mt-5">
                                 <div className="mb-2"><MdOutlineBusinessCenter className="fs-1 text-primary"/></div>
                                 <h3 className="h4 mb-2">Eventos Corporativos</h3>
@@ -174,7 +179,7 @@ const LandingPage = () => {
             {/*<!-- Call to action-->*/}
             <section className="page-section bg-dark text-white">
                 <div className="container px-4 px-lg-5 text-center">
-                    <h2 className="mb-4">Veja a nossa galeria, temos vasta coleção de eventos!</h2>
+                    <h2 className="mb-4">Veja a nossa galeria, temos uma vasta coleção de eventos!</h2>
                     <a className="btn btn-light btn-xl" onClick={() => {alert("redirect para galeria")}}>Ver Galeria</a>
                 </div>
             </section>
@@ -185,7 +190,7 @@ const LandingPage = () => {
                         <div className="col-lg-8 col-xl-6 text-center">
                             <h2 className="mt-0">Contactos</h2>
                             <hr className="divider" />
-                            <p className="text-muted mb-5">Entre em contato conosco agora e vamos juntos dar vida à sua festa.</p>
+                            <p className="text-muted mb-5">Entre em contato conosco agora e vamos juntos dar vida à sua festa!</p>
                         </div>
                     </div>
                     <div className="row gx-4 gx-lg-5 justify-content-center mb-5">
