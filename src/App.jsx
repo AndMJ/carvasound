@@ -34,18 +34,17 @@ function App() {
 
   return (
       <>
-          {/*<loader />*/}
-          <Suspense fallback={<Loader />}>
-              <AnimatePresence mode={"wait"}>
-                  <AuthProvider>
-                          <UserApp></UserApp>
-                          <AdminApp></AdminApp>
-                      <Routes> {/* TODO: fix 404 page not found appearing will pages are loading */}
-                          <Route path={"/*"} element={<PageNotFound />}></Route>
+          <AnimatePresence mode={"wait"}>
+              <AuthProvider>
+                  <Suspense fallback={<Loader />}>
+                      <Routes>
+                          <Route path={"/*"} element={<UserApp></UserApp>}></Route>
+                          <Route path={"/admin/*"} element={<AdminApp></AdminApp>}></Route>
                       </Routes>
-                  </AuthProvider>
-              </AnimatePresence>
-          </Suspense>
+                  </Suspense>
+              </AuthProvider>
+          </AnimatePresence>
+
       </>
   )
 }

@@ -13,13 +13,14 @@ const LandingPage = React.lazy(()=> import("./views/user/landing/LandingPage.jsx
 
 const UserApp = () => (
     <Routes>
-        <Route exact path={"/"} element={<Layout />}>
+        <Route element={<Layout />}>
             <Route index element={
                 <Suspense fallback={<Loader />}>
                     <LandingPage></LandingPage>
                 </Suspense>
             } />
         </Route>
+        <Route path={"*"} element={<PageNotFound />}></Route>
     </Routes>
 )
 
