@@ -59,6 +59,21 @@ function Header ({activeSection}){
         logoTranslate()
         document.addEventListener('scroll', logoTranslate);
         window.onresize = logoTranslate;
+
+        const backToTop = () => {
+            let button = document.body.querySelector(".back-to-top")
+            button.style.transition = "visibility .2s, opacity 0.2s ease-in-out"
+
+            if(window.scrollY === 0) {
+                button.style.setProperty("visibility", "hidden", "important");
+                button.style.setProperty("opacity", "0", "important");
+            } else {
+                button.style.setProperty("visibility", "visible", "important");
+                button.style.setProperty("opacity", "1", "important");
+            }
+        }
+        backToTop()
+        document.addEventListener('scroll', backToTop);
     }, []);
 
     return (
