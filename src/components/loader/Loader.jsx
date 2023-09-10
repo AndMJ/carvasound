@@ -1,6 +1,6 @@
 import "./Loader.css"
 import React from "react";
-React.lazy(()=> import('bootstrap/dist/css/bootstrap.min.css'))
+// React.lazy(()=> import('bootstrap/dist/css/bootstrap.min.css'))
 
 
 const Loader = () => {
