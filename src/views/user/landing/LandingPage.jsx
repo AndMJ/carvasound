@@ -5,10 +5,11 @@ import {useEffect} from "react";
 
 import {TbCross} from "react-icons/tb";
 import {LuCake, LuPartyPopper} from "react-icons/lu";
-import {MdOutlineBusinessCenter, MdOutlineMail, MdOutlinePhoneIphone} from "react-icons/md";
+import {MdOutlineBusinessCenter, MdOutlineMail, MdOutlineMoreHoriz, MdOutlinePhoneIphone} from "react-icons/md";
 import {RiHeartsLine} from "react-icons/ri";
 
 import {scrollToElement} from "../../../utils/scrollToElement.jsx";
+import Gallery from "../gallery/Gallery.jsx";
 
 const LandingPage = () => {
 
@@ -47,14 +48,14 @@ const LandingPage = () => {
                             <hr className="divider" />
                         </div>
                         <div className="col-lg-8 align-self-baseline">
-                            <p className="text-white-75 mb-5">Deixe-nos cuidar da parte técnica para que tenha um bom momento. Com som profissional e uma presença contagiante, terá uma experiência única.</p>
+                            <p className="text-white-75 mb-5">Cuidamos da parte técnica para que tenha um bom momento. Com som profissional e uma presença contagiante, terá uma experiência única.</p>
                             <a className="btn btn-primary btn-xl" onClick={() => scrollToElement('about')}>Ver Mais</a>
                         </div>
                     </div>
                 </div>
             </header>
             {/*<!-- About-->*/}
-            <section className="page-section bg-primary" id="about" ref={sectionRefs.about}>
+            <section className="page-section  bg-dark" id="about" ref={sectionRefs.about}>
                 <div className="container px-4 px-lg-5">
                     <div className="row gx-4 gx-lg-5 justify-content-center">
                         <div className="col-lg-8 text-center">
@@ -63,7 +64,9 @@ const LandingPage = () => {
                             <p className="text-white-75 mb-4">
                                 Especializados em eventos, nossa missão é criar experiências musicais inesquecíveis para cada ocasião.
                                 Com anos de experiência e um vasto repertório musical, trazemos vida e energia a casamentos, festas de aniversário, batizados, eventos corporativos e muito mais.
-                                Conosco, consegue esolher a trilha sonora perfeita, garantindo que sua celebração seja única, emocionante e repleta de momentos especiais.
+                            </p>
+                            <p className="text-white-75 mb-4">
+                                Conosco consegue esolher a trilha sonora perfeita, garantindo que sua celebração seja única, emocionante e repleta de momentos especiais.
                                 Deixe-nos transformar sua festa em um espetáculo musical que você e seus convidados lembrarão com carinho por anos a fio.
                             </p>
                             <a className="btn btn-light btn-xl" onClick={() => scrollToElement('services')}>Ver Eventos</a>
@@ -76,7 +79,7 @@ const LandingPage = () => {
                 <div className="container px-4 px-lg-5">
                     <h2 className="text-center mt-0">Eventos</h2>
                     <hr className="divider" />
-                    <div className="row gx-4 gx-lg-5 d-flex justify-content-center">
+                    <div className="row gx-4 gx-lg-5 ">
                         <div className="col-lg-4 col-md-6 text-center">
                             <div className="mt-5">
                                 <div className="mb-2"><RiHeartsLine className={"fs-1 text-primary"}/></div>
@@ -112,18 +115,25 @@ const LandingPage = () => {
                                 <p className="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                             </div>
                         </div>
+                        <div className="col-lg-4 col-md-6 text-center">
+                            <div className="mt-5">
+                                <div className="mb-2"><MdOutlineMoreHoriz className="fs-1 text-primary"/></div>
+                                <h3 className="h4 mb-2">Outros</h3>
+                                <p className="text-muted mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
             {/*<!-- Portfolio-->*/}
-            <section id="portfolio" ref={sectionRefs.gallery}>
+            {/*<section id="portfolio">
                 <div className="container-fluid p-0">
                     <div className="row g-0">
                         <div className="col-lg-4 col-sm-6">
                             <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
                                 <img className="img-fluid" src={eventImage_casamento} alt="..." />
                                 <div className="portfolio-box-caption">
-                                    <div className="project-category text-white-50">Category</div>
+                                    <div className="project-category text-white-50">Casamentos</div>
                                     <div className="project-name">Project Name</div>
                                 </div>
                             </a>
@@ -132,7 +142,7 @@ const LandingPage = () => {
                             <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
                                 <img className="img-fluid" src={eventImage_casamento} alt="..." />
                                 <div className="portfolio-box-caption">
-                                    <div className="project-category text-white-50">Category</div>
+                                    <div className="project-category text-white-50">Batizados</div>
                                     <div className="project-name">Project Name</div>
                                 </div>
                             </a>
@@ -141,7 +151,7 @@ const LandingPage = () => {
                             <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
                                 <img className="img-fluid" src={eventImage_casamento} alt="..." />
                                 <div className="portfolio-box-caption">
-                                    <div className="project-category text-white-50">Category</div>
+                                    <div className="project-category text-white-50">Aniversários</div>
                                     <div className="project-name">Project Name</div>
                                 </div>
                             </a>
@@ -150,7 +160,7 @@ const LandingPage = () => {
                             <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
                                 <img className="img-fluid" src={eventImage_casamento} alt="..." />
                                 <div className="portfolio-box-caption">
-                                    <div className="project-category text-white-50">Category</div>
+                                    <div className="project-category text-white-50">Festas Temáticas</div>
                                     <div className="project-name">Project Name</div>
                                 </div>
                             </a>
@@ -159,7 +169,7 @@ const LandingPage = () => {
                             <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
                                 <img className="img-fluid" src={eventImage_casamento} alt="..." />
                                 <div className="portfolio-box-caption">
-                                    <div className="project-category text-white-50">Category</div>
+                                    <div className="project-category text-white-50">Eventos Corporativos</div>
                                     <div className="project-name">Project Name</div>
                                 </div>
                             </a>
@@ -168,19 +178,23 @@ const LandingPage = () => {
                             <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
                                 <img className="img-fluid" src={eventImage_casamento} alt="..." />
                                 <div className="portfolio-box-caption p-3">
-                                    <div className="project-category text-white-50">Category</div>
+                                    <div className="project-category text-white-50">Outros</div>
                                     <div className="project-name">Project Name</div>
                                 </div>
                             </a>
                         </div>
                     </div>
                 </div>
-            </section>
+            </section>*/}
             {/*<!-- Call to action-->*/}
-            <section className="page-section bg-dark text-white">
+            <section id="gallery" className="page-section " ref={sectionRefs.gallery}> {/*bg-dark text-white*/}
                 <div className="container px-4 px-lg-5 text-center">
-                    <h2 className="mb-4">Veja a nossa galeria, temos uma vasta coleção de eventos!</h2>
-                    <a className="btn btn-light btn-xl" onClick={() => {alert("redirect para galeria")}}>Ver Galeria</a>
+                    <h2 className="mb-4">Veja a nossa coleção de eventos!</h2>
+                    <a className="btn btn-primary btn-md" onClick={() => {alert("Todas")}}>Todas</a>
+                    <a className="btn btn-primary btn-md mx-3" onClick={() => {alert("Casamentos")}}>Casamentos</a>
+                    <a className="btn btn-primary btn-md" onClick={() => {alert("Batizados")}}>Batizados</a>
+
+                    <Gallery></Gallery>
                 </div>
             </section>
             {/*<!-- Contact-->*/}

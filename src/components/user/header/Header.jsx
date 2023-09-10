@@ -96,7 +96,7 @@ function Header ({activeSection}){
                                 <a className={`nav-link ${activeSection === 'services' ? 'active' : ''}`} onClick={() => scrollToElement('services')}>Eventos</a>
                             </li>
                             <li className="nav-item">
-                                <a className={`nav-link ${activeSection === 'gallery' ? 'active' : ''}`} onClick={() => scrollToElement('portfolio')}>Galeria</a>
+                                <a className={`nav-link ${activeSection === 'gallery' ? 'active' : ''}`} onClick={() => scrollToElement('gallery')}>Galeria</a>
                             </li>
                             <li className="nav-item">
                                 <a className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`} onClick={() => scrollToElement('contact')}>Contactos</a>

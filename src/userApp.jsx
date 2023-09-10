@@ -11,6 +11,11 @@ const Layout = React.lazy(()=> import("./components/user/layout/Layout.jsx"))
 // const Contact = React.lazy(()=> import("./views/user/contact/Contact.jsx"))
 const LandingPage = React.lazy(()=> import("./views/user/landing/LandingPage.jsx"))
 
+//import custom css + bootstrap
+import "./assets/css/styles.scss"
+//import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 const UserApp = () => (
     <Routes>
         <Route element={<Layout />}>

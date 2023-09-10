@@ -1,8 +1,3 @@
-//import custom css + bootstrap
-import "../../../assets/css/styles.scss"
-//import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
 import Header from "../header/Header.jsx";
 import {Outlet} from "react-router-dom";
 import Footer from "../footer/Footer.jsx";
