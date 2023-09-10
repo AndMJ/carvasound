@@ -20,10 +20,6 @@ function Layout(){
         contact: useRef(null)
     };
 
-    useEffect(() => {
-        console.log(activeSection)
-    }, [activeSection]);
-
     return(
         <>
             <motion.div
