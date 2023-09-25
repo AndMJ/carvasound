@@ -71,6 +71,10 @@ const ToolbarButtons = () => {
 }
 
 const Gallery = () => {
+    useEffect(() => {
+        document.title = "Carvasound - Gallery";
+    },[])
+
     const { getGalleryList, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID } = useAuth();
 
     const [rows, setRows] = useState([]);

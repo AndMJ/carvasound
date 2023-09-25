@@ -2,13 +2,13 @@ import "./footer.css"
 
 const Footer = () => {
     return (
-        <footer className="py-4 bg-light mt-auto">
-            <div className="container-fluid px-4">
-                <div className="d-flex align-items-center justify-content-between small">
-                    <div className="text-muted">Copyright &copy; Carvasound {new Date().getFullYear()}</div>
-                    <div className="text-muted">
-                        Made by <a href="https://github.com/AndMJ" target={"_blank"} rel="noreferrer noopener">AndMJ</a>
-                    </div>
+        <footer className="sticky-footer bg-white">
+            <div className="container my-auto">
+                <div className="copyright text-center my-auto">
+                    <span>Copyright &copy; Carvasound {new Date().getFullYear()}</span>
+                </div>
+                <div className="copyright text-center my-auto">
+                    <span>Made by <a href="https://github.com/AndMJ" target={"_blank"} rel="noreferrer noopener">AndMJ</a></span>
                 </div>
             </div>
         </footer>

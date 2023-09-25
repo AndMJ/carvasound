@@ -1,11 +1,14 @@
 import "./users.css"
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useOutletContext} from "react-router-dom";
 import {FaPen, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
 
 const Users = () => {
+    useEffect(() => {
+        document.title = "Carvasound - Users";
+    },[])
 
     const {user} = useAuth()
     // const [allUsers] = useOutletContext();
