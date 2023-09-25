@@ -187,14 +187,26 @@ const LandingPage = () => {
                 </div>
             </section>*/}
             {/*<!-- Call to action-->*/}
-            <section id="gallery" className="page-section " ref={sectionRefs.gallery}> {/*bg-dark text-white*/}
+            <section className="page-section" id="gallery" ref={sectionRefs.gallery}> {/*bg-dark text-white*/}
                 <div className="container px-4 px-lg-5 text-center">
-                    <h2 className="mb-4">Veja a nossa coleção de eventos!</h2>
-                    <a className="btn btn-primary btn-md" onClick={() => {alert("Todas")}}>Todas</a>
-                    <a className="btn btn-primary btn-md mx-3" onClick={() => {alert("Casamentos")}}>Casamentos</a>
-                    <a className="btn btn-primary btn-md" onClick={() => {alert("Batizados")}}>Batizados</a>
+                    <div className="row gx-4 gx-lg-5 justify-content-center">
+                        <div className="col-lg-8 col-xl-6 text-center">
+                            <h2 className="mt-0">Galeria</h2>
+                            <hr className="divider" />
+                            <p className="text-muted mb-5">Veja a nossa coleção de eventos!</p>
+                        </div>
+                    </div>
+                    <div className="row gx-4 gx-lg-5 justify-content-center mb-5">
+                        <div className="col">
+                            <a className="btn btn-primary btn-md" onClick={() => {alert("Todas")}}>Todas</a>
+                            <a className="btn btn-primary btn-md mx-3" onClick={() => {alert("Casamentos")}}>Casamentos</a>
+                            <a className="btn btn-primary btn-md" onClick={() => {alert("Batizados")}}>Batizados</a>
+                        </div>
 
-                    <GalleryBox></GalleryBox>
+
+                        <GalleryBox></GalleryBox>
+                    </div>
+
                 </div>
             </section>
             {/*<!-- Contact-->*/}
