@@ -12,6 +12,7 @@ const Sidebar = () => {
 
     useEffect(() => { //each time location changes, saves it in "url"
         setUrl(location.pathname);
+        //console.log(location.pathname)
     }, [location]);
 
     const {user} = useAuth()
@@ -47,7 +48,7 @@ const Sidebar = () => {
                 </nav>
             </div>*/}
 
-            <Nav className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" activeKey={url}>
+            <Nav className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" as="ul" activeKey={url}>
 
                 {/*// <!-- Sidebar - Brand -->*/}
                 <a className="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
@@ -61,10 +62,9 @@ const Sidebar = () => {
                 <hr className="sidebar-divider my-0"/>
 
                 {/*// <!-- Nav Item - Dashboard -->*/}
-                <Nav.Item>
+                <Nav.Item as="li">
                     <Nav.Link as={Link} to={"/admin"} eventKey={"/admin"}>
-                        <FaTachometerAlt></FaTachometerAlt>
-                        <span>Dashboard</span>
+                        <FaTachometerAlt className={"icon"}></FaTachometerAlt> <span>Dashboard</span>
                     </Nav.Link>
                 </Nav.Item>
 
@@ -77,10 +77,9 @@ const Sidebar = () => {
                 </div>
 
                 {/*// <!-- Nav Item - Pages Collapse Menu -->*/}
-                <Nav.Item>
+                <Nav.Item as="li">
                     <Nav.Link as={Link} to={"/admin/gallery"} eventKey={"/admin/gallery"}>
-                        <FaImage/>
-                        <span>Gallery</span>
+                        <FaImage className={"icon"}></FaImage> <span>Gallery</span>
                     </Nav.Link>
                 </Nav.Item>
 
@@ -88,9 +87,9 @@ const Sidebar = () => {
                 <hr className="sidebar-divider d-none d-md-block"/>
 
                 {/*// <!-- Sidebar Toggler (Sidebar) -->*/}
-                <div className="text-center d-none d-md-inline">
+                {/*<div className="text-center d-none d-md-inline">
                     <button className="rounded-circle border-0" id="sidebarToggle"></button>
-                </div>
+                </div>*/}
 
             </Nav>
         </>

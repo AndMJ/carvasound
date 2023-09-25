@@ -35,7 +35,7 @@ const Header = () => {
             <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                 {/*// <!-- Sidebar Toggle (Topbar) -->*/}
-                <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mr-3">
+                <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mx-3 d-flex justify-content-center align-items-center">
                     <FaBars></FaBars>
                 </button>
 
@@ -197,7 +197,7 @@ const Header = () => {
                             <img className="img-profile rounded-circle" src={user_avatar} alt={"User Avatar"}/>
                         </button>
                         {/*// <!-- Dropdown - User Information -->*/}
-                        <div className="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                        <div className="dropdown-menu dropdown-menu-end shadow animated--grow-in" aria-labelledby="userDropdown">
                             <a className="dropdown-item" href="#">
                                 <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Profile
