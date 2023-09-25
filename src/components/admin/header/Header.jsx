@@ -207,7 +207,7 @@ const Header = () => {
                                 Settings
                             </a>*/}
                             <div className="dropdown-divider"></div>
-                            <button className="dropdown-item" onClick={handleLogout} data-toggle="modal" data-target="#logoutModal">
+                            <button className="dropdown-item" onClick={handleLogout}> {/*data-toggle="modal" data-target="#logoutModal"*/}
                                 <i className="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                 Logout
                             </button>
