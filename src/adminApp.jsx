@@ -1,5 +1,8 @@
 import {Route, Routes} from "react-router-dom";
 import React, {Suspense} from 'react'
+//import custom css + bootstrap js
+import "./assets/css/admin/sb-admin-2.scss"
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const Loader = React.lazy(()=> import("./components/loader/Loader.jsx"))
 const PageNotFound = React.lazy(()=> import("./views/not_found/NotFound.jsx"))

@@ -248,7 +248,7 @@ const LandingPage = () => {
                                 </div>
 
                                 <div className="form-floating mb-3">
-                                    <textarea className="form-control" id="message" style={{height: "10rem"}} placeholder="Mensagem..." required></textarea>
+                                    <textarea className="form-control" id="message" style={{height: "10rem", 'max-height': "15rem"}} placeholder="Mensagem..." required></textarea>
                                     <label htmlFor="message">Mensagem</label>
                                     <div className="invalid-feedback" >erro</div>
                                 </div>
