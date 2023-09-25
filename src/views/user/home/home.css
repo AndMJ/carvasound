@@ -24,12 +24,13 @@
 /*}*/
 
 
+/*
 .home{
     overflow-y: hidden;
 }
 section.home .caption > *{
     color: white;
-    /*text-align: center;*/
+    !*text-align: center;*!
 }
 section.home .caption h1 {
     font-size: calc(2.375rem + 1.5vw);
@@ -67,7 +68,7 @@ section.home .lead {
 }
 
 .swiper {
-    height: calc(100vh - 86px); /*view height - navbar height*/
+    height: calc(100vh - 86px); !*view height - navbar height*!
 }
 .swiper img{
     width: 100%;
@@ -86,4 +87,4 @@ section.home .lead {
 }
 .swiper-pagination-bullet-active{
     background-color: var(--custom-color-primary) !important;
-}
+}*/

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" prefix="og: https://ogp.me/ns#">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- Favicon-->
@@ -10,14 +10,17 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
     <link rel="manifest" href="/favicon/site.webmanifest">
 
-    <!-- Nunito font family-->
+    <!-- Google fonts-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
 
-    <!--embedded
-      TODO: fill the embedded correctly
-    -->
+<!--embedded
+TODO:
+  - fill the embedded correctly
+  - somehow separate admin from user
+-->
     <meta property="og:title" content="Carvasound" />
     <meta property="og:description" content="Carvasound - music to your event" />
     <meta property="og:type" content="website" />
@@ -26,7 +29,7 @@
 
     <title>Carvasound</title>
   </head>
-  <body class="sb-nav-fixed">
+  <body id="page-top" class="sb-nav-fixed">
 
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
