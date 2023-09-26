@@ -1,20 +1,15 @@
 import "./gallery.css"
 
-import {FaImages, FaTable} from "react-icons/fa";
+import { FaImages, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
 import {useEffect, useState} from "react";
 import Fileupload from "../../../components/upload/fileupload.jsx";
 
 
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
 import {
-    Chip,
     Dialog,
     DialogActions,
     DialogContent,
@@ -71,6 +66,10 @@ const ToolbarButtons = () => {
 }
 
 const Gallery = () => {
+    useEffect(() => {
+        document.title = "Carvasound - Gallery";
+    },[])
+
     const { getGalleryList, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID } = useAuth();
 
     const [rows, setRows] = useState([]);
@@ -254,70 +253,76 @@ const Gallery = () => {
 
     return (
         <>
-            <div className="container-fluid px-4">
-                <h1 className="mt-4 mb-4">Gallery</h1>
-                <ol className="breadcrumb mb-4">
-                    <li className="breadcrumb-item active">Gallery</li>
-                </ol>
+            {/*// <!-- Page Heading -->*/}
+            <div className=" mb-4"> {/*d-sm-flex align-items-center justify-content-between*/}
+                <h1 className="h3 mb-1 text-gray-800">Gallery</h1>
+                <p className="mb-4">Upload, edit, remove and categorize images in your gallery.</p>
+            </div>
 
-                <div className="card mb-4">
-                    <div className="card-header">
-                        <FaImages className={"me-1"}></FaImages> Upload images
-                    </div>
-                    <div className="card-body">
-                        <Fileupload></Fileupload>
+            {/*// <!-- Content Row -->*/}
+            <div className="row">
+
+                <div className="col-lg-12">
+                    <div className="card shadow mb-4">
+                        <div className="card-header py-3">
+                            <h6 className="m-0 font-weight-bold text-primary"><span><FaImages className={"me-1"}></FaImages></span> Upload images</h6>
+                        </div>
+                        <div className="card-body">
+                            <Fileupload></Fileupload>
+                        </div>
                     </div>
                 </div>
 
-                <div className="card mb-4">
-                    <div className="card-header">
-                        <FaTable className={"me-1"}></FaTable> Gallery table
-                    </div>
-                    <div className="card-body p-0">
+                <div className="col-lg-12">
+                    <div className="card shadow mb-4">
+                        <div className="card-header py-3">
+                            <h6 className="m-0 font-weight-bold text-primary"><span><FaTable className={"me-1"}></FaTable></span> Gallery table</h6>
+                        </div>
+                        <div className="card-body">
 
-                        {renderConfirmDialog()}
+                            {renderConfirmDialog()}
 
-                        <DataGrid
-                            sx={{
-                                //height: 700,
-                                width: '100%',
-                                border: 0,
-                                '& .actions': {
-                                    color: 'text.secondary',
-                                },
-                                '& .textPrimary': {
-                                    color: 'text.primary',
-                                },
-                            }}
-                            initialState={{
-                                sorting: {
-                                    sortModel: [{ field: 'createdAt', sort: 'desc' }], //TODO: get data already sorted DESC from API with Query
-                                },
-                                pagination: { paginationModel: { pageSize: 5 } },
-                            }}
-                            pageSizeOptions={[5, 10, 25]}
-                            loading={LoadingState}
-                            columnVisibilityModel={ {
-                                id: false,
-                                image_id: false,
-                                category_id: false
-                            } }
-                            rowHeight={100}
-                            rows={rows}
-                            columns={columns}
-                            autoHeight
-                            //autoPageSize
-                            slots={{
-                                toolbar: ToolbarButtons,
-                                loadingOverlay: LinearProgress,
-                            }}
-                            disableRowSelectionOnClick
+                            <DataGrid
+                                sx={{
+                                    //height: 700,
+                                    width: '100%',
+                                    border: 0,
+                                    '& .actions': {
+                                        color: 'text.secondary',
+                                    },
+                                    '& .textPrimary': {
+                                        color: 'text.primary',
+                                    },
+                                }}
+                                initialState={{
+                                    sorting: {
+                                        sortModel: [{ field: 'createdAt', sort: 'desc' }], //TODO: get data already sorted DESC from API with Query
+                                    },
+                                    pagination: { paginationModel: { pageSize: 5 } },
+                                }}
+                                pageSizeOptions={[5, 10, 25]}
+                                loading={LoadingState}
+                                columnVisibilityModel={ {
+                                    id: false,
+                                    image_id: false,
+                                    category_id: false
+                                } }
+                                rowHeight={100}
+                                rows={rows}
+                                columns={columns}
+                                autoHeight
+                                //autoPageSize
+                                slots={{
+                                    toolbar: ToolbarButtons,
+                                    loadingOverlay: LinearProgress,
+                                }}
+                                disableRowSelectionOnClick
 
-                            disableColumnSelector
-                            //disableColumnMenu
+                                disableColumnSelector
+                                //disableColumnMenu
+                            ></DataGrid>
 
-
-                        />
+                        </div>
                     </div>
                 </div>
 

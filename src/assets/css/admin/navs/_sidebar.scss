@@ -19,13 +19,18 @@
                 font-size: 0.65rem;
                 display: block;
             }
-        }
 
-        &.active {
-            .nav-link {
+            &.active {
+                color: $white;
                 font-weight: 700;
             }
         }
+
+        /*&.active {
+            .nav-link {
+                font-weight: 700;
+            }
+        }*/
 
         // Accordion
         .collapse {
@@ -224,8 +229,8 @@
                 padding: 1rem;
                 width: $sidebar-base-width;
 
-                i {
-                    font-size: 0.85rem;
+                .icon {
+                    font-size: 1rem;
                     margin-right: 0.25rem;
                 }
 
@@ -315,7 +320,7 @@
                         display: block;
                     }
 
-                    i {
+                    .icon {
                         margin-right: 0;
                     }
 
@@ -362,7 +367,7 @@
         .nav-link {
             color: $gray-600;
 
-            i {
+            .icon {
                 color: $gray-400;
             }
 
@@ -371,7 +376,7 @@
             &:hover {
                 color: $gray-700;
 
-                i {
+                .icon {
                     color: $gray-700;
                 }
             }
@@ -380,17 +385,26 @@
             &[data-toggle="collapse"]::after {
                 color: $gray-500;
             }
-        }
 
-        &.active {
-            .nav-link {
+            &.active {
                 color: $gray-700;
 
-                i {
+                .icon {
                     color: $gray-700;
                 }
             }
+
         }
+
+        /*&.active {
+            .nav-link {
+                color: $gray-700;
+
+                .icon {
+                    color: $gray-700;
+                }
+            }
+        }*/
     }
 
     // Color the sidebar toggler
@@ -425,7 +439,7 @@
         .nav-link {
             color: fade-out($white, 0.2);
 
-            i {
+            .icon {
                 color: fade-out($white, 0.7);
             }
 
@@ -434,7 +448,7 @@
             &:hover {
                 color: $white;
 
-                i {
+                .icon {
                     color: $white;
                 }
             }
@@ -443,17 +457,17 @@
             &[data-toggle="collapse"]::after {
                 color: fade-out($white, 0.5);
             }
-        }
 
-        &.active {
-            .nav-link {
+            &.active {
                 color: $white;
 
-                i {
+                .icon {
                     color: $white;
                 }
             }
         }
+
+
     }
 
     // Color the sidebar toggler
