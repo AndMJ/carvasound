@@ -1,20 +1,40 @@
-import "./layout.css"
-
 import Header from "../header/Header.jsx";
 import {Outlet} from "react-router-dom";
 import Footer from "../footer/Footer.jsx";
-
+import {useEffect, useRef, useState} from "react";
+import { motion } from "framer-motion"
 
 function Layout(){
+
+    const [activeSection, setActiveSection] = useState(null);
+    const sectionRefs = {
+        main: useRef(null),
+        about: useRef(null),
+        services: useRef(null),
+        gallery: useRef(null),
+        contact: useRef(null)
+    };
+
     return(
         <>
-            <Header></Header>
+            <motion.div
+                className={"landing-page-effect"}
+                initial={{ opacity: 0}}
+                animate={{ opacity: 1}}
+                transition={{ delay: 0.5 }}
+                exit={{ opacity: 0 }}
+            >
+                <Header activeSection={activeSection}></Header>
 
-            <Outlet></Outlet>
+                <Outlet context={[activeSection, setActiveSection, sectionRefs]}></Outlet>
 
-            <Footer></Footer>
+                <Footer></Footer>
+            </motion.div>
         </>
     )
 }
+
+
+
 
 export default Layout;

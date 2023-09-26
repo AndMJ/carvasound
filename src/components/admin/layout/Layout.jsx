@@ -14,16 +14,18 @@ function Layout(){
         <>
             {user ?
                     <>
-                        <Header></Header>
-
-                        <div id="layoutSidenav">
-
+                        <div id="wrapper">
                             <Sidebar></Sidebar>
 
-                            <div id="layoutSidenav_content">
-                                <main>
-                                    <Outlet ></Outlet>{/*context={[allUsers]}*/}
-                                </main>
+                            <div id="content-wrapper" className="d-flex flex-column">
+                                <div id="content">
+                                    <Header></Header>
+
+                                    <div className="container-fluid">
+                                        <Outlet ></Outlet>{/*context={[allUsers]}*/}
+                                    </div>
+                                </div>
+
                                 <Footer></Footer>
                             </div>
                         </div>

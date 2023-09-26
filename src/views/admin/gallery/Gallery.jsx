@@ -1,61 +1,89 @@
 import "./gallery.css"
 
-import {FaImages, FaTable} from "react-icons/fa";
+import { FaImages, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
 import {useEffect, useState} from "react";
-import dateFormat from "dateformat";
 import Fileupload from "../../../components/upload/fileupload.jsx";
 
 
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Close';
-import {Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress, Toolbar} from "@mui/material";
+import {
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    LinearProgress, ToggleButton,
+    ToggleButtonGroup,
+    Toolbar
+} from "@mui/material";
 import {
     GridRowModes,
     DataGrid,
     GridToolbarContainer,
     GridActionsCellItem,
-    GridRowEditStopReasons,
 } from '@mui/x-data-grid';
 
 
 
 const ToolbarButtons = () => {
-    const AddNewImage = () => {
-        alert("add img")
+
+    const [SelectedButton, setSelectedButton] = useState();
+
+    const handleSelectedButton = (event, selected) => {
+        setSelectedButton(selected);
+        console.log(selected)
     };
 
-    const AddNewCategory = () => {
+    const handleNewCategory = () => {
         alert("add cat")
+    };
+
+    const handleCategoryFilter = () => {
+        alert("filter table")
+    };
+
+    const handleDelete = () => {
+
     };
 
     return (
         <>
             <GridToolbarContainer>
-                <Button color="primary" startIcon={<AddIcon />} onClick={AddNewImage}>
-                    Add Image
-                </Button>
-                <Button color="primary" startIcon={<AddIcon />} onClick={AddNewCategory}>
-                    Add Category
-                </Button>
+                <ToggleButtonGroup
+                    color="primary"
+                    value={SelectedButton}
+                    exclusive
+                    onChange={handleSelectedButton}
+                >
+                    <ToggleButton value="Casamentos">Casamentos</ToggleButton>
+                    <ToggleButton value="Batizados">Batizados</ToggleButton>
+                </ToggleButtonGroup>
             </GridToolbarContainer>
         </>
     );
 }
 
 const Gallery = () => {
-    const { getGalleryList, getImagesByID, getCategoryByID } = useAuth();
+    useEffect(() => {
+        document.title = "Carvasound - Gallery";
+    },[])
+
+    const { getGalleryList, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID } = useAuth();
 
     const [rows, setRows] = useState([]);
+    const [LoadingState, setLoadingState] = useState(true);
 
     useEffect(() =>  {
         formatGalleryData()
-    },[])
+            .then((response) => {
+                if (response.length > 0){
+                    setRows(response)
+                }
+                setLoadingState(false)
+            })
+    }, [])
 
     const RenderCellImage = (props) => {
         const handleImgClick = () => {
@@ -69,31 +97,35 @@ const Gallery = () => {
         )
     }
 
-    //TODO: view a better way of loading data to datagrid, it works on dev but not on server side
     const formatGalleryData = async () => {
-
         const gallery_data = await getGalleryList()
 
         let dataArray = []
 
-        for (let row of gallery_data.documents){
-            const image_path = await getImagesByID(row.image_id)
-            const category = await getCategoryByID(row.category_id)
+        for (let row of gallery_data.documents) {
+            let category = null;
+            const image_path = await getStorageImagesByID(row.image_id)
 
-            const creAt= new Date(row.$createdAt)
-            const upAt= new Date(row.$updatedAt)
+            //console.log("dsada " + row.category_id)
+            if(row.category_id !== null){
+                category = await getCategoryByID(row.category_id)
+                //console.log("IN: " + category)
+            }
+
+            const creAt = new Date(row.$createdAt)
+            const upAt = new Date(row.$updatedAt)
 
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
-                category: category.name,
+                category: category !== null ? category.name : null,
                 image_id: row.image_id,
                 image: image_path,
-                createdAt: creAt,
-                updatedAt: upAt,
+                createdAt: creAt.toLocaleString('en-GB'),
+                updatedAt: upAt.toLocaleString('en-GB'),
             })
         }
-        setRows(dataArray)
+        return dataArray
     }
 
     const columns = [
@@ -105,36 +137,34 @@ const Gallery = () => {
             )
         },
         { field: 'category_id', headerName: 'Category ID', width: 180, editable: false},
-        { field: 'category', headerName: 'Category', width: 180, editable: false},
-        { field: 'createdAt', headerName: 'Created At', type:"date", width: 180, editable: false,
+        { field: 'category', headerName: 'Category', width: 180, editable: false,
             renderCell: (params) => {
-                return dateFormat(params.row.date, "dd/mm/yyyy HH:MM:ss")
+                if(params.row.category === null){
+                    return <span className={"text-muted"}>Sem categoria</span>
+                }
             }
         },
-        { field: 'updatedAt', headerName: 'Updated At', type:"date", width: 180, editable: false,
-            renderCell: (params) => {
-                return dateFormat(params.row.date, "dd/mm/yyyy HH:MM:ss")
-            }
-        },
+        { field: 'createdAt', headerName: 'Created At', type:"text", width: 180, editable: false},
+        { field: 'updatedAt', headerName: 'Updated At', type:"text", width: 180, editable: false},
         {
             field: 'actions',
             type: 'actions',
             headerName: 'Actions',
             width: 100,
             cellClassName: 'actions',
-            getActions: ({ id }) => {
+            getActions: ({row}) => {
                 return [
                     <GridActionsCellItem
                         icon={<EditIcon />}
                         label="Edit"
                         className="textPrimary"
-                        onClick={handleEditClick(id)}
+                        onClick={handleEditClick(row.id)}
                         color="inherit"
                     />,
                     <GridActionsCellItem
                         icon={<DeleteIcon />}
                         label="Delete"
-                        onClick={handleDeleteClick(id)}
+                        onClick={handleDeleteClick(row.id, row.image_id)}
                         color="inherit"
                     />,
                 ];
@@ -146,11 +176,20 @@ const Gallery = () => {
         alert("edit")
     };
 
-    const handleDeleteClick = (id) => () => {
-        alert("delete")
-        setState( () => {
-            return true
-        });
+    const handleDeleteClick = (id, image_id) => async () => {
+        //console.log(id)
+        let response
+
+        response = await deleteGalleryByID(id)
+        console.log(response)
+
+        console.log(image_id)
+        response = await deleteStorageImagesByID(image_id)
+        console.log(response)
+
+        // setState( () => {
+        //     return true
+        // });
     };
 
 
@@ -159,9 +198,9 @@ const Gallery = () => {
         // resolve(oldRow); // Resolve with the old row to not update the internal state
         // setPromiseArguments(null);
 
-        setState( () => {
-            return false
-        });
+        // setState( () => {
+        //     return false
+        // });
     };
 
     const handleYes = async () => {
@@ -179,9 +218,9 @@ const Gallery = () => {
         //     setPromiseArguments(null);
         // }
 
-        setState( () => {
-            return false
-        });
+        // setState( () => {
+        //     return false
+        // });
     };
 
     const [state, setState ] = useState(false);
@@ -214,63 +253,76 @@ const Gallery = () => {
 
     return (
         <>
-            <div className="container-fluid px-4">
-                <h1 className="mt-4 mb-4">Gallery</h1>
-                <ol className="breadcrumb mb-4">
-                    <li className="breadcrumb-item active">Gallery</li>
-                </ol>
+            {/*// <!-- Page Heading -->*/}
+            <div className=" mb-4"> {/*d-sm-flex align-items-center justify-content-between*/}
+                <h1 className="h3 mb-1 text-gray-800">Gallery</h1>
+                <p className="mb-4">Upload, edit, remove and categorize images in your gallery.</p>
+            </div>
 
-                <div className="card mb-4">
-                    <div className="card-header">
-                        <FaImages className={"me-1"}></FaImages> Upload images
-                    </div>
-                    <div className="card-body">
-                        <Fileupload></Fileupload>
+            {/*// <!-- Content Row -->*/}
+            <div className="row">
+
+                <div className="col-lg-12">
+                    <div className="card shadow mb-4">
+                        <div className="card-header py-3">
+                            <h6 className="m-0 font-weight-bold text-primary"><span><FaImages className={"me-1"}></FaImages></span> Upload images</h6>
+                        </div>
+                        <div className="card-body">
+                            <Fileupload></Fileupload>
+                        </div>
                     </div>
                 </div>
 
-                <div className="card mb-4">
-                    <div className="card-header">
-                        <FaTable className={"me-1"}></FaTable> Gallery table
-                    </div>
-                    <div className="card-body p-0">
+                <div className="col-lg-12">
+                    <div className="card shadow mb-4">
+                        <div className="card-header py-3">
+                            <h6 className="m-0 font-weight-bold text-primary"><span><FaTable className={"me-1"}></FaTable></span> Gallery table</h6>
+                        </div>
+                        <div className="card-body">
 
-                        {renderConfirmDialog()}
+                            {renderConfirmDialog()}
 
-                        <DataGrid
-                            sx={{
-                                height: 600,
-                                width: '100%',
-                                border: 0,
-                                '& .actions': {
-                                    color: 'text.secondary',
-                                },
-                                '& .textPrimary': {
-                                    color: 'text.primary',
-                                },
-                            }}
-                            //getRowId={(row) => row.$id}
-                            //onCellClick={handleOnCellClick}
-                            //loading={rows}
-                            rowHeight={100}
-                            columnVisibilityModel={ {
-                                id: false,
-                                image_id: false,
-                                category_id: false
-                            } }
-                            rows={rows}
-                            columns={columns}
-                            autoPageSize
-                            slots={{
-                                toolbar: ToolbarButtons,
-                                loadingOverlay: LinearProgress,
-                            }}
-                            disableRowSelectionOnClick
-                            disableColumnSelector
-                            //disableColumnMenu
+                            <DataGrid
+                                sx={{
+                                    //height: 700,
+                                    width: '100%',
+                                    border: 0,
+                                    '& .actions': {
+                                        color: 'text.secondary',
+                                    },
+                                    '& .textPrimary': {
+                                        color: 'text.primary',
+                                    },
+                                }}
+                                initialState={{
+                                    sorting: {
+                                        sortModel: [{ field: 'createdAt', sort: 'desc' }], //TODO: get data already sorted DESC from API with Query
+                                    },
+                                    pagination: { paginationModel: { pageSize: 5 } },
+                                }}
+                                pageSizeOptions={[5, 10, 25]}
+                                loading={LoadingState}
+                                columnVisibilityModel={ {
+                                    id: false,
+                                    image_id: false,
+                                    category_id: false
+                                } }
+                                rowHeight={100}
+                                rows={rows}
+                                columns={columns}
+                                autoHeight
+                                //autoPageSize
+                                slots={{
+                                    toolbar: ToolbarButtons,
+                                    loadingOverlay: LinearProgress,
+                                }}
+                                disableRowSelectionOnClick
 
+                                disableColumnSelector
+                                //disableColumnMenu
+                            ></DataGrid>
 
-                        />
+                        </div>
                     </div>
                 </div>
 

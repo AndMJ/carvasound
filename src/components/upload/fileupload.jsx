@@ -7,8 +7,11 @@ import {RiCheckLine, RiFileWarningLine} from "react-icons/ri";
 
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import {useAuth} from "../../utils/authContext.jsx";
 
 function Fileupload() {
+    const {addGalleryImages, addStorageImage} = useAuth();
+
     const [files, setFiles] = useState([])
 
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
@@ -25,8 +28,25 @@ function Fileupload() {
         }
     })
 
-    function handleImageUpload(files) {
-        alert("TOTAL FILES: " + files.length + " " + JSON.stringify(files))
+//TODO: - add category to images
+    async function handleImageUpload(files) {
+        let payload = {
+            image_id: ""
+        }
+
+        for(let file_image of files){
+            let response
+            if(!file_image.errors){
+                response = await addStorageImage(file_image)
+                payload.image_id = response.$id
+                console.log(response)
+                response = await addGalleryImages(JSON.parse(JSON.stringify(payload)))
+                console.log(response)
+            } else {
+                response = "Wrong file type"
+                console.log(response)
+            }
+        }
     }
 
     function handleDelete(file){
@@ -63,7 +83,7 @@ function Fileupload() {
                     <>
                         <div className="row my-4 d-flex justify-content-between align-items-center">
                             <div className="col-auto d-flex justify-content-start align-items-center">
-                                <button className={"d-flex align-items-center btn btn-success"} onClick={() => {handleImageUpload(files)}}><FaUpload className={"me-2"}></FaUpload> Upload</button>
+                                <button className={"d-flex align-items-center btn btn-success text-white"} onClick={() => {handleImageUpload(files)}}><FaUpload className={"me-2"}></FaUpload> Upload</button>
                             </div>
                             <div className="col-auto d-flex justify-content-end align-items-center ms-auto">
                                 <select defaultValue="placeholder" className="form-select" aria-label="select category">
@@ -72,7 +92,7 @@ function Fileupload() {
                                     <option value="2">Two</option>
                                     <option value="3">Three</option>
                                 </select>
-                                <button className={"d-flex align-items-center btn btn-danger ms-3"} onClick={() => {setFiles([])}}><FaTrashAlt className={"me-2"}></FaTrashAlt> All</button>
+                                <button className={"d-flex align-items-center btn btn-danger text-white ms-3"} onClick={() => {setFiles([])}}><FaTrashAlt className={"me-2"}></FaTrashAlt> All</button>
                             </div>
                         </div>
                     </>
@@ -102,7 +122,7 @@ function Fileupload() {
                                     <p className={"m-0"}>{file.file.name}</p>
                                 </div>
                                 <div className="col-auto d-flex justify-content-end align-items-center ms-auto">
-                                    <button className={"btn btn-danger"} onClick={() => {handleDelete(file)}}><FaTrashAlt></FaTrashAlt></button>
+                                    <button className={"btn btn-danger text-white"} onClick={() => {handleDelete(file)}}><FaTrashAlt></FaTrashAlt></button>
                                 </div>
                             </div>
                         )
@@ -126,7 +146,7 @@ function Fileupload() {
                                     <option value="2">Two</option>
                                     <option value="3">Three</option>
                                 </select>
-                                <button className={"btn btn-danger ms-3"} onClick={() => {handleDelete(file)}}><FaTrashAlt></FaTrashAlt></button>
+                                <button className={"btn btn-danger text-white ms-3"} onClick={() => {handleDelete(file)}}><FaTrashAlt></FaTrashAlt></button>
                             </div>
                         </div>
                     )
