@@ -31,6 +31,7 @@ function Dashboard(){
             TODO:
                 - examples to show data, total image number, by category
                 - charts with images uploaded per month? idk
+                - last login date?
             */}
             <div className="row">
 
