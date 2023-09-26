@@ -1,12 +1,14 @@
-# Carvasound
-
-Frontend + Backoffice, using Vite + ReactJS
+# Carvasound - [Website](https://carvasound.onrender.com)
+Frontend + Backoffice using [Vite](https://vitejs.dev/) with [React](https://react.dev/)
 
 Backend using [Appwrite.io](https://appwrite.io/)
 
+<br>
+
 ## Carvasound - DJ New
-Socials: [Instagram](https://www.instagram.com/carvasound/) | [Facebook](https://www.facebook.com/carvasound/)
+**DJ Socials:** [Instagram](https://www.instagram.com/carvasound/) | [Facebook](https://www.facebook.com/carvasound/)
 
+<br>
 
-## Using [Render](https://render.com/) with React
-[Docs](https://render.com/docs/deploy-create-react-app)
+### Hosting on [Render.com](https://render.com/)
+[Docs - "deploy react app"](https://render.com/docs/deploy-create-react-app)
