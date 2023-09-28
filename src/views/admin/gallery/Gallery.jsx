@@ -24,6 +24,7 @@ import {
     GridToolbarContainer,
     GridActionsCellItem,
 } from '@mui/x-data-grid';
+import login from "../login/Login.jsx";
 
 
 
@@ -74,6 +75,9 @@ const Gallery = () => {
 
     const [rows, setRows] = useState([]);
     const [LoadingState, setLoadingState] = useState(true);
+
+    const [confirmDialogState, setConfirmDialogState ] = useState({"state": false, "data": {}});
+    console.log(confirmDialogState)
 
     useEffect(() =>  {
         formatGalleryData()
@@ -164,7 +168,7 @@ const Gallery = () => {
                     <GridActionsCellItem
                         icon={<DeleteIcon />}
                         label="Delete"
-                        onClick={handleDeleteClick(row.id, row.image_id)}
+                        onClick={handleDeleteClick(row.id, row.image_id, row.image)}
                         color="inherit"
                     />,
                 ];
@@ -173,12 +177,32 @@ const Gallery = () => {
     ];
 
     const handleEditClick = (id) => () => {
-        alert("edit")
+        alert("edit " + id)
     };
 
-    const handleDeleteClick = (id, image_id) => async () => {
-        //console.log(id)
-        let response
+    const handleDeleteClick = (id, image_id, image) => async () => {
+        setConfirmDialogState( (prevState) => {
+            let dataRowToDel = {
+                id: id,
+                image_id: image_id,
+                image: image
+            }
+            return {...prevState, state: true, data: dataRowToDel}
+        });
+    };
+
+    const handle_ConfirmDialog_No = () => {
+        // const { oldRow, resolve } = promiseArguments;
+        // resolve(oldRow); // Resolve with the old row to not update the internal state
+        // setPromiseArguments(null);
+
+        setConfirmDialogState( (prevState) => {
+            return {...prevState, state: false, data: {}}
+        });
+    };
+
+    const handle_ConfirmDialog_Yes = (id, image_id) => async () => {
+        let response = null;
 
         response = await deleteGalleryByID(id)
         console.log(response)
@@ -187,64 +211,27 @@ const Gallery = () => {
         response = await deleteStorageImagesByID(image_id)
         console.log(response)
 
-        // setState( () => {
-        //     return true
-        // });
+        setConfirmDialogState( (prevState) => {
+            return {...prevState, state: false, data: {}}
+        });
     };
 
-
-    const handleNo = () => {
-        // const { oldRow, resolve } = promiseArguments;
-        // resolve(oldRow); // Resolve with the old row to not update the internal state
-        // setPromiseArguments(null);
-
-        // setState( () => {
-        //     return false
-        // });
-    };
-
-    const handleYes = async () => {
-        // const { newRow, oldRow, reject, resolve } = promiseArguments;
-        //
-        // try {
-        //     // Make the HTTP request to save in the backend
-        //     const response = await mutateRow(newRow);
-        //     setSnackbar({ children: 'User successfully saved', severity: 'success' });
-        //     resolve(response);
-        //     setPromiseArguments(null);
-        // } catch (error) {
-        //     setSnackbar({ children: "Name can't be empty", severity: 'error' });
-        //     reject(oldRow);
-        //     setPromiseArguments(null);
-        // }
-
-        // setState( () => {
-        //     return false
-        // });
-    };
-
-    const [state, setState ] = useState(false);
-    const renderConfirmDialog = () => {
-
-        if (!state) {
-            return null;
-        }
-
+    const RenderConfirmDialog = () => {
         return (
             <Dialog
                 maxWidth="xs"
                 TransitionProps={{ onEntered: () => {} }}
-                open={open}
+                open={confirmDialogState.state}
             >
-                <DialogTitle>Are you sure?</DialogTitle>
+                <DialogTitle>Confirm deletion</DialogTitle>
                 <DialogContent dividers>
-                    Pressing 'Yes' will delete this user.
+                    <img src={confirmDialogState.data.image ? confirmDialogState.data.image.href : ""} className="img-thumbnail mb-3" alt={"image to delete"}/>
+                    <h5 className={"mb-1"}>Are you sure?</h5>
+                    <p className={""}>Pressing 'Yes' will <span className={"text-danger"}>delete</span> this image from the platform.</p>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleNo}>
-                        No
-                    </Button>
-                    <Button onClick={handleYes}>Yes</Button>
+                    <Button onClick={handle_ConfirmDialog_No}>No</Button>
+                    <Button onClick={handle_ConfirmDialog_Yes(confirmDialogState.data.id, confirmDialogState.data.image_id)}>Yes</Button>
                 </DialogActions>
             </Dialog>
         );
@@ -280,7 +267,7 @@ const Gallery = () => {
                         </div>
                         <div className="card-body">
 
-                            {renderConfirmDialog()}
+                            <RenderConfirmDialog></RenderConfirmDialog>
 
                             <DataGrid
                                 sx={{
