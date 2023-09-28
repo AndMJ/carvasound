@@ -24,9 +24,6 @@ import {
     GridToolbarContainer,
     GridActionsCellItem,
 } from '@mui/x-data-grid';
-import login from "../login/Login.jsx";
-
-
 
 const ToolbarButtons = () => {
 
@@ -265,7 +262,7 @@ const Gallery = () => {
                         <div className="card-header py-3">
                             <h6 className="m-0 font-weight-bold text-primary"><span><FaTable className={"me-1"}></FaTable></span> Gallery table</h6>
                         </div>
-                        <div className="card-body">
+                        <div className="card-body gallery-table">
 
                             <RenderConfirmDialog></RenderConfirmDialog>
 
@@ -279,7 +276,7 @@ const Gallery = () => {
                                     },
                                     '& .textPrimary': {
                                         color: 'text.primary',
-                                    },
+                                    }
                                 }}
                                 initialState={{
                                     sorting: {
