@@ -1,14 +1,19 @@
-import React, {useContext, useState, createContext, useEffect} from "react";
-const Loader = React.lazy(()=> import("../components/loader/Loader.jsx"))
-
-import {GenerateID,account, storage, database,
-    STORAGE_BUCKET_ID,
-    DATABASE_ID,
-    COLLECTION_GALLERY_ID,
+import React, {createContext, useContext, useEffect, useState} from "react";
+import {
+    account,
     COLLECTION_CATEGORY_ID,
+    COLLECTION_GALLERY_ID,
+    database,
+    DATABASE_ID,
+    GenerateID,
+    storage,
+    STORAGE_BUCKET_ID,
 } from "../appwrite/appwrite.config.jsx";
 
 import {useNavigate} from "react-router-dom";
+import {Query} from "appwrite";
+
+const Loader = React.lazy(()=> import("../components/loader/Loader.jsx"))
 
 
 const AuthContext = createContext()
@@ -29,7 +34,7 @@ export const AuthProvider = ({children}) => {
             })
     },[])
 
-    const getUserOnLoad = async () => { //TODO: handle all possible errors from API, like its done here, and make a way of showing errors popups, see @mui/material/Snackbar
+    const getUserOnLoad = async () => { //TODO: handle all possible errors from API, like its done here
         try {
             return await account.get()
         } catch (error) {
@@ -66,6 +71,8 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+
+
     /*
      * Database > Production
      * Collection > gallery
@@ -83,7 +90,11 @@ export const AuthProvider = ({children}) => {
     const getGalleryList = async () => {
         let promise = "";
         try {
-            promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID);
+            promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+                [
+                    Query.orderDesc('$createdAt'),
+                ]
+            );
 
         } catch (error) {
             console.error(error)
@@ -93,15 +104,35 @@ export const AuthProvider = ({children}) => {
     }
 
     const deleteGalleryByID = async (gallery_id) => {
-        let promise = "";
+        /*try {
+            return await database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
+        } catch (error) {
+            console.error(error)
+            return await error
+        }*/
+
+
         try {
-            promise = database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id);
+            const promise = database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
+            return promise
 
         } catch (error) {
             console.error(error)
+            return error
         }
 
-        return promise
+
+
+
+        /*const promise = database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
+        promise.then(function (response) {
+            console.log(response); // Success
+            return response
+        }, function (error) {
+            console.log(error); // Failure
+            return error
+        });*/
+
     }
 
     /*
