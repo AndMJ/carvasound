@@ -28,12 +28,14 @@ function Fileupload() {
         }
     })
 
-//TODO: - add category to images
+
     async function handleImageUpload(files) {
         let payload = {
-            image_id: ""
+            image_id: "",
+            //category_id: ""
         }
-
+        //TODO: - add category to images
+        //TODO: - validate errors from appwrite
         for(let file_image of files){
             let response
             if(!file_image.errors){
