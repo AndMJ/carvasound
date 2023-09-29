@@ -7,8 +7,38 @@ import Footer from "../Footer/Footer.jsx";
 import {useEffect, useState} from "react";
 import {useAuth} from "../../../utils/authContext.jsx";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function Layout(){
     const {user} = useAuth()
+
+    const newToastNotif = (type,message) => {
+        if (type === "success") {
+            toast.success(message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+        if (type === "error") {
+            toast.error(message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+        }
+    };
 
     return(
         <>
@@ -22,7 +52,8 @@ function Layout(){
                                     <Header></Header>
 
                                     <div className="container-fluid">
-                                        <Outlet ></Outlet>{/*context={[allUsers]}*/}
+                                        <ToastContainer containerId={"appNotifications-container"} className="position-fixed bottom-0 end-0 mb-4 me-4 z-3"></ToastContainer>
+                                        <Outlet context={[newToastNotif]} ></Outlet>{/*context={[allUsers]}*/}
                                     </div>
                                 </div>
 
