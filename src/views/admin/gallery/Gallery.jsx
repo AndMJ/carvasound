@@ -1,15 +1,15 @@
 import "./gallery.css"
 
+import {useEffect, useState} from "react";
 import { FaImages, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
-import {useEffect, useState} from "react";
 import Fileupload from "../../../components/upload/fileupload.jsx";
-
 
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import {
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -24,9 +24,10 @@ import {
     GridToolbarContainer,
     GridActionsCellItem,
 } from '@mui/x-data-grid';
+import {useOutletContext} from "react-router-dom";
+import client, {COLLECTION_GALLERY_ID, DATABASE_ID} from "../../../appwrite/appwrite.config.jsx";
 
 const ToolbarButtons = () => {
-
     const [SelectedButton, setSelectedButton] = useState();
 
     const handleSelectedButton = (event, selected) => {
@@ -40,10 +41,6 @@ const ToolbarButtons = () => {
 
     const handleCategoryFilter = () => {
         alert("filter table")
-    };
-
-    const handleDelete = () => {
-
     };
 
     return (
@@ -68,13 +65,19 @@ const Gallery = () => {
         document.title = "Carvasound - Gallery";
     },[])
 
-    const { getGalleryList, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID } = useAuth();
+    const [newToastNotif] = useOutletContext()
 
-    const [rows, setRows] = useState([]);
+    const {getGalleryList, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID } = useAuth();
+
     const [LoadingState, setLoadingState] = useState(true);
+    const [rows, setRows] = useState([]);
+    //console.log(rows)
 
+    const [processing, setProcessing] = useState(false);
     const [confirmDialogState, setConfirmDialogState ] = useState({"state": false, "data": {}});
-    console.log(confirmDialogState)
+    //console.log(confirmDialogState)
+
+
 
     useEffect(() =>  {
         formatGalleryData()
@@ -85,6 +88,51 @@ const Gallery = () => {
                 setLoadingState(false)
             })
     }, [])
+
+    useEffect(() => {
+        const subscription = client.subscribe(`databases.${DATABASE_ID}.collections.${COLLECTION_GALLERY_ID}.documents`, response => {
+            // Callback will be executed on changes for all files.
+
+            if(response.events.includes("databases.*.collections.*.documents.*.create")){
+                console.info("create ", response.payload);
+
+                //TODO: temporary callAll. change to call just when all image files are uploaded
+                setLoadingState(true)
+                formatGalleryData()
+                    .then((response) => {
+
+                        if (response.length > 0){
+                            setRows(response)
+                        }
+                        setLoadingState(false)
+                    })
+            }
+
+            if(response.events.includes("databases.*.collections.*.documents.*.update")){
+                console.info("update ", response.payload);
+            }
+
+            if(response.events.includes("databases.*.collections.*.documents.*.delete")){
+                console.info("delete ", response.payload);
+                /*setRows(prevState => {
+                    return prevState.filter(row => row.id !== response.payload.$id)
+                })*/
+                setLoadingState(true)
+                formatGalleryData()
+                    .then((response) => {
+
+                        if (response.length > 0){
+                            setRows(response)
+                        }
+                        setLoadingState(false)
+                    })
+            }
+        });
+
+        return () => {
+            subscription();
+        };
+    }, []);
 
     const RenderCellImage = (props) => {
         const handleImgClick = () => {
@@ -189,51 +237,58 @@ const Gallery = () => {
     };
 
     const handle_ConfirmDialog_No = () => {
-        // const { oldRow, resolve } = promiseArguments;
-        // resolve(oldRow); // Resolve with the old row to not update the internal state
-        // setPromiseArguments(null);
-
         setConfirmDialogState( (prevState) => {
             return {...prevState, state: false, data: {}}
         });
     };
 
-    const handle_ConfirmDialog_Yes = (id, image_id) => async () => {
-        let response = null;
+    const handle_ConfirmDialog_Yes = async (id, image_id) => {
+        function closeDialog(){
+            setProcessing(() => {return false})
+            setConfirmDialogState( (prevState) => {
+                return {...prevState, state: false, data: {}}
+            });
+        }
 
-        response = await deleteGalleryByID(id)
-        console.log(response)
+        let response;
+        setProcessing(() => {return true})
+        try {
+            response = await deleteGalleryByID(id)
+            //console.log(response)
+            //newToastNotif("success", "Image deleted.")
+        } catch (error) {
+            console.log(error)
+            if (error.code !== 204){
+                closeDialog()
+                newToastNotif("error", error.message)
+                return
+            }
+            //newToastNotif("error", error.message)
+        }
 
-        console.log(image_id)
-        response = await deleteStorageImagesByID(image_id)
-        console.log(response)
+        try {
+            response = await deleteStorageImagesByID(image_id)
+            //console.log(response)
+            //newToastNotif("success", "Image deleted.")
+        } catch (error) {
+            console.log(error)
+            if (error.code !== 204){
+                closeDialog()
+                newToastNotif("error", error.message)
+                return
+            }
+            //newToastNotif("error", error.message)
+        }
 
-        setConfirmDialogState( (prevState) => {
-            return {...prevState, state: false, data: {}}
-        });
+        /*setRows(prevState => {
+            return prevState.filter(row => row.id !== response.payload.$id)
+        })*/
+
+        closeDialog()
+
+        newToastNotif("success", "Image deleted.")
+
     };
-
-    const RenderConfirmDialog = () => {
-        return (
-            <Dialog
-                maxWidth="xs"
-                TransitionProps={{ onEntered: () => {} }}
-                open={confirmDialogState.state}
-            >
-                <DialogTitle>Confirm deletion</DialogTitle>
-                <DialogContent dividers>
-                    <img src={confirmDialogState.data.image ? confirmDialogState.data.image.href : ""} className="img-thumbnail mb-3" alt={"image to delete"}/>
-                    <h5 className={"mb-1"}>Are you sure?</h5>
-                    <p className={""}>Pressing 'Yes' will <span className={"text-danger"}>delete</span> this image from the platform.</p>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handle_ConfirmDialog_No}>No</Button>
-                    <Button onClick={handle_ConfirmDialog_Yes(confirmDialogState.data.id, confirmDialogState.data.image_id)}>Yes</Button>
-                </DialogActions>
-            </Dialog>
-        );
-    };
-
 
     return (
         <>
@@ -264,7 +319,22 @@ const Gallery = () => {
                         </div>
                         <div className="card-body gallery-table">
 
-                            <RenderConfirmDialog></RenderConfirmDialog>
+                            <Dialog
+                                maxWidth="xs"
+                                TransitionProps={{ onEntered: () => {} }}
+                                open={confirmDialogState.state}
+                            >
+                                <DialogTitle>Confirm deletion</DialogTitle>
+                                <DialogContent dividers>
+                                    <img src={confirmDialogState.data.image ? confirmDialogState.data.image.href : ""} className="img-thumbnail mb-3" alt={"image to delete"}/>
+                                    <h5 className={"mb-1"}>Are you sure?</h5>
+                                    <p className={""}>Pressing 'Yes' will <span className={"text-danger"}>delete</span> this image from the platform.</p>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handle_ConfirmDialog_No}>No</Button>
+                                    <Button onClick={() => {handle_ConfirmDialog_Yes(confirmDialogState.data.id, confirmDialogState.data.image_id)}} disabled={processing} >{processing ? <CircularProgress color="inherit" /> : "Yes" }</Button>
+                                </DialogActions>
+                            </Dialog>
 
                             <DataGrid
                                 sx={{
@@ -279,12 +349,12 @@ const Gallery = () => {
                                     }
                                 }}
                                 initialState={{
-                                    sorting: {
-                                        sortModel: [{ field: 'createdAt', sort: 'desc' }], //TODO: get data already sorted DESC from API with Query
-                                    },
+                                    /*sorting: {
+                                        sortModel: [{ field: 'createdAt', sort: 'desc' }],
+                                    },*/
                                     pagination: { paginationModel: { pageSize: 5 } },
                                 }}
-                                pageSizeOptions={[5, 10, 25]}
+                                pageSizeOptions={[5, 25, 50, 100]}
                                 loading={LoadingState}
                                 columnVisibilityModel={ {
                                     id: false,
@@ -301,7 +371,6 @@ const Gallery = () => {
                                     loadingOverlay: LinearProgress,
                                 }}
                                 disableRowSelectionOnClick
-
                                 disableColumnSelector
                                 //disableColumnMenu
                             ></DataGrid>
