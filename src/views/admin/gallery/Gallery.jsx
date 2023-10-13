@@ -307,7 +307,7 @@ const Gallery = () => {
                             <h6 className="m-0 font-weight-bold text-primary"><span><FaImages className={"me-1"}></FaImages></span> Upload images</h6>
                         </div>
                         <div className="card-body">
-                            <Fileupload></Fileupload>
+                            <Fileupload newToastNotif={newToastNotif}></Fileupload>
                         </div>
                     </div>
                 </div>
