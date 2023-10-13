@@ -8,11 +8,15 @@ import {RiCheckLine, RiFileWarningLine} from "react-icons/ri";
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import {useAuth} from "../../utils/authContext.jsx";
+import {CircularProgress} from "@mui/material";
+import {useOutletContext} from "react-router-dom";
 
-function Fileupload() {
+function Fileupload({newToastNotif}) {
     const {addGalleryImages, addStorageImage} = useAuth();
 
     const [files, setFiles] = useState([])
+
+    const [uploading, setUploading] = useState(false)
 
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
         //const mappedAcceptedFiles = acceptedFiles.map((file) => ({file, errors: []}))
@@ -30,25 +34,37 @@ function Fileupload() {
 
 
     async function handleImageUpload(files) {
-        let payload = {
-            image_id: "",
-            //category_id: ""
-        }
         //TODO: - add category to images
         //TODO: - validate errors from appwrite
         for(let file_image of files){
             let response
+            console.log(file_image)
             if(!file_image.errors){
+                setUploading(true)
+
                 response = await addStorageImage(file_image)
-                payload.image_id = response.$id
                 console.log(response)
+
+                let payload = {
+                    image_id: response.$id,
+                    //category_id: ""
+                }
+
                 response = await addGalleryImages(JSON.parse(JSON.stringify(payload)))
                 console.log(response)
+
+                setUploading(false)
+
+                setFiles(curr => curr.filter(f => (f !== file_image)))
             } else {
                 response = "Wrong file type"
                 console.log(response)
+                setFiles(curr => curr.filter(f => (f !== file_image)))
             }
         }
+
+        newToastNotif("success", "All images uploaded.")
+
     }
 
     function handleDelete(file){
@@ -130,10 +146,16 @@ function Fileupload() {
                         )
                     }
                     return (
-                        <div key={index} className="row my-3 d-flex justify-content-between text-success">
+                        <div key={index} className="row my-3 d-flex justify-content-between text-black">
                             <div className="col-auto d-flex justify-content-start align-items-center">
                                 <div className="me-3">
-                                    <RiCheckLine size={24}></RiCheckLine>
+                                    {uploading ?
+                                        <span className={"text-muted"}><CircularProgress size={24} color="inherit" /></span>
+                                        :
+                                        ""
+                                        /*<span className={"text-success"}><RiCheckLine size={24}></RiCheckLine></span>*/
+                                    }
+
                                 </div>
                                 <img src={URL.createObjectURL(file)} height={52} alt=""/>
                                 <div className="ms-3">
