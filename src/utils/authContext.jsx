@@ -211,6 +211,7 @@ export const AuthProvider = ({children}) => {
 
         getStorageImagesByID,
         getGalleryList,
+        getCategoryList,
         getCategoryByID,
 
         deleteGalleryByID,
