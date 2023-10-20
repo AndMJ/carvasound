@@ -26,7 +26,7 @@ function GalleryBox(){
             })
     }, [])
 
-    function getImageSize(imgSrc) {
+    async function getImageSize(imgSrc) {
         let imgLoader = new Image();
         imgLoader.src = imgSrc;
         return {width: imgLoader.width, height: imgLoader.height}
@@ -47,7 +47,7 @@ function GalleryBox(){
                 //console.log("IN: " + category)
             }
 
-            let image_size = getImageSize(image_path)
+            let image_size = await getImageSize(image_path)
 
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
@@ -170,7 +170,10 @@ function GalleryBox(){
                         </Item>
                     </div>*/}
 
-                    {/*TODO: try to build gallery in mosaic*/}
+                    {/*
+                    TODO:   - try to build gallery in mosaic
+                            - use appwrite subscribe feature to update page content on database changes
+                    */}
 
                     <div className="col-lg-4 col-md-12 mb-4 mb-lg-0">
                         {gallery?.map((image, index) => {
