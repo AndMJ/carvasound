@@ -203,7 +203,6 @@ const LandingPage = () => {
                             <a className="btn btn-primary btn-md" onClick={() => {alert("Batizados")}}>Batizados</a>
                         </div>
 
-
                         <GalleryBox></GalleryBox>
                     </div>
 
