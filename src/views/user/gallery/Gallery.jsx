@@ -175,28 +175,30 @@ function GalleryBox(){
                             - use appwrite subscribe feature to update page content on database changes
                     */}
 
-                    <div className="col-lg-4 col-md-12 mb-4 mb-lg-0">
+
                         {gallery?.map((image, index) => {
                             return (
-                                <Item key={index}
-                                    original={image.image}
-                                    thumbnail={image.image}
-                                    width={image.image_size.width}
-                                    height={image.image_size.height}
-                                    alt={image.category}
-                                >
-                                    {({ ref, open }) => (
-                                        <img
-                                            className={"w-100 shadow-1-strong rounded mb-4"}
-                                            style={{ cursor: 'pointer' }}
-                                            src={image.image}
-                                            ref={ref} onClick={open}
-                                        />
-                                    )}
-                                </Item>
+                                <div className="col-lg-4 col-md-12 mb-4 mb-lg-0">
+                                    <Item key={index}
+                                        original={image.image}
+                                        thumbnail={image.image}
+                                        width={image.image_size.width}
+                                        height={image.image_size.height}
+                                        alt={image.category}
+                                    >
+                                        {({ ref, open }) => (
+                                            <img
+                                                className={"w-100 shadow-1-strong rounded mb-4"}
+                                                style={{ cursor: 'pointer' }}
+                                                src={image.image}
+                                                ref={ref} onClick={open}
+                                            />
+                                        )}
+                                    </Item>
+                                </div>
                             )
                         })}
-                    </div>
+
 
                 </div>
             </Gallery>
