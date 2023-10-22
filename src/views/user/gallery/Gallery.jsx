@@ -1,8 +1,10 @@
 import "./gallery.css";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 import 'photoswipe/dist/photoswipe.css'
 import { Gallery, Item } from 'react-photoswipe-gallery'
+
+import {useAuth} from "../../../utils/authContext.jsx";
 
 //import { motion } from "framer-motion"
 
@@ -10,11 +12,65 @@ import { Gallery, Item } from 'react-photoswipe-gallery'
 
 function GalleryBox(){
 
+    const {getGalleryList, getStorageImagesByID, getCategoryByID} = useAuth();
+
+    const [gallery, setGallery] = useState([])
+
+    useEffect(() =>  {
+        formatGalleryData()
+            .then((response) => {
+                if (response.length > 0){
+                    setGallery(response)
+                }
+                //setLoadingState(false)
+            })
+    }, [])
+
+    async function getImageSize(imgSrc) {
+        let imgLoader = new Image();
+        imgLoader.src = imgSrc;
+        return {width: imgLoader.width, height: imgLoader.height}
+    }
+
+    const formatGalleryData = async () => {
+        const gallery_data = await getGalleryList()
+
+        let dataArray = []
+
+        for (let row of gallery_data.documents) {
+            let category = null;
+            const image_path = await getStorageImagesByID(row.image_id)
+
+            //console.log("dsada " + row.category_id)
+            if(row.category_id !== null){
+                category = await getCategoryByID(row.category_id)
+                //console.log("IN: " + category)
+            }
+
+            let image_size = await getImageSize(image_path)
+
+            const creAt = new Date(row.$createdAt)
+            const upAt = new Date(row.$updatedAt)
+
+            dataArray.push({
+                id: row.$id,
+                category_id: row.category_id,
+                category: category !== null ? category.name : null,
+                image_id: row.image_id,
+                image: image_path,
+                image_size: image_size,
+                createdAt: creAt.toLocaleString('en-GB'),
+                updatedAt: upAt.toLocaleString('en-GB'),
+            })
+        }
+        return dataArray
+    }
+
     return (
         <>
             <Gallery>
                 <div className="row mt-4">
-                    <div className="col-lg-4 col-md-12 mb-4 mb-lg-0">
+                    {/*<div className="col-lg-4 col-md-12 mb-4 mb-lg-0">
                         <Item
                             original="https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg"
                             thumbnail="https://farm4.staticflickr.com/3894/15008518202_b016d7d289_m.jpg"
@@ -112,7 +168,38 @@ function GalleryBox(){
                                 />
                             )}
                         </Item>
-                    </div>
+                    </div>*/}
+
+                    {/*
+                    TODO:   - try to build gallery in mosaic
+                            - use appwrite subscribe feature to update page content on database changes
+                    */}
+
+
+                        {gallery?.map((image, index) => {
+                            return (
+                                <div className="col-lg-4 col-md-12 mb-4 mb-lg-0">
+                                    <Item key={index}
+                                        original={image.image}
+                                        thumbnail={image.image}
+                                        width={image.image_size.width}
+                                        height={image.image_size.height}
+                                        alt={image.category}
+                                    >
+                                        {({ ref, open }) => (
+                                            <img
+                                                className={"w-100 shadow-1-strong rounded mb-4"}
+                                                style={{ cursor: 'pointer' }}
+                                                src={image.image}
+                                                ref={ref} onClick={open}
+                                            />
+                                        )}
+                                    </Item>
+                                </div>
+                            )
+                        })}
+
+
                 </div>
             </Gallery>
         </>
