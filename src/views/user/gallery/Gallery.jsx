@@ -34,8 +34,7 @@ function GalleryBox(){
 
     const formatGalleryData = async () => {
         const gallery_data = await getGalleryList()
-
-        let dataArray = []
+        let dataArray = [];
 
         for (let row of gallery_data.documents) {
             let category = null;
@@ -47,10 +46,21 @@ function GalleryBox(){
                 //console.log("IN: " + category)
             }
 
-            let image_size = await getImageSize(image_path)
-
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
+
+            /*setDataArray((curr) => {
+                return [...curr, {
+                    id: row.$id,
+                    category_id: row.category_id,
+                    category: category !== null ? category.name : null,
+                    image_id: row.image_id,
+                    image: image_path,
+                    image_size: image_size,
+                    createdAt: creAt.toLocaleString('en-GB'),
+                    updatedAt: upAt.toLocaleString('en-GB'),
+                }]
+            });*/
 
             dataArray.push({
                 id: row.$id,
@@ -58,7 +68,7 @@ function GalleryBox(){
                 category: category !== null ? category.name : null,
                 image_id: row.image_id,
                 image: image_path,
-                image_size: image_size,
+                image_size: await getImageSize(image_path),
                 createdAt: creAt.toLocaleString('en-GB'),
                 updatedAt: upAt.toLocaleString('en-GB'),
             })
