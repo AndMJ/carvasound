@@ -26,7 +26,7 @@ function GalleryBox(){
             })
     }, [])
 
-    async function getImageSize(imgSrc) {
+    const getImageSize = async (imgSrc) => {
         let imgLoader = new Image();
         imgLoader.src = imgSrc;
         return {width: imgLoader.width, height: imgLoader.height}
@@ -62,13 +62,15 @@ function GalleryBox(){
                 }]
             });*/
 
+            const img_size= await getImageSize(image_path);
+            console.log(img_size)
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
                 category: category !== null ? category.name : null,
                 image_id: row.image_id,
-                image: image_path,
-                image_size: await getImageSize(image_path),
+                image: image_path.toString(),
+                image_size: img_size,
                 createdAt: creAt.toLocaleString('en-GB'),
                 updatedAt: upAt.toLocaleString('en-GB'),
             })
@@ -183,13 +185,15 @@ function GalleryBox(){
                     {/*
                     TODO:   - try to build gallery in mosaic
                             - use appwrite subscribe feature to update page content on database changes
+                            - FIX images not getting correct size
                     */}
 
 
                         {gallery?.map((image, index) => {
+                            console.log(image.image_size)
                             return (
-                                <div className="col-lg-4 col-md-12 mb-4 mb-lg-0">
-                                    <Item key={index}
+                                <div key={index} className="col-lg-4 col-md-12 mb-4 mb-lg-0">
+                                    <Item
                                         original={image.image}
                                         thumbnail={image.image}
                                         width={image.image_size.width}
