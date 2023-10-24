@@ -26,11 +26,11 @@ function GalleryBox(){
             })
     }, [])
 
-    const getImageSize = async (imgSrc) => {
+    /*const getImageSize = async (imgSrc) => {
         let imgLoader = new Image();
         imgLoader.src = imgSrc;
         return {width: imgLoader.width, height: imgLoader.height}
-    }
+    }*/
 
     const formatGalleryData = async () => {
         const gallery_data = await getGalleryList()
@@ -62,7 +62,10 @@ function GalleryBox(){
                 }]
             });*/
 
-            const img_size= await getImageSize(image_path);
+            let imgLoader = new Image();
+            imgLoader.src = image_path;
+            const img_size= {width: imgLoader.width, height: imgLoader.height};
+
             console.log(img_size)
             dataArray.push({
                 id: row.$id,
