@@ -67,7 +67,7 @@ function Fileupload({newToastNotif}) {
     async function handleImageUpload(files) {
         //TODO: - add category to images
         //      - validate errors from appwrite
-        //      - on wrong file upload, send notif of error and show what file it was
+        //      DONE - on wrong file upload, send notif of error and show what file it was
         for(let file_image of files){
             let response
             console.log(file_image)
@@ -92,15 +92,15 @@ function Fileupload({newToastNotif}) {
 
                 setUploading(false)
 
+                newToastNotif("success", "Image uploaded.")
                 setFiles(curr => curr.filter(f => (f !== file_image)))
             } else {
-                response = "Wrong file type"
-                console.log(response)
+                newToastNotif("error", `File "${file_image.file.name}" with wrong file-type not uploaded.`)
                 setFiles(curr => curr.filter(f => (f !== file_image)))
             }
         }
 
-        newToastNotif("success", "All images uploaded.")
+        // newToastNotif("success", "All images uploaded.")
 
     }
 
@@ -160,7 +160,7 @@ function Fileupload({newToastNotif}) {
                             <div className="col-auto d-flex justify-content-end align-items-center ms-auto">
                                 <select ref={selectAllCategoryRef} onChange={(e) => {handleSetAllCategory(e)}} defaultValue="placeholder" className="form-select" aria-label="select category">
                                     <option value="placeholder" disabled>Select category</option>
-                                    {/*TODO: -validate if there is no categories, do something*/}
+                                    {/*TODO: - validate if there is no categories, do something*/}
                                     {categories?.map((category, index) => {
                                         return (
                                             <option key={index} value={category.$id}>{category.name}</option>
@@ -174,8 +174,8 @@ function Fileupload({newToastNotif}) {
                 }
 
                 <div className="singular-select-wrapper" ref={selectEachImageListRef}>
-                    {   //TODO: send a alert when a file is not supported and remove it from list
-                        //      list of upload container columns need adjusting
+                    {   //TODO: - send a alert when a file is not supported and remove it from list
+                        //      - list of upload container columns need adjusting
                         files?.map((file, index) => {
                         if (file.errors?.length > 0){
                             return (
