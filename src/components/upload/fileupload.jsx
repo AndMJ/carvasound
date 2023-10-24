@@ -11,6 +11,7 @@ import {useAuth} from "../../utils/authContext.jsx";
 import {CircularProgress} from "@mui/material";
 
 function Fileupload({newToastNotif}) {
+    let _URL = window.URL || window.webkitURL;
     const {addGalleryImages, addStorageImage, getCategoryList} = useAuth();
 
     const [files, setFiles] = useState([])
@@ -44,20 +45,45 @@ function Fileupload({newToastNotif}) {
         return categories.documents
     }
 
+
+    const imageDimensions = file =>
+        new Promise((resolve, reject) => {
+            const img = new Image()
+
+            // the following handler will fire after a successful loading of the image
+            img.onload = () => {
+                const { naturalWidth: width, naturalHeight: height } = img
+                resolve({ width, height })
+            }
+
+            // and this handler will fire if there was an error with the image (like if it's not really an image or a corrupted one)
+            img.onerror = () => {
+                reject('There was some problem with the image.')
+            }
+
+            img.src = _URL.createObjectURL(file)
+        })
+
     async function handleImageUpload(files) {
         //TODO: - add category to images
-        //TODO: - validate errors from appwrite
+        //      - validate errors from appwrite
+        //      - on wrong file upload, send notif of error and show what file it was
         for(let file_image of files){
             let response
             console.log(file_image)
             if(!file_image.errors){
                 setUploading(true)
 
+                let img_dim = await imageDimensions(file_image)
+                console.log(img_dim)
+
                 response = await addStorageImage(file_image)
                 console.log(response)
 
                 let payload = {
                     image_id: response.$id,
+                    width: img_dim.width,
+                    height: img_dim.height,
                     //category_id: ""
                 }
 
@@ -189,7 +215,7 @@ function Fileupload({newToastNotif}) {
                                             </div>
                                         }
 
-                                        <img src={URL.createObjectURL(file)} height={52} alt=""/>
+                                        <img src={_URL.createObjectURL(file)} height={52} alt=""/>
                                     </div>
                                     <div className="ms-3">
                                         <p className={"m-0"}>{file.name}</p>

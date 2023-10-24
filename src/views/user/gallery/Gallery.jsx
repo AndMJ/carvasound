@@ -62,18 +62,14 @@ function GalleryBox(){
                 }]
             });*/
 
-            let imgLoader = new Image();
-            imgLoader.src = image_path;
-            const img_size= {width: imgLoader.width, height: imgLoader.height};
-
-            console.log(img_size)
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
                 category: category !== null ? category.name : null,
                 image_id: row.image_id,
                 image: image_path.toString(),
-                image_size: img_size,
+                width: row.width !== null ? row.width : 0,
+                height: row.height !== null ? row.height : 0,
                 createdAt: creAt.toLocaleString('en-GB'),
                 updatedAt: upAt.toLocaleString('en-GB'),
             })
@@ -188,19 +184,17 @@ function GalleryBox(){
                     {/*
                     TODO:   - try to build gallery in mosaic
                             - use appwrite subscribe feature to update page content on database changes
-                            - FIX images not getting correct size
                     */}
 
 
                         {gallery?.map((image, index) => {
-                            console.log(image.image_size)
                             return (
                                 <div key={index} className="col-lg-4 col-md-12 mb-4 mb-lg-0">
                                     <Item
                                         original={image.image}
                                         thumbnail={image.image}
-                                        width={image.image_size.width}
-                                        height={image.image_size.height}
+                                        width={image.width}
+                                        height={image.height}
                                         alt={image.category}
                                     >
                                         {({ ref, open }) => (
