@@ -6,7 +6,7 @@ import { Gallery, Item } from 'react-photoswipe-gallery'
 
 import {useAuth} from "../../../utils/authContext.jsx";
 import client, {COLLECTION_GALLERY_ID, DATABASE_ID} from "../../../appwrite/appwrite.config.jsx";
-import {LinearProgress, ToggleButton, ToggleButtonGroup} from "@mui/material";
+import {ImageList, ImageListItem, LinearProgress, ToggleButton, ToggleButtonGroup} from "@mui/material";
 
 //import { motion } from "framer-motion"
 
@@ -17,6 +17,7 @@ function GalleryBox(){
     const {getGalleryList, getStorageImagesByID, getCategoryByID, getCategoryList, getGalleryByCategory} = useAuth();
 
     const [gallery, setGallery] = useState([])
+    const [galleryCols, setGalleryCols] = useState(3)
     const [filter, setFilter] = useState(null)
     const [categories, setCategories] = useState([])
     const [LoadingState, setLoadingState] = useState(true);
@@ -134,8 +135,31 @@ function GalleryBox(){
         setFilter(category_id)
     }
 
+    useEffect(() => {
+        const mediaQuery = window.matchMedia('(max-width: 1200px)')
+        function handleTabletChange(e) {
+            // Check if the media query is true
+            if (e.matches) {
+                setGalleryCols(2)
+            } else {
+                setGalleryCols(3)
+            }
+        }
+        // Register event listener
+        mediaQuery.addListener(handleTabletChange)
+        // Initial check
+        handleTabletChange(mediaQuery)
+    }, []);
+
     return (
         <>
+            {/*
+            TODO:   DONE - try to build gallery in mosaic, https://mui.com/material-ui/react-image-list/#masonry-image-list
+                    - use appwrite subscribe feature to update page content on database changes
+                    - pagination or "load more"
+                    - better "gallery loading"
+                    - implement image thumbnails
+            */}
             <div className="row gx-4 gx-lg-5 justify-content-center mb-5">
                 <div className="col">
                     <ToggleButtonGroup
@@ -154,66 +178,59 @@ function GalleryBox(){
 
                 <Gallery>
                     <div className="row mt-4">
-                        {/*
-                        TODO:   - try to build gallery in mosaic, https://mui.com/material-ui/react-image-list/#masonry-image-list
-                                - use appwrite subscribe feature to update page content on database changes
-                                - pagination or "load more"
-                                - better "gallery loading"
-                                - implement image thumbnails
-                        */}
+                        <ImageList variant="masonry" cols={galleryCols} gap={8}>
+                            {gallery?.map((image, index) => {
+                                if(filter /*|| filter.lenght > 0*/){
+                                    if (filter.includes(image.category_id))
+                                        return (
+                                            <ImageListItem key={index}>
+                                                <Item
+                                                    original={image.image}
+                                                    thumbnail={image.image}
+                                                    width={image.width}
+                                                    height={image.height}
+                                                    alt={image.category}
+                                                >
+                                                    {({ ref, open }) => (
+                                                        <img
+                                                            className={"w-100 shadow-1-strong rounded"}
+                                                            style={{ cursor: 'pointer' }}
+                                                            src={image.image}
+                                                            ref={ref} onClick={open}
+                                                            loading={"lazy"}
+                                                        />
+                                                    )}
+                                                </Item>
+                                            </ImageListItem>
+                                        )
+                                } else {
+                                    return (
+                                        <ImageListItem key={index}>
+                                            <Item
+                                                original={image.image}
+                                                thumbnail={image.image}
+                                                width={image.width}
+                                                height={image.height}
+                                                alt={image.category}
+                                            >
+                                                {({ ref, open }) => (
+                                                    <img
+                                                        className={"w-100 shadow-1-strong rounded"}
+                                                        style={{ cursor: 'pointer' }}
+                                                        src={image.image}
+                                                        ref={ref} onClick={open}
+                                                        loading={"lazy"}
+                                                    />
+                                                )}
+                                            </Item>
+                                        </ImageListItem>
+                                    )
+                                }
 
-                        {LoadingState && <LinearProgress className={"mb-3"}/>}
-
-                        {gallery?.map((image, index) => {
-                            if(filter /*|| filter.lenght > 0*/){
-                                if (filter.includes(image.category_id))
-                                return (
-                                    <div key={index} className="col-lg-4 col-md-12 mb-4 mb-lg-0">
-                                        <Item
-                                            original={image.image}
-                                            thumbnail={image.image}
-                                            width={image.width}
-                                            height={image.height}
-                                            alt={image.category}
-                                        >
-                                            {({ ref, open }) => (
-                                                <img
-                                                    className={"w-100 shadow-1-strong rounded mb-4"}
-                                                    style={{ cursor: 'pointer' }}
-                                                    src={image.image}
-                                                    ref={ref} onClick={open}
-                                                />
-                                            )}
-                                        </Item>
-                                    </div>
-                                )
-                            } else {
-                                return (
-                                    <div key={index} className="col-lg-4 col-md-12 mb-4 mb-lg-0">
-                                        <Item
-                                            original={image.image}
-                                            thumbnail={image.image}
-                                            width={image.width}
-                                            height={image.height}
-                                            alt={image.category}
-                                        >
-                                            {({ ref, open }) => (
-                                                <img
-                                                    className={"w-100 shadow-1-strong rounded mb-4"}
-                                                    style={{ cursor: 'pointer' }}
-                                                    src={image.image}
-                                                    ref={ref} onClick={open}
-                                                />
-                                            )}
-                                        </Item>
-                                    </div>
-                                )
-                            }
-
-                        })}
-
-
+                            })}
+                        </ImageList>
                     </div>
+
                 </Gallery>
             </div>
 
