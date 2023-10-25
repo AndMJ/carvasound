@@ -87,6 +87,10 @@ const Gallery = () => {
                 }
                 setLoadingState(false)
             })
+
+        return () => {
+            setRows([]);
+        };
     }, [])
 
     useEffect(() => {
@@ -109,6 +113,7 @@ const Gallery = () => {
             }
 
             if(response.events.includes("databases.*.collections.*.documents.*.update")){
+                //TODO: on DB update
                 console.info("update ", response.payload);
             }
 

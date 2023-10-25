@@ -38,6 +38,10 @@ function Fileupload({newToastNotif}) {
             .then((response) => {
                 setCategories(response)
             })
+
+        return () => {
+            setCategories([]);
+        };
     }, []);
 
     const getCategories = async () => {
