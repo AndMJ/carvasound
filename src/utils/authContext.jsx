@@ -103,6 +103,22 @@ export const AuthProvider = ({children}) => {
         return promise
     }
 
+    const getGalleryByCategory = async (category_id) => {
+        let promise = "";
+        try {
+            promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+                [
+                    Query.equal('category_id', category_id),
+                ]
+            );
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        return promise
+    }
+
     const deleteGalleryByID = async (gallery_id) => {
         /*try {
             return await database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
@@ -211,6 +227,7 @@ export const AuthProvider = ({children}) => {
 
         getStorageImagesByID,
         getGalleryList,
+        getGalleryByCategory,
         getCategoryList,
         getCategoryByID,
 

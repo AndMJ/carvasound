@@ -5,6 +5,7 @@ import 'photoswipe/dist/photoswipe.css'
 import { Gallery, Item } from 'react-photoswipe-gallery'
 
 import {useAuth} from "../../../utils/authContext.jsx";
+import client, {COLLECTION_GALLERY_ID, DATABASE_ID} from "../../../appwrite/appwrite.config.jsx";
 
 //import { motion } from "framer-motion"
 
@@ -12,9 +13,58 @@ import {useAuth} from "../../../utils/authContext.jsx";
 
 function GalleryBox(){
 
-    const {getGalleryList, getStorageImagesByID, getCategoryByID} = useAuth();
+    const {getGalleryList, getStorageImagesByID, getCategoryByID, getCategoryList, getGalleryByCategory} = useAuth();
 
     const [gallery, setGallery] = useState([])
+    const [categories, setCategories] = useState([])
+    // const [CategoriesWithAssociatedImages, setCategoriesWithAssociatedImages] = useState([])
+
+    useEffect(() => {
+        const subscription = client.subscribe(`databases.${DATABASE_ID}.collections.${COLLECTION_GALLERY_ID}.documents`, response => {
+            // Callback will be executed on changes for all files.
+
+            if(response.events.includes("databases.*.collections.*.documents.*.create")){
+                console.info("create ", response.payload);
+
+                //TODO: temporary callAll. change to call just when all image files are uploaded
+
+                // setLoadingState(true)
+                formatGalleryData()
+                    .then((response) => {
+
+                        if (response.length > 0){
+                            setGallery(response)
+                        }
+                        // setLoadingState(false)
+                    })
+            }
+
+            if(response.events.includes("databases.*.collections.*.documents.*.update")){
+                //TODO: on DB update
+                console.info("update ", response.payload);
+            }
+
+            if(response.events.includes("databases.*.collections.*.documents.*.delete")){
+                console.info("delete ", response.payload);
+                /*setRows(prevState => {
+                    return prevState.filter(row => row.id !== response.payload.$id)
+                })*/
+                // setLoadingState(true)
+                formatGalleryData()
+                    .then((response) => {
+
+                        if (response.length > 0){
+                            setGallery(response)
+                        }
+                        // setLoadingState(false)
+                    })
+            }
+        });
+
+        return () => {
+            subscription();
+        };
+    }, []);
 
     useEffect(() =>  {
         formatGalleryData()
@@ -24,13 +74,11 @@ function GalleryBox(){
                 }
                 //setLoadingState(false)
             })
-    }, [])
 
-    /*const getImageSize = async (imgSrc) => {
-        let imgLoader = new Image();
-        imgLoader.src = imgSrc;
-        return {width: imgLoader.width, height: imgLoader.height}
-    }*/
+        return () => {
+            setGallery([]);
+        };
+    }, [])
 
     const formatGalleryData = async () => {
         const gallery_data = await getGalleryList()
@@ -49,19 +97,6 @@ function GalleryBox(){
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
 
-            /*setDataArray((curr) => {
-                return [...curr, {
-                    id: row.$id,
-                    category_id: row.category_id,
-                    category: category !== null ? category.name : null,
-                    image_id: row.image_id,
-                    image: image_path,
-                    image_size: image_size,
-                    createdAt: creAt.toLocaleString('en-GB'),
-                    updatedAt: upAt.toLocaleString('en-GB'),
-                }]
-            });*/
-
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
@@ -77,11 +112,37 @@ function GalleryBox(){
         return dataArray
     }
 
+    useEffect(() => {
+        getCategories()
+            .then((response) => {
+                setCategories(response)
+            })
+
+        return () => {
+            setCategories([]);
+        };
+    }, []);
+
+    const getCategories = async () => {
+        const categories = await getCategoryList()
+        return categories.documents
+    }
+
     return (
         <>
-            <Gallery>
-                <div className="row mt-4">
-                    {/*<div className="col-lg-4 col-md-12 mb-4 mb-lg-0">
+            <div className="row gx-4 gx-lg-5 justify-content-center mb-5">
+                <div className="col">
+                    {categories?.map((categ) => {
+                        return (
+                            //TODO: on load, display one of the categories as default, then use getGalleryByCategory() to get all images by category, instead of get allLIST
+                            <a className="btn btn-primary btn-md mx-1" onClick={() => {alert(`${categ.name}` + " " + `${categ.$id}`)}}>{categ.name}</a>
+                        )
+                    })}
+                </div>
+
+                <Gallery>
+                    <div className="row mt-4">
+                        {/*<div className="col-lg-4 col-md-12 mb-4 mb-lg-0">
                         <Item
                             original="https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg"
                             thumbnail="https://farm4.staticflickr.com/3894/15008518202_b016d7d289_m.jpg"
@@ -181,7 +242,7 @@ function GalleryBox(){
                         </Item>
                     </div>*/}
 
-                    {/*
+                        {/*
                     TODO:   - try to build gallery in mosaic
                             - use appwrite subscribe feature to update page content on database changes
                     */}
@@ -211,8 +272,10 @@ function GalleryBox(){
                         })}
 
 
-                </div>
-            </Gallery>
+                    </div>
+                </Gallery>
+            </div>
+
         </>
     );
 }

@@ -125,68 +125,8 @@ const LandingPage = () => {
                     </div>
                 </div>
             </section>
-            {/*<!-- Portfolio-->*/}
-            {/*<section id="portfolio">
-                <div className="container-fluid p-0">
-                    <div className="row g-0">
-                        <div className="col-lg-4 col-sm-6">
-                            <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
-                                <img className="img-fluid" src={eventImage_casamento} alt="..." />
-                                <div className="portfolio-box-caption">
-                                    <div className="project-category text-white-50">Casamentos</div>
-                                    <div className="project-name">Project Name</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div className="col-lg-4 col-sm-6">
-                            <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
-                                <img className="img-fluid" src={eventImage_casamento} alt="..." />
-                                <div className="portfolio-box-caption">
-                                    <div className="project-category text-white-50">Batizados</div>
-                                    <div className="project-name">Project Name</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div className="col-lg-4 col-sm-6">
-                            <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
-                                <img className="img-fluid" src={eventImage_casamento} alt="..." />
-                                <div className="portfolio-box-caption">
-                                    <div className="project-category text-white-50">Aniversários</div>
-                                    <div className="project-name">Project Name</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div className="col-lg-4 col-sm-6">
-                            <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
-                                <img className="img-fluid" src={eventImage_casamento} alt="..." />
-                                <div className="portfolio-box-caption">
-                                    <div className="project-category text-white-50">Festas Temáticas</div>
-                                    <div className="project-name">Project Name</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div className="col-lg-4 col-sm-6">
-                            <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
-                                <img className="img-fluid" src={eventImage_casamento} alt="..." />
-                                <div className="portfolio-box-caption">
-                                    <div className="project-category text-white-50">Eventos Corporativos</div>
-                                    <div className="project-name">Project Name</div>
-                                </div>
-                            </a>
-                        </div>
-                        <div className="col-lg-4 col-sm-6">
-                            <a className="portfolio-box" href={eventImage_casamento} title="Project Name">
-                                <img className="img-fluid" src={eventImage_casamento} alt="..." />
-                                <div className="portfolio-box-caption p-3">
-                                    <div className="project-category text-white-50">Outros</div>
-                                    <div className="project-name">Project Name</div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </section>*/}
-            {/*<!-- Call to action-->*/}
+
+            {/*<!-- Gallery-->*/}
             <section className="page-section" id="gallery" ref={sectionRefs.gallery}> {/*bg-dark text-white*/}
                 <div className="container px-4 px-lg-5 text-center">
                     <div className="row gx-4 gx-lg-5 justify-content-center">
@@ -196,15 +136,8 @@ const LandingPage = () => {
                             <p className="text-muted mb-5">Veja a nossa coleção de eventos!</p>
                         </div>
                     </div>
-                    <div className="row gx-4 gx-lg-5 justify-content-center mb-5">
-                        <div className="col">
-                            <a className="btn btn-primary btn-md" onClick={() => {alert("Todas")}}>Todas</a>
-                            <a className="btn btn-primary btn-md mx-3" onClick={() => {alert("Casamentos")}}>Casamentos</a>
-                            <a className="btn btn-primary btn-md" onClick={() => {alert("Batizados")}}>Batizados</a>
-                        </div>
 
-                        <GalleryBox></GalleryBox>
-                    </div>
+                    <GalleryBox></GalleryBox>
 
                 </div>
             </section>
