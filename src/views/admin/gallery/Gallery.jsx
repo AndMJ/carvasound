@@ -183,14 +183,14 @@ const Gallery = () => {
     }
 
     const columns = [
-        { field: 'id', headerName: 'ID', width: 180, editable: false },
-        { field: 'image_id', headerName: 'Image ID', width: 180, editable: false},
-        { field: 'image', headerName: 'Image', width: 100, editable: false,
+        { field: 'id', headerName: 'ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
+        { field: 'image_id', headerName: 'Image ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
+        { field: 'image', headerName: 'Image', width: 100, editable: false, filterable: false, sortable: false, disableColumnMenu: true,
             renderCell: (params) => (
                 <RenderCellImage image_path={params.row.image.href}></RenderCellImage>
             )
         },
-        { field: 'category_id', headerName: 'Category ID', width: 180, editable: false},
+        { field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'category', headerName: 'Category', width: 180, editable: false,
             renderCell: (params) => {
                 if(params.row.category === null){
