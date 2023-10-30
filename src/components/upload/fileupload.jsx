@@ -179,7 +179,7 @@ function Fileupload({newToastNotif}) {
 
                 <div className="singular-select-wrapper" ref={selectEachImageListRef}>
                     {   //TODO: - send a alert when a file is not supported and remove it from list
-                        //      - list of upload container columns need adjusting
+                        //      - upload list of files container need adjusting
                         files?.map((file, index) => {
                         if (file.errors?.length > 0){
                             return (
