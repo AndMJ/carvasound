@@ -8,7 +8,7 @@ import {RiCheckLine, RiFileWarningLine} from "react-icons/ri";
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import {useAuth} from "../../utils/authContext.jsx";
-import {CircularProgress} from "@mui/material";
+import {CircularProgress, LinearProgress} from "@mui/material";
 
 function Fileupload({newToastNotif}) {
     let _URL = window.URL || window.webkitURL;
@@ -72,43 +72,43 @@ function Fileupload({newToastNotif}) {
         //TODO: - add category to images
         //      - validate errors from appwrite
         //      DONE - on wrong file upload, send notif of error and show what file it was
-        for(let file_image of files){
+        for(let fileWrapper of files){
             let response
-            console.log(file_image)
-            if(!file_image.errors){
+            console.log(fileWrapper)
+            if(!fileWrapper.errors){
                 setUploading(true)
 
-                let img_dim = await imageDimensions(file_image)
-                console.log(img_dim)
+                /*let img_dim = await imageDimensions(fileWrapper)
+                console.log(img_dim)*/
 
-                response = await addStorageImage(file_image)
-                console.log(response)
+                /*response = await addStorageImage(fileWrapper)
+                console.log(response)*/
 
-                let payload = {
+                /*let payload = {
                     image_id: response.$id,
                     width: img_dim.width,
                     height: img_dim.height,
                     //category_id: ""
-                }
+                }*/
 
-                response = await addGalleryImages(JSON.parse(JSON.stringify(payload)))
-                console.log(response)
-
+                /*response = await addGalleryImages(JSON.parse(JSON.stringify(payload)))
+                console.log(response)*/
+                
                 setUploading(false)
 
-                newToastNotif("success", "Image uploaded.")
-                setFiles(curr => curr.filter(f => (f !== file_image)))
+                //newToastNotif("success", "Image uploaded.")
+                setFiles(curr => curr.filter(f => (f !== fileWrapper)))
             } else {
-                newToastNotif("error", `File "${file_image.file.name}" with wrong file-type not uploaded.`)
-                setFiles(curr => curr.filter(f => (f !== file_image)))
+                newToastNotif("error", `File "${fileWrapper.file.name}" is the wrong file-type and was not uploaded.`)
+                setFiles(curr => curr.filter(f => (f !== fileWrapper)))
             }
         }
 
-        // newToastNotif("success", "All images uploaded.")
+        newToastNotif("success", "All images uploaded.")
 
     }
 
-    function handleDelete(file){
+    function handleImageDelete(file){
         setFiles(curr => curr.filter(f => (f !== file)))
     }
 
@@ -124,10 +124,21 @@ function Fileupload({newToastNotif}) {
     }
 
     const eachImageSelectRef = useRef(null);
-    const handleUpdateEachImageCategory = (e, index) => {
+    const handleUpdateEachImageCategory = (e, file) => {
         //let select = eachImageSelectRef.current
-        console.log(e.target.value, index)
+        console.log(e.target.value)
+
+        setFiles((curr) => {
+            curr.map((fw) => {
+                if (fw.file === file.file) {
+                    console.log(file)
+                    return { ...fw, category_id: e.target.value};
+                }
+                return fw;
+            })
+        })
     }
+    console.log(files)
 
     return (
         <>
@@ -159,10 +170,12 @@ function Fileupload({newToastNotif}) {
                     <>
                         <div className="row my-4 d-flex justify-content-between align-items-center">
                             <div className="col-auto d-flex justify-content-start align-items-center">
-                                <button className={"d-flex align-items-center btn btn-success text-white"} onClick={() => {handleImageUpload(files)}}><FaUpload className={"me-2"}></FaUpload> Upload</button>
+                                <button disabled={uploading} className={"d-flex align-items-center btn btn-success text-white"} onClick={() => {handleImageUpload(files)}}>
+                                    <FaUpload className={"me-2"}></FaUpload> {uploading ? "Uploading" : "Upload" }
+                                </button>
                             </div>
                             <div className="col-auto d-flex justify-content-end align-items-center ms-auto">
-                                <select ref={selectAllCategoryRef} onChange={(e) => {handleSetAllCategory(e)}} defaultValue="placeholder" className="form-select" aria-label="select category">
+                                <select disabled={uploading} ref={selectAllCategoryRef} onChange={(e) => {handleSetAllCategory(e)}} defaultValue="placeholder" className="form-select" aria-label="select category">
                                     <option value="placeholder" disabled>Select category</option>
                                     {/*TODO: - validate if there is no categories, do something*/}
                                     {categories?.map((category, index) => {
@@ -171,7 +184,7 @@ function Fileupload({newToastNotif}) {
                                         )
                                     })}
                                 </select>
-                                <button className={"d-flex align-items-center btn btn-danger text-white ms-3"} onClick={() => {setFiles([])}}><FaTrashAlt className={"me-2"}></FaTrashAlt> All</button>
+                                <button disabled={uploading} className={"d-flex align-items-center btn btn-danger text-white ms-3"} onClick={() => {setFiles([])}}><FaTrashAlt className={"me-2"}></FaTrashAlt> All</button>
                             </div>
                         </div>
                     </>
@@ -201,7 +214,7 @@ function Fileupload({newToastNotif}) {
                                         <p className={"m-0"}>{file.file.name}</p>
                                     </div>
                                     <div className="col-auto d-flex justify-content-end align-items-center ms-auto">
-                                        <button className={"btn btn-danger text-white"} onClick={() => {handleDelete(file)}}><FaTrashAlt></FaTrashAlt></button>
+                                        <button className={"btn btn-danger text-white"} onClick={() => {handleImageDelete(file)}}><FaTrashAlt></FaTrashAlt></button>
                                     </div>
                                 </div>
                             )
@@ -209,25 +222,17 @@ function Fileupload({newToastNotif}) {
                         return (
                             <div key={index} className="row my-3 d-flex justify-content-between text-black">
                                 <div className="col-auto d-flex justify-content-start align-items-center">
-                                    <div className="image-wrapper position-relative">
-
-                                        {uploading &&
-                                            <div className={"uploading-as-overlay position-absolute top-50 start-50 translate-middle w-100 h-100"}>
-                                                <div className={"text-muted position-absolute top-50 start-50 translate-middle"}>
-                                                    <CircularProgress size={24} color="inherit" />
-                                                </div>
-                                            </div>
-                                        }
-
+                                    <div className="image-wrapper">
                                         <img src={_URL.createObjectURL(file)} height={52} alt=""/>
                                     </div>
                                     <div className="ms-3">
-                                        <p className={"m-0"}>{file.name}</p>
+                                        <p className={"m-0 " + (uploading && "text-muted")}>{file.name}</p>
+                                        {uploading && <CircularProgress size={24} color="primary" /> }
                                     </div>
                                 </div>
 
                                 <div className="col-auto d-flex justify-content-end align-items-center flex-shrink-0">
-                                    <select ref={eachImageSelectRef} onChange={(e) => {handleUpdateEachImageCategory(e, index)}} defaultValue="placeholder" className="form-select" aria-label="select category">
+                                    <select disabled={uploading} ref={eachImageSelectRef} onChange={(e) => {handleUpdateEachImageCategory(e, file)}} defaultValue="placeholder" className="form-select" aria-label="select category">
                                         <option value="placeholder" disabled>Select category</option>
                                         {categories?.map((category, index) => {
                                             return (
@@ -235,7 +240,7 @@ function Fileupload({newToastNotif}) {
                                             )
                                         })}
                                     </select>
-                                    <button className={"btn btn-danger text-white ms-3"} onClick={() => {handleDelete(file)}}><FaTrashAlt></FaTrashAlt></button>
+                                    <button disabled={uploading} className={"btn btn-danger text-white ms-3"} onClick={() => {handleImageDelete(file)}}><FaTrashAlt></FaTrashAlt></button>
                                 </div>
                             </div>
                         )
