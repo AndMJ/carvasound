@@ -22,6 +22,7 @@ TODO: [GENERAL]
  - FIX RENDER.COM IMPORT CHUNKS BIGGER THAN 500Mb, separate admin imports from user, diff files
  - see about translations, and main language has to be Portuguese, see https://react.i18next.com/
  - see React Motion Framer for animations
+ - FIX authContext loader
  - appwrite network errors, sometimes it works, some it doesnt ???
  - implement image thumbnails
 */
@@ -43,12 +44,10 @@ function App() {
       <>
           <AnimatePresence mode={"wait"}>
               <AuthProvider>
-                  <Suspense fallback={<Loader />}>
-                      <Routes>
-                          <Route path={"/*"} element={<UserApp></UserApp>}></Route>
-                          <Route path={"/admin/*"} element={<AdminApp></AdminApp>}></Route>
-                      </Routes>
-                  </Suspense>
+                  <Routes>
+                      <Route path={"/*"} element={<UserApp></UserApp>}></Route>
+                      <Route path={"/admin/*"} element={<AdminApp></AdminApp>}></Route>
+                  </Routes>
               </AuthProvider>
           </AnimatePresence>
 
