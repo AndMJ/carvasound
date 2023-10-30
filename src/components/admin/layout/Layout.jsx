@@ -53,7 +53,7 @@ function Layout(){
 
                                     <div className="container-fluid">
                                         <ToastContainer containerId={"appNotifications-container"} className="position-fixed bottom-0 end-0 mb-4 me-4 z-3"></ToastContainer>
-                                        <Outlet context={[newToastNotif]} ></Outlet>{/*context={[allUsers]}*/}
+                                        <Outlet context={[newToastNotif]} ></Outlet>
                                     </div>
                                 </div>
 

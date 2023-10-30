@@ -16,27 +16,38 @@ const UserApp = React.lazy(()=> import("./userApp.jsx"))
 //ADMIN
 const AdminApp = React.lazy(()=> import("./adminApp.jsx"))
 
+
 /*
-TODO:
-    - FIX RENDER.COM IMPORT CHUNKS BIGGER THAN 500Mb, separate admin imports from user, diff files
-    [GENERAL/USER]
-    - see about translations, and main language has to be Portuguese, see https://react.i18next.com/
-    - see React Motion Framer for animations
-    [ADMIN]
-    - login error message
+TODO: [GENERAL]
+ - FIX RENDER.COM IMPORT CHUNKS BIGGER THAN 500Mb, separate admin imports from user, diff files
+ - see about translations, and main language has to be Portuguese, see https://react.i18next.com/
+ - see React Motion Framer for animations
+ - FIX authContext loader
+ - appwrite network errors, sometimes it works, some it doesnt ???
+ - implement image thumbnails
 */
+
+/*
+TODO: [USER]
+ -
+*/
+
+/*
+TODO: [ADMIN]
+ - navbar toggle button not working
+ - login error message
+*/
+
 function App() {
 
   return (
       <>
           <AnimatePresence mode={"wait"}>
               <AuthProvider>
-                  <Suspense fallback={<Loader />}>
-                      <Routes>
-                          <Route path={"/*"} element={<UserApp></UserApp>}></Route>
-                          <Route path={"/admin/*"} element={<AdminApp></AdminApp>}></Route>
-                      </Routes>
-                  </Suspense>
+                  <Routes>
+                      <Route path={"/*"} element={<UserApp></UserApp>}></Route>
+                      <Route path={"/admin/*"} element={<AdminApp></AdminApp>}></Route>
+                  </Routes>
               </AuthProvider>
           </AnimatePresence>
 

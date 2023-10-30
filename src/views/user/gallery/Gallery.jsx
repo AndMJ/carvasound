@@ -154,9 +154,7 @@ function GalleryBox(){
     return (
         <>
             {/*
-            TODO:   DONE - try to build gallery in mosaic, https://mui.com/material-ui/react-image-list/#masonry-image-list
-                    - use appwrite subscribe feature to update page content on database changes
-                    - pagination or "load more"
+            TODO:   - pagination or "load more"
                     - better "gallery loading"
                     - implement image thumbnails
             */}
