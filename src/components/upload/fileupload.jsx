@@ -20,9 +20,9 @@ function Fileupload({newToastNotif}) {
     const [uploading, setUploading] = useState(false)
 
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-        //const mappedAcceptedFiles = acceptedFiles.map((file) => ({file, errors: []}))
+        const mappedAcceptedFiles = acceptedFiles.map((file) => ({file, category_id: undefined}))
         //const mappedRejectedFiles = rejectedFiles.map((file) => ({file, errors: []}))
-        setFiles((curr) => [...curr, ...acceptedFiles, ...rejectedFiles])
+        setFiles((curr) => [...curr, ...mappedAcceptedFiles, ...rejectedFiles])
     }, [])
 
     const {getRootProps, getInputProps, isDragActive} = useDropzone({
@@ -69,39 +69,36 @@ function Fileupload({newToastNotif}) {
         })
 
     async function handleImageUpload(files) {
-        //TODO: - add category to images
-        //      - validate errors from appwrite
+        //TODO: - validate errors from appwrite
         //      DONE - on wrong file upload, send notif of error and show what file it was
-        for(let fileWrapper of files){
-            let response
-            console.log(fileWrapper)
-            if(!fileWrapper.errors){
+        for(let fWrapper of files){
+            if(!fWrapper.errors){
                 setUploading(true)
 
-                /*let img_dim = await imageDimensions(fileWrapper)
-                console.log(img_dim)*/
+                const img_dim = await imageDimensions(fWrapper.file)
+                console.log(img_dim)
 
-                /*response = await addStorageImage(fileWrapper)
-                console.log(response)*/
+                const img_storage_resp = await addStorageImage(fWrapper.file)
+                console.log(img_storage_resp)
 
-                /*let payload = {
-                    image_id: response.$id,
+                const payload = {
+                    image_id: img_storage_resp.$id,
                     width: img_dim.width,
                     height: img_dim.height,
-                    //category_id: ""
-                }*/
+                    category_id: fWrapper.category_id
+                }
 
-                /*response = await addGalleryImages(JSON.parse(JSON.stringify(payload)))
-                console.log(response)*/
+                const resp = await addGalleryImages(JSON.parse(JSON.stringify(payload)))
+                console.log(resp)
                 
                 setUploading(false)
 
                 //newToastNotif("success", "Image uploaded.")
-                setFiles(curr => curr.filter(f => (f !== fileWrapper)))
             } else {
-                newToastNotif("error", `File "${fileWrapper.file.name}" is the wrong file-type and was not uploaded.`)
-                setFiles(curr => curr.filter(f => (f !== fileWrapper)))
+                newToastNotif("error", `File "${fWrapper.file.name}" is the wrong file-type and was not uploaded.`)
             }
+
+            handleImageDelete(fWrapper.file)
         }
 
         newToastNotif("success", "All images uploaded.")
@@ -109,7 +106,7 @@ function Fileupload({newToastNotif}) {
     }
 
     function handleImageDelete(file){
-        setFiles(curr => curr.filter(f => (f !== file)))
+        setFiles(curr => curr.filter(f => (f.file !== file)))
     }
 
     const selectAllCategoryRef = useRef(null);
@@ -121,6 +118,13 @@ function Fileupload({newToastNotif}) {
         for (let select of selectList){
             select.value = allSelect.options[allSelect.selectedIndex].value
         }
+
+        setFiles((currentFiles) =>
+            currentFiles.map((currentFile) => {
+                console.log({ ...currentFile, category_id: e.target.value})
+                return { ...currentFile, category_id: e.target.value};
+            })
+        );
     }
 
     const eachImageSelectRef = useRef(null);
@@ -128,17 +132,16 @@ function Fileupload({newToastNotif}) {
         //let select = eachImageSelectRef.current
         console.log(e.target.value)
 
-        setFiles((curr) => {
-            curr.map((fw) => {
-                if (fw.file === file.file) {
-                    console.log(file)
-                    return { ...fw, category_id: e.target.value};
+        setFiles((currentFiles) =>
+            currentFiles.map((currentFile) => {
+                if (currentFile.file === file) {
+                    console.log({ ...currentFile, category_id: e.target.value})
+                    return { ...currentFile, category_id: e.target.value};
                 }
-                return fw;
+                return currentFile;
             })
-        })
+        );
     }
-    console.log(files)
 
     return (
         <>
@@ -175,15 +178,17 @@ function Fileupload({newToastNotif}) {
                                 </button>
                             </div>
                             <div className="col-auto d-flex justify-content-end align-items-center ms-auto">
-                                <select disabled={uploading} ref={selectAllCategoryRef} onChange={(e) => {handleSetAllCategory(e)}} defaultValue="placeholder" className="form-select" aria-label="select category">
-                                    <option value="placeholder" disabled>Select category</option>
-                                    {/*TODO: - validate if there is no categories, do something*/}
-                                    {categories?.map((category, index) => {
-                                        return (
-                                            <option key={index} value={category.$id}>{category.name}</option>
-                                        )
-                                    })}
-                                </select>
+                                {files.length > 1 &&
+                                    <select disabled={uploading} ref={selectAllCategoryRef} onChange={(e) => {handleSetAllCategory(e)}} defaultValue="null" className="form-select" aria-label="select category">
+                                        <option value="null">Sem Categoria</option>
+                                        {/*TODO: - validate if there is no categories, do something*/}
+                                        {categories?.map((category, index) => {
+                                            return (
+                                                <option key={index} value={category.$id}>{category.name}</option>
+                                            )
+                                        })}
+                                    </select>
+                                }
                                 <button disabled={uploading} className={"d-flex align-items-center btn btn-danger text-white ms-3"} onClick={() => {setFiles([])}}><FaTrashAlt className={"me-2"}></FaTrashAlt> All</button>
                             </div>
                         </div>
@@ -193,8 +198,8 @@ function Fileupload({newToastNotif}) {
                 <div className="singular-select-wrapper" ref={selectEachImageListRef}>
                     {   //TODO: - send a alert when a file is not supported and remove it from list
                         //      - upload list of files container need adjusting
-                        files?.map((file, index) => {
-                        if (file.errors?.length > 0){
+                        files?.map((fWrapper, index) => {
+                        if (fWrapper.errors?.length > 0){
                             return (
                                 <div key={index} className="row d-flex justify-content-between align-items-center text-danger">
                                     <div className="col-auto d-flex justify-content-start align-items-center">
@@ -211,10 +216,10 @@ function Fileupload({newToastNotif}) {
                                                 <div><RiFileWarningLine size={24}></RiFileWarningLine></div>
                                             </OverlayTrigger>
                                         </div>
-                                        <p className={"m-0"}>{file.file.name}</p>
+                                        <p className={"m-0"}>{fWrapper.file.name}</p>
                                     </div>
                                     <div className="col-auto d-flex justify-content-end align-items-center ms-auto">
-                                        <button className={"btn btn-danger text-white"} onClick={() => {handleImageDelete(file)}}><FaTrashAlt></FaTrashAlt></button>
+                                        <button className={"btn btn-danger text-white"} onClick={() => {handleImageDelete(fWrapper.file)}}><FaTrashAlt></FaTrashAlt></button>
                                     </div>
                                 </div>
                             )
@@ -223,24 +228,24 @@ function Fileupload({newToastNotif}) {
                             <div key={index} className="row my-3 d-flex justify-content-between text-black">
                                 <div className="col-auto d-flex justify-content-start align-items-center">
                                     <div className="image-wrapper">
-                                        <img src={_URL.createObjectURL(file)} height={52} alt=""/>
+                                        <img src={_URL.createObjectURL(fWrapper.file)} height={52} alt=""/>
                                     </div>
                                     <div className="ms-3">
-                                        <p className={"m-0 " + (uploading && "text-muted")}>{file.name}</p>
+                                        <p className={"m-0 " + (uploading && "text-muted")}>{fWrapper.file.name}</p>
                                         {uploading && <CircularProgress size={24} color="primary" /> }
                                     </div>
                                 </div>
 
                                 <div className="col-auto d-flex justify-content-end align-items-center flex-shrink-0">
-                                    <select disabled={uploading} ref={eachImageSelectRef} onChange={(e) => {handleUpdateEachImageCategory(e, file)}} defaultValue="placeholder" className="form-select" aria-label="select category">
-                                        <option value="placeholder" disabled>Select category</option>
+                                    <select disabled={uploading} ref={eachImageSelectRef} onChange={(e) => {handleUpdateEachImageCategory(e, fWrapper.file)}} defaultValue="null" className="form-select" aria-label="select category">
+                                        <option value="null">Sem Categoria</option>
                                         {categories?.map((category, index) => {
                                             return (
                                                 <option key={index} value={category.$id}>{category.name}</option>
                                             )
                                         })}
                                     </select>
-                                    <button disabled={uploading} className={"btn btn-danger text-white ms-3"} onClick={() => {handleImageDelete(file)}}><FaTrashAlt></FaTrashAlt></button>
+                                    <button disabled={uploading} className={"btn btn-danger text-white ms-3"} onClick={() => {handleImageDelete(fWrapper.file)}}><FaTrashAlt></FaTrashAlt></button>
                                 </div>
                             </div>
                         )
