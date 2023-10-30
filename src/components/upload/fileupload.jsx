@@ -121,7 +121,7 @@ function Fileupload({newToastNotif}) {
 
         setFiles((currentFiles) =>
             currentFiles.map((currentFile) => {
-                console.log({ ...currentFile, category_id: e.target.value})
+                //console.log({ ...currentFile, category_id: e.target.value})
                 return { ...currentFile, category_id: e.target.value};
             })
         );
