@@ -372,7 +372,7 @@ const Gallery = () => {
                                 autoHeight
                                 //autoPageSize
                                 slots={{
-                                    toolbar: ToolbarButtons,
+                                    //toolbar: ToolbarButtons,
                                     loadingOverlay: LinearProgress,
                                 }}
                                 disableRowSelectionOnClick
