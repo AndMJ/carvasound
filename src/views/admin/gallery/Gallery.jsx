@@ -67,17 +67,13 @@ const Gallery = () => {
 
     const [newToastNotif] = useOutletContext()
 
-    const {getGalleryList, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID } = useAuth();
+    const {getGalleryList, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
 
     const [LoadingState, setLoadingState] = useState(true);
     const [rows, setRows] = useState([]);
-    //console.log(rows)
 
     const [processing, setProcessing] = useState(false);
     const [confirmDialogState, setConfirmDialogState ] = useState({"state": false, "data": {}});
-    //console.log(confirmDialogState)
-
-
 
     useEffect(() =>  {
         formatGalleryData()
@@ -97,31 +93,13 @@ const Gallery = () => {
         const subscription = client.subscribe(`databases.${DATABASE_ID}.collections.${COLLECTION_GALLERY_ID}.documents`, response => {
             // Callback will be executed on changes for all files.
 
-            if(response.events.includes("databases.*.collections.*.documents.*.create")){
-                console.info("create ", response.payload);
+            if(
+                response.events.includes("databases.*.collections.*.documents.*.create") ||
+                response.events.includes("databases.*.collections.*.documents.*.update") ||
+                response.events.includes("databases.*.collections.*.documents.*.delete")
+            ){
+                console.info("DB TRIGGER: ", response.payload);
 
-                //TODO: temporary callAll. change to call just when all image files are uploaded
-                setLoadingState(true)
-                formatGalleryData()
-                    .then((response) => {
-
-                        if (response.length > 0){
-                            setRows(response)
-                        }
-                        setLoadingState(false)
-                    })
-            }
-
-            if(response.events.includes("databases.*.collections.*.documents.*.update")){
-                //TODO: on DB update
-                console.info("update ", response.payload);
-            }
-
-            if(response.events.includes("databases.*.collections.*.documents.*.delete")){
-                console.info("delete ", response.payload);
-                /*setRows(prevState => {
-                    return prevState.filter(row => row.id !== response.payload.$id)
-                })*/
                 setLoadingState(true)
                 formatGalleryData()
                     .then((response) => {
@@ -158,7 +136,8 @@ const Gallery = () => {
 
         for (let row of gallery_data.documents) {
             let category = null;
-            const image_path = await getStorageImagesByID(row.image_id)
+            // const image_path = await getStorageImagesByID(row.image_id)
+            const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.10)
 
             //console.log("dsada " + row.category_id)
             if(row.category_id !== null){
@@ -172,9 +151,9 @@ const Gallery = () => {
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
-                category: category !== null ? category.name : null,
+                category: category !== null ? category.name : "Sem categoria",
                 image_id: row.image_id,
-                image: image_path,
+                image: image_thumb_path,
                 createdAt: creAt.toLocaleString('en-GB'),
                 updatedAt: upAt.toLocaleString('en-GB'),
             })
@@ -192,11 +171,11 @@ const Gallery = () => {
         },
         { field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'category', headerName: 'Category', width: 180, editable: false,
-            renderCell: (params) => {
+            /*renderCell: (params) => {
                 if(params.row.category === null){
                     return <span className={"text-muted"}>Sem categoria</span>
                 }
-            }
+            }*/
         },
         { field: 'createdAt', headerName: 'Created At', type:"text", width: 180, editable: false},
         { field: 'updatedAt', headerName: 'Updated At', type:"text", width: 180, editable: false},
