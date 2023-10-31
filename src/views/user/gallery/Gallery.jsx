@@ -10,11 +10,10 @@ import {ImageList, ImageListItem, LinearProgress, ToggleButton, ToggleButtonGrou
 
 //import { motion } from "framer-motion"
 
-//import eventImage_casamento from "../../../assets/img/events/casamento.jpg"
 
 function GalleryBox(){
 
-    const {getGalleryList, getStorageImagesByID, getCategoryByID, getCategoryList, getGalleryByCategory} = useAuth();
+    const {getGalleryList, getStorageImagesByID, getStorageImagesThumbnailByID, getCategoryByID, getCategoryList, getGalleryByCategory} = useAuth();
 
     const [gallery, setGallery] = useState([])
     const [galleryCols, setGalleryCols] = useState(3)
@@ -26,40 +25,21 @@ function GalleryBox(){
         const subscription = client.subscribe(`databases.${DATABASE_ID}.collections.${COLLECTION_GALLERY_ID}.documents`, response => {
             // Callback will be executed on changes for all files.
 
-            if(response.events.includes("databases.*.collections.*.documents.*.create")){
-                console.info("create ", response.payload);
+            if(
+                response.events.includes("databases.*.collections.*.documents.*.create") ||
+                response.events.includes("databases.*.collections.*.documents.*.update") ||
+                response.events.includes("databases.*.collections.*.documents.*.delete")
+            ){
+                console.info("DB TRIGGER: ", response.payload);
 
-                //TODO: temporary callAll. change to call just when all image files are uploaded
-
-                // setLoadingState(true)
+                setLoadingState(true)
                 formatGalleryData()
                     .then((response) => {
 
                         if (response.length > 0){
                             setGallery(response)
                         }
-                        // setLoadingState(false)
-                    })
-            }
-
-            if(response.events.includes("databases.*.collections.*.documents.*.update")){
-                //TODO: on DB update
-                console.info("update ", response.payload);
-            }
-
-            if(response.events.includes("databases.*.collections.*.documents.*.delete")){
-                console.info("delete ", response.payload);
-                /*setRows(prevState => {
-                    return prevState.filter(row => row.id !== response.payload.$id)
-                })*/
-                // setLoadingState(true)
-                formatGalleryData()
-                    .then((response) => {
-
-                        if (response.length > 0){
-                            setGallery(response)
-                        }
-                        // setLoadingState(false)
+                        setLoadingState(false)
                     })
             }
         });
@@ -90,6 +70,7 @@ function GalleryBox(){
         for (let row of gallery_data.documents) {
             let category = null;
             const image_path = await getStorageImagesByID(row.image_id)
+            const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.17)
 
             //console.log("dsada " + row.category_id)
             if(row.category_id !== null){
@@ -106,6 +87,7 @@ function GalleryBox(){
                 category: category !== null ? category.name : null,
                 image_id: row.image_id,
                 image: image_path.toString(),
+                image_thumb: image_thumb_path.toString(),
                 width: row.width !== null ? row.width : 0,
                 height: row.height !== null ? row.height : 0,
                 createdAt: creAt.toLocaleString('en-GB'),
@@ -156,7 +138,7 @@ function GalleryBox(){
             {/*
             TODO:   - pagination or "load more"
                     - better "gallery loading"
-                    - implement image thumbnails
+                    - responsive togglebuttons, https://mui.com/material-ui/react-grid/#grid-with-multiple-breakpoints
             */}
             <div className="row gx-4 gx-lg-5 justify-content-center mb-5">
                 <div className="col">
@@ -184,7 +166,7 @@ function GalleryBox(){
                                             <ImageListItem key={index}>
                                                 <Item
                                                     original={image.image}
-                                                    thumbnail={image.image}
+                                                    thumbnail={image.image_thumb}
                                                     width={image.width}
                                                     height={image.height}
                                                     alt={image.category}
@@ -193,7 +175,7 @@ function GalleryBox(){
                                                         <img
                                                             className={"w-100 shadow-1-strong rounded"}
                                                             style={{ cursor: 'pointer' }}
-                                                            src={image.image}
+                                                            src={image.image_thumb}
                                                             ref={ref} onClick={open}
                                                             loading={"lazy"}
                                                         />
@@ -206,7 +188,7 @@ function GalleryBox(){
                                         <ImageListItem key={index}>
                                             <Item
                                                 original={image.image}
-                                                thumbnail={image.image}
+                                                thumbnail={image.image_thumb}
                                                 width={image.width}
                                                 height={image.height}
                                                 alt={image.category}
@@ -215,7 +197,7 @@ function GalleryBox(){
                                                     <img
                                                         className={"w-100 shadow-1-strong rounded"}
                                                         style={{ cursor: 'pointer' }}
-                                                        src={image.image}
+                                                        src={image.image_thumb}
                                                         ref={ref} onClick={open}
                                                         loading={"lazy"}
                                                     />
