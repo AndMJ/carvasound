@@ -205,6 +205,19 @@ export const AuthProvider = ({children}) => {
         return promise
     }
 
+    const getStorageImagesThumbnailByID = async (image_id, width, percentage) => {
+        let promise = "";
+
+        try {
+            promise = await storage.getFilePreview(STORAGE_BUCKET_ID, image_id, Math.round(width * percentage)/*, Math.round(height * proportion)*/);
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        return promise
+    }
+
     const deleteStorageImagesByID = async (image_id) => {
         let promise = "";
         try {
@@ -225,11 +238,12 @@ export const AuthProvider = ({children}) => {
         addGalleryImages,
         addStorageImage,
 
-        getStorageImagesByID,
         getGalleryList,
         getGalleryByCategory,
         getCategoryList,
         getCategoryByID,
+        getStorageImagesByID,
+        getStorageImagesThumbnailByID,
 
         deleteGalleryByID,
         deleteStorageImagesByID,
