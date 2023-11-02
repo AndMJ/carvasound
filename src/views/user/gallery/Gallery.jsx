@@ -242,8 +242,8 @@ function GalleryBox(){
         setLoadingState(false)
     }
 
-    console.log(galleryTotal)
-    console.log(gallery.length)
+    // console.log(galleryTotal)
+    // console.log(gallery.length)
 
     return (
         <>
