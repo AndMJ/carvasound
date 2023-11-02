@@ -92,6 +92,7 @@ export const AuthProvider = ({children}) => {
         try {
             promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
+                    Query.limit(100),
                     Query.orderDesc('$createdAt'),
                 ]
             );
@@ -103,12 +104,14 @@ export const AuthProvider = ({children}) => {
         return promise
     }
 
-    const getGalleryByCategory = async (category_id) => {
+    const getGalleryListNextPage = async (last_item_id) => {
         let promise = "";
         try {
             promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
-                    Query.equal('category_id', category_id),
+                    Query.limit(100),
+                    Query.orderDesc('$createdAt'),
+                    Query.cursorAfter(last_item_id)
                 ]
             );
 
@@ -118,6 +121,41 @@ export const AuthProvider = ({children}) => {
 
         return promise
     }
+
+    const getGalleryListPrevPage = async (first_item_id) => {
+        let promise = "";
+        try {
+            promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+                [
+                    Query.limit(100),
+                    Query.orderDesc('$createdAt'),
+                    Query.cursorBefore(first_item_id)
+                ]
+            );
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        return promise
+    }
+
+    /*const getGalleryByCategory = async (category_id) => {
+        let promise = "";
+        try {
+            promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+                [
+                    Query.limit(100),
+                    Query.equal('category_id', category_id),
+                ]
+            );
+
+        } catch (error) {
+            console.error(error)
+        }
+
+        return promise
+    }*/
 
     const deleteGalleryByID = async (gallery_id) => {
         /*try {
@@ -129,8 +167,7 @@ export const AuthProvider = ({children}) => {
 
 
         try {
-            const promise = database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
-            return promise
+            return database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
 
         } catch (error) {
             console.error(error)
@@ -158,7 +195,11 @@ export const AuthProvider = ({children}) => {
     const getCategoryList = async () => {
         let promise = "";
         try {
-            promise = database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID);
+            promise = database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID,
+                [
+                        Query.limit(100),
+                    ]
+            );
 
         } catch (error) {
             console.error(error)
@@ -169,7 +210,11 @@ export const AuthProvider = ({children}) => {
     const getCategoryByID = async (category_id) => {
         let promise = "";
         try {
-            promise = database.getDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id);
+            promise = database.getDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id,
+                // [
+                //     Query.limit(100),
+                // ]
+            );
 
         } catch (error) {
             console.error(error)
@@ -239,7 +284,9 @@ export const AuthProvider = ({children}) => {
         addStorageImage,
 
         getGalleryList,
-        getGalleryByCategory,
+        getGalleryListNextPage,
+        getGalleryListPrevPage,
+        // getGalleryByCategory,
         getCategoryList,
         getCategoryByID,
         getStorageImagesByID,
