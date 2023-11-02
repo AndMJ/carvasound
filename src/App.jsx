@@ -24,7 +24,6 @@ TODO: [GENERAL]
  - see React Motion Framer for animations
  - FIX authContext loader
  - appwrite network errors, sometimes it works, some it doesnt ???
- - implement image thumbnails
 */
 
 /*
