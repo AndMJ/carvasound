@@ -249,13 +249,19 @@ function GalleryBox(){
         <>
             {/*
             TODO:   - pagination is slow, make it so the image becomes a component and loads images from db dynamically
-                    - better "gallery loading"
-                    - responsive togglebuttons, https://mui.com/material-ui/react-grid/#grid-with-multiple-breakpoints
+                    - better "gallery loading each image"
+                    DONE? - responsive togglebuttons, https://mui.com/material-ui/react-grid/#grid-with-multiple-breakpoints
             */}
             <div className="row gx-4 gx-lg-5 justify-content-center mb-5">
                 <div className="col-lg-8">
                     <ToggleButtonGroup
-                        color="primary"
+                        sx={{
+                            display: "flex",
+                            flexWrap: 'wrap',
+                            justifyContent: 'center',
+                            bgcolor: "rgba(128,128,128,0.08)"
+                        }}
+                        color={"primary"}
                         value={filter}
                         exclusive
                         onChange={handleGalleryFiltering}
