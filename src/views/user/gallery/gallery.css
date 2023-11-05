@@ -56,3 +56,19 @@
     box-shadow: 3px 5px 7px rgba(0, 0, 0, 0.5);
     border: 3px solid white;
 }
+
+
+.MuiToggleButtonGroup-grouped {
+    border: 0 !important;
+    border-radius: 5px!important;
+}
+.Mui-selected{
+    color: #ffffff !important;
+    background-color: rgb(250, 99, 67) !important;
+}
+.Mui-selected:hover{
+    background-color: rgb(250, 99, 67) !important;
+}
+.MuiToggleButtonGroup-grouped .Mui-disabled {
+    border: 0 !important;
+}
