@@ -91,6 +91,9 @@ function GalleryBox(){
         };
     }, [])
 
+    //TODO: change the scripts that get the images, to get DB data without getting the images,
+    // its doing all at the same time (its getting all rows and getting the image corresponding to that row),
+    // so its slowing the gallery load time
     const formatGalleryData = async () => {
         const gallery_data = await getGalleryList()
         setGalleryTotal(gallery_data.total)
@@ -356,11 +359,24 @@ function GalleryBox(){
                     </div>
                 }
 
-
             </div>
 
         </>
     );
+}
+
+const Image = (image_path) => {
+    return (
+        <>
+            <img
+                className={"w-100 shadow-1-strong rounded"}
+                style={{ cursor: 'pointer' }}
+                src={image_path}
+                ref={ref} onClick={open}
+                loading={"lazy"}
+            />
+        </>
+    )
 }
 
 export default GalleryBox
