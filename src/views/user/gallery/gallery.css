@@ -57,7 +57,7 @@
     border: 3px solid white;
 }
 
-
+/*filters*/
 .MuiToggleButtonGroup-grouped {
     border: 0 !important;
     border-radius: 5px!important;
@@ -71,4 +71,9 @@
 }
 .MuiToggleButtonGroup-grouped .Mui-disabled {
     border: 0 !important;
+}
+
+/*image onHover*/
+.img-overlay {
+    opacity: 0.93;
 }
