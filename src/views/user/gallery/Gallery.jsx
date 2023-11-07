@@ -91,6 +91,9 @@ function GalleryBox(){
         };
     }, [])
 
+    //TODO: DONE? - change the scripts that get the images, to get DB data without getting the images,
+    // its doing all at the same time (its getting all rows and getting the image corresponding to that row),
+    // so its slowing the gallery load time
     const formatGalleryData = async () => {
         const gallery_data = await getGalleryList()
         setGalleryTotal(gallery_data.total)
@@ -98,14 +101,14 @@ function GalleryBox(){
         let dataArray = [];
         for (let row of gallery_data.documents) {
             let category = null;
-            const image_path = await getStorageImagesByID(row.image_id)
-            const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.17)
+            // const image_path = await getStorageImagesByID(row.image_id)
+            // const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.17)
 
             //console.log("dsada " + row.category_id)
-            if(row.category_id !== null){
-                category = await getCategoryByID(row.category_id)
-                //console.log("IN: " + category)
-            }
+            // if(row.category_id !== null){
+            //     category = await getCategoryByID(row.category_id)
+            //     //console.log("IN: " + category)
+            // }
 
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
@@ -113,10 +116,10 @@ function GalleryBox(){
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
-                category: category !== null ? category.name : null,
+                // category: category !== null ? category.name : null,
                 image_id: row.image_id,
-                image: image_path.toString(),
-                image_thumb: image_thumb_path.toString(),
+                image: null/*image_path.toString()*/,
+                image_thumb: null/*image_thumb_path.toString()*/,
                 width: row.width !== null ? row.width : 0,
                 height: row.height !== null ? row.height : 0,
                 createdAt: creAt.toLocaleString('en-GB'),
@@ -164,14 +167,14 @@ function GalleryBox(){
         let dataArray = [];
         for (let row of nextPage.documents) {
             let category = null;
-            const image_path = await getStorageImagesByID(row.image_id)
-            const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.17)
+            // const image_path = await getStorageImagesByID(row.image_id)
+            // const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.17)
 
             //console.log("dsada " + row.category_id)
-            if(row.category_id !== null){
+            /*if(row.category_id !== null){
                 category = await getCategoryByID(row.category_id)
                 //console.log("IN: " + category)
-            }
+            }*/
 
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
@@ -179,10 +182,10 @@ function GalleryBox(){
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
-                category: category !== null ? category.name : null,
+                //category: category !== null ? category.name : null,
                 image_id: row.image_id,
-                image: image_path.toString(),
-                image_thumb: image_thumb_path.toString(),
+                image: null/*image_path.toString()*/,
+                image_thumb: null/*image_thumb_path.toString()*/,
                 width: row.width !== null ? row.width : 0,
                 height: row.height !== null ? row.height : 0,
                 createdAt: creAt.toLocaleString('en-GB'),
@@ -212,14 +215,14 @@ function GalleryBox(){
         let dataArray = [];
         for (let row of prevPage.documents) {
             let category = null;
-            const image_path = await getStorageImagesByID(row.image_id)
-            const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.17)
+            // const image_path = await getStorageImagesByID(row.image_id)
+            // const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.17)
 
             //console.log("dsada " + row.category_id)
-            if(row.category_id !== null){
+            /*if(row.category_id !== null){
                 category = await getCategoryByID(row.category_id)
                 //console.log("IN: " + category)
-            }
+            }*/
 
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
@@ -227,10 +230,10 @@ function GalleryBox(){
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
-                category: category !== null ? category.name : null,
+                //category: category !== null ? category.name : null,
                 image_id: row.image_id,
-                image: image_path.toString(),
-                image_thumb: image_thumb_path.toString(),
+                image: null/*image_path.toString()*/,
+                image_thumb: null/*image_thumb_path.toString()*/,
                 width: row.width !== null ? row.width : 0,
                 height: row.height !== null ? row.height : 0,
                 createdAt: creAt.toLocaleString('en-GB'),
@@ -282,51 +285,13 @@ function GalleryBox(){
                                     if (filter.includes(image.category_id))
                                         return (
                                             <ImageListItem key={index}>
-                                                <Item
-                                                    original={image.image}
-                                                    thumbnail={image.image_thumb}
-                                                    width={image.width}
-                                                    height={image.height}
-                                                    alt={image.category}
-                                                >
-                                                    {({ ref, open }) => (
-                                                        <>
-                                                            {/*<p>{index}</p>*/}
-                                                            <img
-                                                                className={"w-100 shadow-1-strong rounded"}
-                                                                style={{ cursor: 'pointer' }}
-                                                                src={image.image_thumb}
-                                                                ref={ref} onClick={open}
-                                                                loading={"lazy"}
-                                                            />
-                                                        </>
-                                                    )}
-                                                </Item>
+                                                <Image key={index} image_data={image}></Image>
                                             </ImageListItem>
                                         )
                                 } else {
                                     return (
                                         <ImageListItem key={index}>
-                                            <Item
-                                                original={image.image}
-                                                thumbnail={image.image_thumb}
-                                                width={image.width}
-                                                height={image.height}
-                                                alt={image.category}
-                                            >
-                                                {({ ref, open }) => (
-                                                    <>
-                                                        {/*<p>{index}</p>*/}
-                                                        <img
-                                                            className={"w-100 shadow-1-strong rounded"}
-                                                            style={{ cursor: 'pointer' }}
-                                                            src={image.image_thumb}
-                                                            ref={ref} onClick={open}
-                                                            loading={"lazy"}
-                                                        />
-                                                    </>
-                                                )}
-                                            </Item>
+                                            <Image key={index} image_data={image}></Image>
                                         </ImageListItem>
                                     )
                                 }
@@ -356,11 +321,83 @@ function GalleryBox(){
                     </div>
                 }
 
-
             </div>
 
         </>
     );
+}
+
+const Image = ({image_data}) => {
+
+    const {getStorageImagesByID, getStorageImagesThumbnailByID} = useAuth();
+    const [imageData, setImageData] = useState(image_data)
+
+    //console.log(imageData)
+
+    useEffect(() => {
+        getImagePath()
+            .then((response) => {
+                setImageData((curr) => {
+                    return {...curr, image: response.image_path, image_thumb: response.image_thumb_path}
+                })
+            })
+    }, [])
+
+    const getImagePath = async () => {
+        const image_path = await getStorageImagesByID(image_data.image_id)
+        const image_thumb_path = await getStorageImagesThumbnailByID(image_data.image_id, image_data.width, 0.17)
+
+        return {image_path, image_thumb_path};
+    }
+
+    /*const placeholderSrc = "https://w.wallhaven.cc/full/dg/wallhaven-dgxk6o.png"
+    const src = ""
+    const [imgSrc, setImgSrc] = useState(placeholderSrc || src);
+    useEffect(() => {
+        const img = new Image();
+        img.src = src;
+        img.onload = () => {
+            setImgSrc(src);
+        };
+    }, [src]);*/
+
+    return (
+        /*<Item
+            original={imageData.image}
+            thumbnail={imageData.image_thumb}
+            width={imageData.width}
+            height={imageData.height}
+            alt={imageData.category}
+        >
+            {({ ref, open }) => (
+                <img
+                    className={"w-100 shadow-1-strong rounded"}
+                    style={{ cursor: 'pointer' }}
+                    src={imageData.image_thumb}
+                    ref={ref} onClick={open}
+                    loading={"lazy"}
+                />
+            )}
+        </Item>*/
+
+        <Item
+            original={imageData.image}
+            thumbnail={imageData.image_thumb}
+            width={imageData.width}
+            height={imageData.height}
+            alt={imageData.category}
+        >
+            {({ ref, open }) => (
+                <img
+                    className={"w-100 shadow-1-strong rounded"}
+                    style={{ cursor: 'pointer' }}
+                    src={imageData.image_thumb}
+                    ref={ref} onClick={open}
+                    loading={"lazy"}
+                />
+            )}
+        </Item>
+    )
 }
 
 export default GalleryBox
