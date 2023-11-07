@@ -19,7 +19,7 @@ import {color} from "framer-motion";
 import {FaAngleLeft, FaAngleRight} from "react-icons/fa6";
 //import {scrollToElement} from "../../../utils/scrollToElement.jsx";
 
-//import { motion } from "framer-motion"
+import { motion } from "framer-motion"
 
 
 function GalleryBox(){
@@ -388,13 +388,19 @@ const Image = ({image_data}) => {
             alt={imageData.category}
         >
             {({ ref, open }) => (
-                <img
-                    className={"w-100 shadow-1-strong rounded"}
-                    style={{ cursor: 'pointer' }}
-                    src={imageData.image_thumb}
-                    ref={ref} onClick={open}
-                    loading={"lazy"}
-                />
+                <motion.div
+                    layout
+                    style={{opacity: 0.93}}
+                    whileHover={{opacity: 1}}
+                >
+                    <img
+                        className={"w-100 shadow-1-strong rounded"}
+                        style={{ cursor: 'pointer' }}
+                        src={imageData.image_thumb}
+                        ref={ref} onClick={open}
+                        loading={"lazy"}
+                    />
+                </motion.div>
             )}
         </Item>
     )
