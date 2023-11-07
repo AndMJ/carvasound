@@ -92,7 +92,7 @@ export const AuthProvider = ({children}) => {
         try {
             promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
-                    Query.limit(30),
+                    Query.limit(100),
                     Query.orderDesc('$createdAt'),
                 ]
             );
