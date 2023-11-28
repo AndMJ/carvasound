@@ -1,3 +1,6 @@
+:root{
+    --bs-primary: #f3623a
+}
 .loader-spinner { /*spinner is 32x32 so we do the difference */
     left: calc(50% - 16px) !important;
     right: calc(50% - 16px) !important;
