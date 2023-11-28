@@ -362,24 +362,6 @@ const Image = ({image_data}) => {
     }, [src]);*/
 
     return (
-        /*<Item
-            original={imageData.image}
-            thumbnail={imageData.image_thumb}
-            width={imageData.width}
-            height={imageData.height}
-            alt={imageData.category}
-        >
-            {({ ref, open }) => (
-                <img
-                    className={"w-100 shadow-1-strong rounded"}
-                    style={{ cursor: 'pointer' }}
-                    src={imageData.image_thumb}
-                    ref={ref} onClick={open}
-                    loading={"lazy"}
-                />
-            )}
-        </Item>*/
-
         <Item
             original={imageData.image}
             thumbnail={imageData.image_thumb}

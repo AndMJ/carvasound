@@ -117,14 +117,27 @@ const Gallery = () => {
         };
     }, []);
 
-    const RenderCellImage = (props) => {
+    const RenderCellImage = ({image_id, image_width}) => {
+        const [image, setImage] = useState();
+
         const handleImgClick = () => {
             alert("zoom image")
         }
 
+        useEffect(() => {
+            getImage()
+                .then((response) => {
+                    setImage(response)
+                })
+        }, []);
+
+        const getImage = async () => {
+            return await getStorageImagesThumbnailByID(image_id, image_width, 0.10)
+        }
+
         return (
             <div className={"w-100 p-1"} onClick={handleImgClick}>
-                <img src={props.image_path} width={"100%"} height={"100%"}/>
+                <img src={image} width={"100%"} height={"100%"}/>
             </div>
         )
     }
@@ -136,8 +149,8 @@ const Gallery = () => {
 
         for (let row of gallery_data.documents) {
             let category = null;
-            // const image_path = await getStorageImagesByID(row.image_id)
-            const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.10)
+            //const image_path = await getStorageImagesByID(row.image_id)
+            //const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.10)
 
             //console.log("dsada " + row.category_id)
             if(row.category_id !== null){
@@ -153,7 +166,7 @@ const Gallery = () => {
                 category_id: row.category_id,
                 category: category !== null ? category.name : "Sem categoria",
                 image_id: row.image_id,
-                image: image_thumb_path,
+                image: {image_id: row.image_id, width: row.width}/*image_thumb_path*/,
                 createdAt: creAt.toLocaleString('en-GB'),
                 updatedAt: upAt.toLocaleString('en-GB'),
             })
@@ -166,7 +179,8 @@ const Gallery = () => {
         { field: 'image_id', headerName: 'Image ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'image', headerName: 'Image', width: 100, editable: false, filterable: false, sortable: false, disableColumnMenu: true,
             renderCell: (params) => (
-                <RenderCellImage image_path={params.row.image.href}></RenderCellImage>
+                //<RenderCellImage image_path={params.row.image.href}></RenderCellImage>
+                <RenderCellImage image_id={params.row.image.image_id} image_width={params.row.image.width}></RenderCellImage>
             )
         },
         { field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},

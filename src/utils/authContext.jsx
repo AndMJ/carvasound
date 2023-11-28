@@ -14,6 +14,7 @@ import {useNavigate} from "react-router-dom";
 import {Query} from "appwrite";
 
 const Loader = React.lazy(()=> import("../components/loader/Loader.jsx"))
+//import Loader from "../components/loader/Loader.jsx"
 
 
 const AuthContext = createContext()
@@ -24,11 +25,12 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        getUserOnLoad()
+        getUserOnLoad() //TODO: session cookies giving an error, but its fixed??
             .then((response) => {
-                if (response)
-                setUser(response)
-                setLoading(false)
+                if (response) {
+                    setUser(response)
+                    setLoading(false)
+                }
             }, (error) => {
                 console.log(error)
             })
@@ -37,9 +39,11 @@ export const AuthProvider = ({children}) => {
     const getUserOnLoad = async () => { //TODO: handle all possible errors from API, like its done here
         try {
             return await account.get()
+
         } catch (error) {
-            //return error
             console.log(error)
+            await account.deleteSession("current")
+            //return error
         }
     }
 
@@ -78,19 +82,18 @@ export const AuthProvider = ({children}) => {
      * Collection > gallery
      */
     const addGalleryImages = async (image_json) => {
-        let promise
         try {
-            promise = database.createDocument(DATABASE_ID, COLLECTION_GALLERY_ID, GenerateID, image_json);
+            return database.createDocument(DATABASE_ID, COLLECTION_GALLERY_ID, GenerateID, image_json);
+
         } catch (error) {
             console.error(error)
+            return error
         }
-        return promise
     }
 
     const getGalleryList = async () => {
-        let promise = "";
         try {
-            promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+            return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
                     Query.limit(100),
                     Query.orderDesc('$createdAt'),
@@ -99,15 +102,13 @@ export const AuthProvider = ({children}) => {
 
         } catch (error) {
             console.error(error)
+            return error
         }
-
-        return promise
     }
 
     const getGalleryListNextPage = async (last_item_id) => {
-        let promise = "";
         try {
-            promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+            return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
                     Query.limit(100),
                     Query.orderDesc('$createdAt'),
@@ -117,15 +118,13 @@ export const AuthProvider = ({children}) => {
 
         } catch (error) {
             console.error(error)
+            return error
         }
-
-        return promise
     }
 
     const getGalleryListPrevPage = async (first_item_id) => {
-        let promise = "";
         try {
-            promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+            return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
                     Query.limit(100),
                     Query.orderDesc('$createdAt'),
@@ -135,37 +134,11 @@ export const AuthProvider = ({children}) => {
 
         } catch (error) {
             console.error(error)
+            return error
         }
-
-        return promise
     }
 
-    /*const getGalleryByCategory = async (category_id) => {
-        let promise = "";
-        try {
-            promise = database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
-                [
-                    Query.limit(100),
-                    Query.equal('category_id', category_id),
-                ]
-            );
-
-        } catch (error) {
-            console.error(error)
-        }
-
-        return promise
-    }*/
-
     const deleteGalleryByID = async (gallery_id) => {
-        /*try {
-            return await database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
-        } catch (error) {
-            console.error(error)
-            return await error
-        }*/
-
-
         try {
             return database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
 
@@ -173,19 +146,6 @@ export const AuthProvider = ({children}) => {
             console.error(error)
             return error
         }
-
-
-
-
-        /*const promise = database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
-        promise.then(function (response) {
-            console.log(response); // Success
-            return response
-        }, function (error) {
-            console.log(error); // Failure
-            return error
-        });*/
-
     }
 
     /*
@@ -193,9 +153,8 @@ export const AuthProvider = ({children}) => {
      * Collection > category
      */
     const getCategoryList = async () => {
-        let promise = "";
         try {
-            promise = database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID,
+            return database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID,
                 [
                         Query.limit(100),
                     ]
@@ -203,14 +162,12 @@ export const AuthProvider = ({children}) => {
 
         } catch (error) {
             console.error(error)
+            return error
         }
-
-        return promise
     }
     const getCategoryByID = async (category_id) => {
-        let promise = "";
         try {
-            promise = database.getDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id,
+            return database.getDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id,
                 // [
                 //     Query.limit(100),
                 // ]
@@ -218,61 +175,51 @@ export const AuthProvider = ({children}) => {
 
         } catch (error) {
             console.error(error)
+            return error
         }
-
-        return promise
     }
 
     /*
      * Storage > Buckets > gallery_images
      */
     const addStorageImage = async (image) => {
-        let promise = "";
         try {
-            promise = storage.createFile(STORAGE_BUCKET_ID, GenerateID, image);
+            return storage.createFile(STORAGE_BUCKET_ID, GenerateID, image);
 
         } catch (error) {
             console.error(error)
+            return error
         }
-
-        return promise
     }
 
     const getStorageImagesByID = async (image_id) => {
-        let promise = "";
         try {
-            promise = await storage.getFileView(STORAGE_BUCKET_ID, image_id);
+            return storage.getFileView(STORAGE_BUCKET_ID, image_id);
 
         } catch (error) {
             console.error(error)
+            return error
         }
-
-        return promise
     }
 
     const getStorageImagesThumbnailByID = async (image_id, width, percentage) => {
-        let promise = "";
-
         try {
-            promise = await storage.getFilePreview(STORAGE_BUCKET_ID, image_id, Math.round(width * percentage)/*, Math.round(height * proportion)*/);
+            return storage.getFilePreview(STORAGE_BUCKET_ID, image_id, Math.round(width * percentage)/*, Math.round(height * proportion)*/);
 
         } catch (error) {
             console.error(error)
+            return error
         }
-
-        return promise
     }
 
     const deleteStorageImagesByID = async (image_id) => {
-        let promise = "";
         try {
-            promise = storage.deleteFile(STORAGE_BUCKET_ID, image_id);
+            return storage.deleteFile(STORAGE_BUCKET_ID, image_id);
 
         } catch (error) {
             console.error(error)
+            return error
         }
-
-        return promise
     }
 
     const contextData = {
@@ -286,7 +233,6 @@ export const AuthProvider = ({children}) => {
         getGalleryList,
         getGalleryListNextPage,
         getGalleryListPrevPage,
-        // getGalleryByCategory,
         getCategoryList,
         getCategoryByID,
         getStorageImagesByID,
@@ -298,7 +244,7 @@ export const AuthProvider = ({children}) => {
 
     return (
         <AuthContext.Provider value={contextData}>
-            {loading ? <Loader /> : children}
+            {loading ? <Loader></Loader> : children}
         </AuthContext.Provider>
     )
 
