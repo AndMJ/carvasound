@@ -25,7 +25,7 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        getUserOnLoad() //TODO: session cookies giving an error, but its fixed??
+        /*getUserOnLoad() //TODO: session cookies giving an error
             .then((response) => {
                 if (response) {
                     setUser(response)
@@ -33,7 +33,8 @@ export const AuthProvider = ({children}) => {
                 }
             }, (error) => {
                 console.log(error)
-            })
+            })*/
+        setLoading(false)
     },[])
 
     const getUserOnLoad = async () => { //TODO: handle all possible errors from API, like its done here
