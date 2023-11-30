@@ -14,10 +14,8 @@ import {useNavigate} from "react-router-dom";
 import {Query} from "appwrite";
 
 const Loader = React.lazy(()=> import("../components/loader/Loader.jsx"))
-//import Loader from "../components/loader/Loader.jsx"
 
-
-const AuthContext = createContext()
+const AuthContext = createContext(null)
 export const AuthProvider = ({children}) => {
 
     const navigate = useNavigate()
@@ -25,8 +23,8 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        /*getUserOnLoad() //TODO: session cookies giving an error
-            .then((response) => {
+        getUserOnLoad() //TODO: session cookies giving an error
+            /*.then((response) => {
                 if (response) {
                     setUser(response)
                     setLoading(false)
@@ -34,18 +32,19 @@ export const AuthProvider = ({children}) => {
             }, (error) => {
                 console.log(error)
             })*/
-        setLoading(false)
+        //setLoading(false)
     },[])
 
     const getUserOnLoad = async () => { //TODO: handle all possible errors from API, like its done here
         try {
-            return await account.get()
-
+            const userdata = await account.get()
+            setUser(userdata)
         } catch (error) {
-            console.log(error)
-            await account.deleteSession("current")
+            console.error(error)
+            //await account.deleteSession("current")
             //return error
         }
+        setLoading(false)
     }
 
     const handleLogin = async (event, credentials) => {

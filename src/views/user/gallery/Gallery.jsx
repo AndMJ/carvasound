@@ -338,7 +338,7 @@ const Image = ({image_data}) => {
         getImagePath()
             .then((response) => {
                 setImageData((curr) => {
-                    return {...curr, image: response.image_path, image_thumb: response.image_thumb_path}
+                    return {...curr, image: response.image_path.toString(), image_thumb: response.image_thumb_path.toString()}
                 })
             })
     }, [])
