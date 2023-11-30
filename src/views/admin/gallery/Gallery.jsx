@@ -149,7 +149,7 @@ const Gallery = () => {
             //const image_path = await getStorageImagesByID(row.image_id)
             //const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.10)
 
-            //console.log("dsada " + row.category_id)
+            //console.log("dsada " + row.category_id) //TODO: database changed so categories are linked by relationship, so no need the get each category; apply to all
             /*if(row.category_id !== null){
                 let category = await getCategoryByID(row.category_id)
                 //console.log("IN: " + category)
