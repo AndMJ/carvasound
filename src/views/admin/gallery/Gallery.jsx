@@ -1,7 +1,7 @@
 import "./gallery.css"
 
 import {useEffect, useState} from "react";
-import { FaImages, FaTable} from "react-icons/fa";
+import {FaImages, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
 import Fileupload from "../../../components/upload/fileupload.jsx";
 
@@ -14,16 +14,11 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    LinearProgress, ToggleButton,
-    ToggleButtonGroup,
-    Toolbar
+    LinearProgress,
+    ToggleButton,
+    ToggleButtonGroup
 } from "@mui/material";
-import {
-    GridRowModes,
-    DataGrid,
-    GridToolbarContainer,
-    GridActionsCellItem,
-} from '@mui/x-data-grid';
+import {DataGrid, GridActionsCellItem, GridToolbarContainer,} from '@mui/x-data-grid';
 import {useOutletContext} from "react-router-dom";
 import client, {COLLECTION_GALLERY_ID, DATABASE_ID} from "../../../appwrite/appwrite.config.jsx";
 
@@ -65,6 +60,7 @@ const Gallery = () => {
         document.title = "Carvasound - Gallery";
     },[])
 
+    let _URL = window.URL || window.webkitURL;
     const [newToastNotif] = useOutletContext()
 
     const {getGalleryList, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
@@ -74,6 +70,8 @@ const Gallery = () => {
 
     const [processing, setProcessing] = useState(false);
     const [confirmDialogState, setConfirmDialogState ] = useState({"state": false, "data": {}});
+
+    console.log(rows)
 
     useEffect(() =>  {
         formatGalleryData()
@@ -103,7 +101,6 @@ const Gallery = () => {
                 setLoadingState(true)
                 formatGalleryData()
                     .then((response) => {
-
                         if (response.length > 0){
                             setRows(response)
                         }
@@ -118,7 +115,8 @@ const Gallery = () => {
     }, []);
 
     const RenderCellImage = ({image_id, image_width}) => {
-        const [image, setImage] = useState();
+        const [image, setImage] = useState()
+        //console.log(image)
 
         const handleImgClick = () => {
             alert("zoom image")
@@ -148,15 +146,14 @@ const Gallery = () => {
         let dataArray = []
 
         for (let row of gallery_data.documents) {
-            let category = null;
             //const image_path = await getStorageImagesByID(row.image_id)
             //const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.10)
 
             //console.log("dsada " + row.category_id)
-            if(row.category_id !== null){
-                category = await getCategoryByID(row.category_id)
+            /*if(row.category_id !== null){
+                let category = await getCategoryByID(row.category_id)
                 //console.log("IN: " + category)
-            }
+            }*/
 
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
@@ -164,9 +161,11 @@ const Gallery = () => {
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
-                category: category !== null ? category.name : "Sem categoria",
+                category: row.category !== null ? row.category.name : "Sem categoria",
                 image_id: row.image_id,
-                image: {image_id: row.image_id, width: row.width}/*image_thumb_path*/,
+                image: {image_id: row.image_id, width: row.width}, //TODO: apply dynamic image loading, get the image to the state variable of Rows
+                /*await getStorageImagesThumbnailByID(row.image_id, row.width, 0.10).then((response) => {return response.href})*/
+                /*image_thumb_path*/
                 createdAt: creAt.toLocaleString('en-GB'),
                 updatedAt: upAt.toLocaleString('en-GB'),
             })
@@ -181,6 +180,7 @@ const Gallery = () => {
             renderCell: (params) => (
                 //<RenderCellImage image_path={params.row.image.href}></RenderCellImage>
                 <RenderCellImage image_id={params.row.image.image_id} image_width={params.row.image.width}></RenderCellImage>
+                //<RenderCellImage image={params.row.image}></RenderCellImage>
             )
         },
         { field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
@@ -324,7 +324,7 @@ const Gallery = () => {
                             >
                                 <DialogTitle>Confirm deletion</DialogTitle>
                                 <DialogContent dividers>
-                                    <img src={confirmDialogState.data.image ? confirmDialogState.data.image.href : ""} className="img-thumbnail mb-3" alt={"image to delete"}/>
+                                    <img src={confirmDialogState.data.image ? confirmDialogState.data.image : ""} className="img-thumbnail mb-3" alt={"image to delete"}/>
                                     <h5 className={"mb-1"}>Are you sure?</h5>
                                     <p className={""}>Pressing 'Yes' will <span className={"text-danger"}>delete</span> this image from the platform.</p>
                                 </DialogContent>
