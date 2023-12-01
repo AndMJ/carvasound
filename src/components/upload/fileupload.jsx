@@ -20,7 +20,7 @@ function Fileupload({newToastNotif}) {
     const [uploading, setUploading] = useState(false)
 
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-        const mappedAcceptedFiles = acceptedFiles.map((file) => ({file, category_id: undefined}))
+        const mappedAcceptedFiles = acceptedFiles.map((file) => ({file, category: undefined}))
         //const mappedRejectedFiles = rejectedFiles.map((file) => ({file, errors: []}))
         setFiles((curr) => [...curr, ...mappedAcceptedFiles, ...rejectedFiles])
     }, [])
@@ -85,7 +85,7 @@ function Fileupload({newToastNotif}) {
                     image_id: img_storage_resp.$id,
                     width: img_dim.width,
                     height: img_dim.height,
-                    category_id: fWrapper.category_id
+                    category: fWrapper.category
                 }
 
                 const resp = await addGalleryImages(JSON.parse(JSON.stringify(payload)))
@@ -121,8 +121,8 @@ function Fileupload({newToastNotif}) {
 
         setFiles((currentFiles) =>
             currentFiles.map((currentFile) => {
-                //console.log({ ...currentFile, category_id: e.target.value})
-                return { ...currentFile, category_id: e.target.value};
+                //console.log({ ...currentFile, category: e.target.value})
+                return { ...currentFile, category: e.target.value};
             })
         );
     }
@@ -135,8 +135,8 @@ function Fileupload({newToastNotif}) {
         setFiles((currentFiles) =>
             currentFiles.map((currentFile) => {
                 if (currentFile.file === file) {
-                    console.log({ ...currentFile, category_id: e.target.value})
-                    return { ...currentFile, category_id: e.target.value};
+                    console.log({ ...currentFile, category: e.target.value})
+                    return { ...currentFile, category: e.target.value};
                 }
                 return currentFile;
             })
