@@ -67,11 +67,10 @@ const Gallery = () => {
 
     const [LoadingState, setLoadingState] = useState(true);
     const [rows, setRows] = useState([]);
+    //console.log(rows)
 
     const [processing, setProcessing] = useState(false);
     const [confirmDialogState, setConfirmDialogState ] = useState({"state": false, "data": {}});
-
-    console.log(rows)
 
     useEffect(() =>  {
         formatGalleryData()
@@ -114,7 +113,7 @@ const Gallery = () => {
         };
     }, []);
 
-    const RenderCellImage = ({image_id, image_width}) => {
+    /*const RenderCellImage = ({image_id, image_width}) => {
         const [image, setImage] = useState()
         //console.log(image)
 
@@ -122,7 +121,7 @@ const Gallery = () => {
             alert("zoom image")
         }
 
-        useEffect(() => {
+        /!*useEffect(() => {
             getImage()
                 .then((response) => {
                     setImage(response)
@@ -131,6 +130,27 @@ const Gallery = () => {
 
         const getImage = async () => {
             return await getStorageImagesThumbnailByID(image_id, image_width, 0.10)
+        }*!/
+
+        return (
+            <div className={"w-100 p-1"} onClick={handleImgClick}>
+                <img src={image} width={"100%"} height={"100%"}/>
+            </div>
+        )
+    }*/
+
+    const RenderCellImage = ({imagePromise}) => {
+        const [image, setImage] = useState()
+        //console.log(image)
+
+        useEffect(() => {
+            imagePromise.then((res) => {
+                setImage(res)
+            })
+        }, []);
+
+        const handleImgClick = () => {
+            alert("zoom image")
         }
 
         return (
@@ -163,9 +183,8 @@ const Gallery = () => {
                 category_id: row.category_id,
                 category: row.category !== null ? row.category.name : "Sem categoria",
                 image_id: row.image_id,
-                image: {image_id: row.image_id, width: row.width}, //TODO: apply dynamic image loading, get the image to the state variable of Rows
-                /*await getStorageImagesThumbnailByID(row.image_id, row.width, 0.10).then((response) => {return response.href})*/
-                /*image_thumb_path*/
+                image: getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
+                /*{image_id: row.image_id, width: row.width}*/
                 createdAt: creAt.toLocaleString('en-GB'),
                 updatedAt: upAt.toLocaleString('en-GB'),
             })
@@ -178,9 +197,8 @@ const Gallery = () => {
         { field: 'image_id', headerName: 'Image ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'image', headerName: 'Image', width: 100, editable: false, filterable: false, sortable: false, disableColumnMenu: true,
             renderCell: (params) => (
-                //<RenderCellImage image_path={params.row.image.href}></RenderCellImage>
-                <RenderCellImage image_id={params.row.image.image_id} image_width={params.row.image.width}></RenderCellImage>
-                //<RenderCellImage image={params.row.image}></RenderCellImage>
+                //<RenderCellImage image_id={params.row.image.image_id} image_width={params.row.image.width}></RenderCellImage>
+                <RenderCellImage imagePromise={params.row.image}></RenderCellImage>
             )
         },
         { field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
@@ -223,15 +241,17 @@ const Gallery = () => {
         alert("edit " + id)
     };
 
-    const handleDeleteClick = (id, image_id, image) => async () => {
-        setConfirmDialogState( (prevState) => {
-            let dataRowToDel = {
-                id: id,
-                image_id: image_id,
-                image: image
-            }
-            return {...prevState, state: true, data: dataRowToDel}
-        });
+    const handleDeleteClick = (id, image_id, imagePromise) => async () => {
+        imagePromise.then((imageResponse) => {
+            setConfirmDialogState( (prevState) => {
+                let dataRowToDel = {
+                    id: id,
+                    image_id: image_id,
+                    image: imageResponse
+                }
+                return {...prevState, state: true, data: dataRowToDel}
+            });
+        })
     };
 
     const handle_ConfirmDialog_No = () => {
@@ -324,7 +344,7 @@ const Gallery = () => {
                             >
                                 <DialogTitle>Confirm deletion</DialogTitle>
                                 <DialogContent dividers>
-                                    <img src={confirmDialogState.data.image ? confirmDialogState.data.image : ""} className="img-thumbnail mb-3" alt={"image to delete"}/>
+                                    <img src={confirmDialogState.data.image} className="img-thumbnail mb-3" alt={"image thumbnail"}/>
                                     <h5 className={"mb-1"}>Are you sure?</h5>
                                     <p className={""}>Pressing 'Yes' will <span className={"text-danger"}>delete</span> this image from the platform.</p>
                                 </DialogContent>
