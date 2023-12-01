@@ -162,26 +162,19 @@ const Gallery = () => {
 
     const formatGalleryData = async () => {
         const gallery_data = await getGalleryList()
+        console.log(gallery_data)
 
         let dataArray = []
-
         for (let row of gallery_data.documents) {
-            //const image_path = await getStorageImagesByID(row.image_id)
-            //const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.10)
-
-            //console.log("dsada " + row.category_id) //TODO: database changed so categories are linked by relationship, so no need the get each category; apply to all
-            /*if(row.category_id !== null){
-                let category = await getCategoryByID(row.category_id)
-                //console.log("IN: " + category)
-            }*/
+            //TODO: database changed so categories are linked by relationship, so no need the get each category; apply to all
 
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
 
             dataArray.push({
                 id: row.$id,
-                category_id: row.category_id,
-                category: row.category !== null ? row.category.name : "Sem categoria",
+                //category_id: row.category.$id,
+                category: row.category,//row.category.name !== null ? row.category.name : "Sem categoria",
                 image_id: row.image_id,
                 image: getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
                 /*{image_id: row.image_id, width: row.width}*/
@@ -201,13 +194,15 @@ const Gallery = () => {
                 <RenderCellImage imagePromise={params.row.image}></RenderCellImage>
             )
         },
-        { field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
+        //{ field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'category', headerName: 'Category', width: 180, editable: false,
-            /*renderCell: (params) => {
+            renderCell: (params) => {
                 if(params.row.category === null){
-                    return <span className={"text-muted"}>Sem categoria</span>
+                    return "Sem categoria"
+                } else {
+                    return params.row.category.name
                 }
-            }*/
+            }
         },
         { field: 'createdAt', headerName: 'Created At', type:"text", width: 180, editable: false},
         { field: 'updatedAt', headerName: 'Updated At', type:"text", width: 180, editable: false},
