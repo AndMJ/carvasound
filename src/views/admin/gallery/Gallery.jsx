@@ -1,7 +1,7 @@
 import "./gallery.css"
 
 import {useEffect, useState} from "react";
-import { FaImages, FaTable} from "react-icons/fa";
+import {FaImages, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
 import Fileupload from "../../../components/upload/fileupload.jsx";
 
@@ -14,16 +14,11 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    LinearProgress, ToggleButton,
-    ToggleButtonGroup,
-    Toolbar
+    LinearProgress,
+    ToggleButton,
+    ToggleButtonGroup
 } from "@mui/material";
-import {
-    GridRowModes,
-    DataGrid,
-    GridToolbarContainer,
-    GridActionsCellItem,
-} from '@mui/x-data-grid';
+import {DataGrid, GridActionsCellItem, GridToolbarContainer,} from '@mui/x-data-grid';
 import {useOutletContext} from "react-router-dom";
 import client, {COLLECTION_GALLERY_ID, DATABASE_ID} from "../../../appwrite/appwrite.config.jsx";
 
@@ -65,12 +60,14 @@ const Gallery = () => {
         document.title = "Carvasound - Gallery";
     },[])
 
+    let _URL = window.URL || window.webkitURL;
     const [newToastNotif] = useOutletContext()
 
     const {getGalleryList, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
 
     const [LoadingState, setLoadingState] = useState(true);
     const [rows, setRows] = useState([]);
+    //console.log(rows)
 
     const [processing, setProcessing] = useState(false);
     const [confirmDialogState, setConfirmDialogState ] = useState({"state": false, "data": {}});
@@ -103,7 +100,6 @@ const Gallery = () => {
                 setLoadingState(true)
                 formatGalleryData()
                     .then((response) => {
-
                         if (response.length > 0){
                             setRows(response)
                         }
@@ -117,14 +113,15 @@ const Gallery = () => {
         };
     }, []);
 
-    const RenderCellImage = ({image_id, image_width}) => {
-        const [image, setImage] = useState();
+    /*const RenderCellImage = ({image_id, image_width}) => {
+        const [image, setImage] = useState()
+        //console.log(image)
 
         const handleImgClick = () => {
             alert("zoom image")
         }
 
-        useEffect(() => {
+        /!*useEffect(() => {
             getImage()
                 .then((response) => {
                     setImage(response)
@@ -133,6 +130,27 @@ const Gallery = () => {
 
         const getImage = async () => {
             return await getStorageImagesThumbnailByID(image_id, image_width, 0.10)
+        }*!/
+
+        return (
+            <div className={"w-100 p-1"} onClick={handleImgClick}>
+                <img src={image} width={"100%"} height={"100%"}/>
+            </div>
+        )
+    }*/
+
+    const RenderCellImage = ({imagePromise}) => {
+        const [image, setImage] = useState()
+        //console.log(image)
+
+        useEffect(() => {
+            imagePromise.then((res) => {
+                setImage(res)
+            })
+        }, []);
+
+        const handleImgClick = () => {
+            alert("zoom image")
         }
 
         return (
@@ -148,15 +166,14 @@ const Gallery = () => {
         let dataArray = []
 
         for (let row of gallery_data.documents) {
-            let category = null;
             //const image_path = await getStorageImagesByID(row.image_id)
             //const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.10)
 
-            //console.log("dsada " + row.category_id)
-            if(row.category_id !== null){
-                category = await getCategoryByID(row.category_id)
+            //console.log("dsada " + row.category_id) //TODO: database changed so categories are linked by relationship, so no need the get each category; apply to all
+            /*if(row.category_id !== null){
+                let category = await getCategoryByID(row.category_id)
                 //console.log("IN: " + category)
-            }
+            }*/
 
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
@@ -164,9 +181,10 @@ const Gallery = () => {
             dataArray.push({
                 id: row.$id,
                 category_id: row.category_id,
-                category: category !== null ? category.name : "Sem categoria",
+                category: row.category !== null ? row.category.name : "Sem categoria",
                 image_id: row.image_id,
-                image: {image_id: row.image_id, width: row.width}/*image_thumb_path*/,
+                image: getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
+                /*{image_id: row.image_id, width: row.width}*/
                 createdAt: creAt.toLocaleString('en-GB'),
                 updatedAt: upAt.toLocaleString('en-GB'),
             })
@@ -179,8 +197,8 @@ const Gallery = () => {
         { field: 'image_id', headerName: 'Image ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'image', headerName: 'Image', width: 100, editable: false, filterable: false, sortable: false, disableColumnMenu: true,
             renderCell: (params) => (
-                //<RenderCellImage image_path={params.row.image.href}></RenderCellImage>
-                <RenderCellImage image_id={params.row.image.image_id} image_width={params.row.image.width}></RenderCellImage>
+                //<RenderCellImage image_id={params.row.image.image_id} image_width={params.row.image.width}></RenderCellImage>
+                <RenderCellImage imagePromise={params.row.image}></RenderCellImage>
             )
         },
         { field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
@@ -223,15 +241,17 @@ const Gallery = () => {
         alert("edit " + id)
     };
 
-    const handleDeleteClick = (id, image_id, image) => async () => {
-        setConfirmDialogState( (prevState) => {
-            let dataRowToDel = {
-                id: id,
-                image_id: image_id,
-                image: image
-            }
-            return {...prevState, state: true, data: dataRowToDel}
-        });
+    const handleDeleteClick = (id, image_id, imagePromise) => async () => {
+        imagePromise.then((imageResponse) => {
+            setConfirmDialogState( (prevState) => {
+                let dataRowToDel = {
+                    id: id,
+                    image_id: image_id,
+                    image: imageResponse
+                }
+                return {...prevState, state: true, data: dataRowToDel}
+            });
+        })
     };
 
     const handle_ConfirmDialog_No = () => {
@@ -324,7 +344,7 @@ const Gallery = () => {
                             >
                                 <DialogTitle>Confirm deletion</DialogTitle>
                                 <DialogContent dividers>
-                                    <img src={confirmDialogState.data.image ? confirmDialogState.data.image.href : ""} className="img-thumbnail mb-3" alt={"image to delete"}/>
+                                    <img src={confirmDialogState.data.image} className="img-thumbnail mb-3" alt={"image thumbnail"}/>
                                     <h5 className={"mb-1"}>Are you sure?</h5>
                                     <p className={""}>Pressing 'Yes' will <span className={"text-danger"}>delete</span> this image from the platform.</p>
                                 </DialogContent>
