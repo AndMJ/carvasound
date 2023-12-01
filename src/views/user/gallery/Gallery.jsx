@@ -24,7 +24,7 @@ import { motion } from "framer-motion"
 
 function GalleryBox(){
 
-    const {getGalleryList, getStorageImagesByID, getStorageImagesThumbnailByID, getCategoryByID, getCategoryList, getGalleryListNextPage, getGalleryListPrevPage} = useAuth();
+    const {getGalleryList, getCategoryList, getGalleryListNoNull, getGalleryListNextPage, getGalleryListPrevPage} = useAuth();
 
     const [gallery, setGallery] = useState([])
     const [galleryCols, setGalleryCols] = useState(3)
@@ -80,6 +80,7 @@ function GalleryBox(){
     useEffect(() =>  {
         formatGalleryData()
             .then((response) => {
+                console.log(response)
                 if (response.length > 0){
                     setGallery(response)
                 }
@@ -95,27 +96,17 @@ function GalleryBox(){
     // its doing all at the same time (its getting all rows and getting the image corresponding to that row),
     // so its slowing the gallery load time
     const formatGalleryData = async () => {
-        const gallery_data = await getGalleryList()
+        const gallery_data = await getGalleryListNoNull()
         setGalleryTotal(gallery_data.total)
 
         let dataArray = [];
         for (let row of gallery_data.documents) {
-            let category = null;
-            // const image_path = await getStorageImagesByID(row.image_id)
-            // const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.17)
-
-            //console.log("dsada " + row.category_id)
-            // if(row.category_id !== null){
-            //     category = await getCategoryByID(row.category_id)
-            //     //console.log("IN: " + category)
-            // }
-
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
 
             dataArray.push({
                 id: row.$id,
-                category_id: row.category_id,
+                category_id: row.category.$id,
                 // category: category !== null ? category.name : null,
                 image_id: row.image_id,
                 image: null/*image_path.toString()*/,
@@ -156,7 +147,7 @@ function GalleryBox(){
         //console.log(gallery[gallery.length - 1].id)
         const last_item_id = gallery[gallery.length - 1].id
         const nextPage = await getGalleryListNextPage(last_item_id)
-        //console.log(nextPage)
+        //console.log("next: ", nextPage)
 
         if(nextPage.documents.length === 0){
             console.log("vazio")
@@ -166,22 +157,12 @@ function GalleryBox(){
 
         let dataArray = [];
         for (let row of nextPage.documents) {
-            let category = null;
-            // const image_path = await getStorageImagesByID(row.image_id)
-            // const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.17)
-
-            //console.log("dsada " + row.category_id)
-            /*if(row.category_id !== null){
-                category = await getCategoryByID(row.category_id)
-                //console.log("IN: " + category)
-            }*/
-
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
 
             dataArray.push({
                 id: row.$id,
-                category_id: row.category_id,
+                category_id: row.category.$id,
                 //category: category !== null ? category.name : null,
                 image_id: row.image_id,
                 image: null/*image_path.toString()*/,
@@ -204,7 +185,7 @@ function GalleryBox(){
         //console.log(gallery[0].id)
         const first_item_id = gallery[0].id
         const prevPage = await getGalleryListPrevPage(first_item_id)
-        //console.log(prevPage)
+        //console.log("prev: ",prevPage)
 
         if(prevPage.documents.length === 0){
             console.log("vazio")
@@ -214,22 +195,12 @@ function GalleryBox(){
 
         let dataArray = [];
         for (let row of prevPage.documents) {
-            let category = null;
-            // const image_path = await getStorageImagesByID(row.image_id)
-            // const image_thumb_path = await getStorageImagesThumbnailByID(row.image_id, row.width, 0.17)
-
-            //console.log("dsada " + row.category_id)
-            /*if(row.category_id !== null){
-                category = await getCategoryByID(row.category_id)
-                //console.log("IN: " + category)
-            }*/
-
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
 
             dataArray.push({
                 id: row.$id,
-                category_id: row.category_id,
+                category_id: row.category.$id,
                 //category: category !== null ? category.name : null,
                 image_id: row.image_id,
                 image: null/*image_path.toString()*/,

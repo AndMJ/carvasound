@@ -106,11 +106,28 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+    const getGalleryListNoNull = async () => {
+        try {
+            return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+                [
+                    Query.limit(100),
+                    Query.isNotNull("category"),
+                    Query.orderDesc('$createdAt'),
+                ]
+            );
+
+        } catch (error) {
+            console.error(error)
+            return error
+        }
+    }
+
     const getGalleryListNextPage = async (last_item_id) => {
         try {
             return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
                     Query.limit(100),
+                    Query.isNotNull("category"),
                     Query.orderDesc('$createdAt'),
                     Query.cursorAfter(last_item_id)
                 ]
@@ -127,6 +144,7 @@ export const AuthProvider = ({children}) => {
             return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
                     Query.limit(100),
+                    Query.isNotNull("category"),
                     Query.orderDesc('$createdAt'),
                     Query.cursorBefore(first_item_id)
                 ]
@@ -231,6 +249,7 @@ export const AuthProvider = ({children}) => {
         addStorageImage,
 
         getGalleryList,
+        getGalleryListNoNull,
         getGalleryListNextPage,
         getGalleryListPrevPage,
         getCategoryList,
