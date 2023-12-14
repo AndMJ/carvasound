@@ -1,5 +1,5 @@
 import "./sidebar.css"
-import {FaColumns, FaImage, FaTachometerAlt, FaUpload, FaUser} from "react-icons/fa";
+import {FaColumns, FaImage, FaList, FaTachometerAlt, FaUpload, FaUser} from "react-icons/fa";
 import {Nav} from "react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
@@ -52,6 +52,9 @@ const Sidebar = () => {
                     <Nav.Link as={Link} to={"/admin/gallery"} eventKey={"/admin/gallery"}>
                         <FaImage className={"icon"}></FaImage> <span>Gallery</span>
                     </Nav.Link>
+                    {/*<Nav.Link as={Link} to={"/admin/category"} eventKey={"/admin/category"}>
+                        <FaList className={"icon"}></FaList> <span>Category page ?</span>
+                    </Nav.Link>*/}
                 </Nav.Item>
 
                 {/*// <!-- Divider -->*/}

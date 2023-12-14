@@ -11,6 +11,7 @@ const AdminLayout = React.lazy(()=> import("./components/admin/layout/Layout.jsx
 const AdminDashboard = React.lazy(()=> import("./views/admin/dashboard/Dashboard.jsx"))
 const AdminUsers = React.lazy(()=> import("./views/admin/users/Users.jsx"))
 const AdminGallery = React.lazy(()=> import("./views/admin/gallery/Gallery.jsx"))
+const AdminCategory = React.lazy(()=> import("./views/admin/category/Category.jsx"))
 const AdminLogin = React.lazy(()=> import("./views/admin/login/Login.jsx"))
 
 const AdminApp = () => (
@@ -35,6 +36,11 @@ const AdminApp = () => (
                     <AdminGallery />
                 </Suspense>
             }></Route>
+            {/*<Route path={"/category"} element={*/}
+            {/*    <Suspense fallback={<Loader />}>*/}
+            {/*        <AdminCategory />*/}
+            {/*    </Suspense>*/}
+            {/*}></Route>*/}
         </Route>
         <Route path={"/*"} element={<PageNotFound />}></Route>
     </Routes>

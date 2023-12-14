@@ -1,7 +1,7 @@
 import "./gallery.css"
 
 import {useEffect, useState} from "react";
-import {FaImages, FaTable} from "react-icons/fa";
+import {FaImages, FaList, FaPlusCircle, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
 import Fileupload from "../../../components/upload/fileupload.jsx";
 
@@ -314,13 +314,24 @@ const Gallery = () => {
             {/*// <!-- Content Row -->*/}
             <div className="row">
 
-                <div className="col-lg-12">
+                <div className="col-lg-8">
                     <div className="card shadow mb-4">
                         <div className="card-header py-3">
                             <h6 className="m-0 font-weight-bold text-primary"><span><FaImages className={"me-1"}></FaImages></span> Upload images</h6>
                         </div>
                         <div className="card-body">
                             <Fileupload newToastNotif={newToastNotif}></Fileupload>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="col-lg-4">
+                    <div className="card shadow mb-4">
+                        <div className="card-header py-3">
+                            <h6 className="m-0 font-weight-bold text-primary"><span><FaList className={"me-1"}></FaList></span> New category</h6>
+                        </div>
+                        <div className="card-body">
+                            categories
                         </div>
                     </div>
                 </div>
