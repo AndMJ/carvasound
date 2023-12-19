@@ -18,7 +18,7 @@ import {
     ToggleButton,
     ToggleButtonGroup
 } from "@mui/material";
-import {DataGrid, GridActionsCellItem, GridToolbarContainer,} from '@mui/x-data-grid';
+import {DataGrid, GRID_CHECKBOX_SELECTION_COL_DEF, GridActionsCellItem, GridToolbarContainer,} from '@mui/x-data-grid';
 import {useOutletContext} from "react-router-dom";
 import client, {COLLECTION_GALLERY_ID, DATABASE_ID} from "../../../appwrite/appwrite.config.jsx";
 
@@ -38,10 +38,15 @@ const ToolbarButtons = () => {
         alert("filter table")
     };
 
+    const handleClick = () => {
+        alert("delete all selected")
+    };
+
+
     return (
         <>
             <GridToolbarContainer>
-                <ToggleButtonGroup
+                {/*<ToggleButtonGroup
                     color="primary"
                     value={SelectedButton}
                     exclusive
@@ -49,7 +54,11 @@ const ToolbarButtons = () => {
                 >
                     <ToggleButton value="Casamentos">Casamentos</ToggleButton>
                     <ToggleButton value="Batizados">Batizados</ToggleButton>
-                </ToggleButtonGroup>
+                </ToggleButtonGroup>*/}
+
+                <Button color="primary" startIcon={<DeleteIcon />} onClick={handleClick}>
+                    Delete multiple
+                </Button>
             </GridToolbarContainer>
         </>
     );
@@ -71,6 +80,8 @@ const Gallery = () => {
 
     const [processing, setProcessing] = useState(false);
     const [confirmDialogState, setConfirmDialogState ] = useState({"state": false, "data": {}});
+
+    const [checkboxSelectionState, setCheckboxSelectionState] = useState(false)
 
     useEffect(() =>  {
         formatGalleryData()
@@ -186,6 +197,9 @@ const Gallery = () => {
     }
 
     const columns = [
+        {
+            ...GRID_CHECKBOX_SELECTION_COL_DEF,
+        },
         { field: 'id', headerName: 'ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'image_id', headerName: 'Image ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'image', headerName: 'Image', width: 100, editable: false, filterable: false, sortable: false, disableColumnMenu: true,
@@ -218,7 +232,7 @@ const Gallery = () => {
                         icon={<EditIcon />}
                         label="Edit"
                         className="textPrimary"
-                        onClick={handleEditClick(row.id)}
+                        onClick={handleEditClick(row.id, row.category)}
                         color="inherit"
                     />,
                     <GridActionsCellItem
@@ -230,10 +244,11 @@ const Gallery = () => {
                 ];
             },
         },
+
     ];
 
-    const handleEditClick = (id) => () => {
-        alert("edit " + id)
+    const handleEditClick = (id, category) => () => {
+        alert("edit " + id + " cat " + category)
     };
 
     const handleDeleteClick = (id, image_id, imagePromise) => async () => {
@@ -314,24 +329,29 @@ const Gallery = () => {
             {/*// <!-- Content Row -->*/}
             <div className="row">
 
-                <div className="col-lg-8">
-                    <div className="card shadow mb-4">
-                        <div className="card-header py-3">
-                            <h6 className="m-0 font-weight-bold text-primary"><span><FaImages className={"me-1"}></FaImages></span> Upload images</h6>
+                <div className="col-lg-12">
+                    <div className="row">
+                        <div className="col-lg-8"> {/*TODO: add max height to the categories box*/}
+                            <div className="card shadow mb-4">
+                                <div className="card-header py-3">
+                                    <h6 className="m-0 font-weight-bold text-primary"><span><FaImages className={"me-1"}></FaImages></span> Upload images</h6>
+                                </div>
+                                <div className="card-body">
+                                    <Fileupload newToastNotif={newToastNotif}></Fileupload>
+                                </div>
+                            </div>
                         </div>
-                        <div className="card-body">
-                            <Fileupload newToastNotif={newToastNotif}></Fileupload>
-                        </div>
-                    </div>
-                </div>
 
-                <div className="col-lg-4">
-                    <div className="card shadow mb-4">
-                        <div className="card-header py-3">
-                            <h6 className="m-0 font-weight-bold text-primary"><span><FaList className={"me-1"}></FaList></span> New category</h6>
-                        </div>
-                        <div className="card-body">
-                            categories
+                        <div className="col-lg-4">
+                            <div className="card shadow mb-4">
+                                <div className="card-header py-3 d-flex justify-content-between align-items-center">
+                                    <h6 className="m-0 font-weight-bold text-primary"><span><FaList className={"me-1"}></FaList></span> New category</h6>
+                                    <a href="#" className=" btn btn-success btn-sm text-white">Add</a>
+                                </div>
+                                <div className="card-body">
+                                    categories
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -360,6 +380,10 @@ const Gallery = () => {
                                 </DialogActions>
                             </Dialog>
 
+
+                            {/*<Button onClick={() => setCheckboxSelectionState(!checkboxSelectionState)} >Categorizar</Button>*/}
+
+
                             <DataGrid
                                 sx={{
                                     //height: 700,
@@ -376,7 +400,7 @@ const Gallery = () => {
                                     /*sorting: {
                                         sortModel: [{ field: 'createdAt', sort: 'desc' }],
                                     },*/
-                                    pagination: { paginationModel: { pageSize: 5 } },
+                                    pagination: { paginationModel: { page: 0, pageSize: 5 } },
                                 }}
                                 pageSizeOptions={[5, 25, 50, 100]}
                                 loading={LoadingState}
@@ -391,9 +415,10 @@ const Gallery = () => {
                                 autoHeight
                                 //autoPageSize
                                 slots={{
-                                    //toolbar: ToolbarButtons,
+                                    toolbar: ToolbarButtons,
                                     loadingOverlay: LinearProgress,
                                 }}
+                                checkboxSelection//={checkboxSelectionState}
                                 disableRowSelectionOnClick
                                 disableColumnSelector
                                 //disableColumnMenu
