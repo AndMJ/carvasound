@@ -177,7 +177,6 @@ const Gallery = () => {
 
         let dataArray = []
         for (let row of gallery_data.documents) {
-            //TODO: database changed so categories are linked by relationship, so no need the get each category; apply to all
 
             const creAt = new Date(row.$createdAt)
             const upAt = new Date(row.$updatedAt)
@@ -246,6 +245,8 @@ const Gallery = () => {
         },
 
     ];
+
+    /*TODO: implement https://mui.com/x/react-data-grid/editing/#full-featured-crud*/
 
     const handleEditClick = (id, category) => () => {
         alert("edit " + id + " cat " + category)
