@@ -156,6 +156,16 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+    const updateGalleryByID = async (id, data) => {
+        try {
+            return database.updateDocument(DATABASE_ID, COLLECTION_GALLERY_ID, id, data);
+
+        } catch (error) {
+            console.error(error)
+            return error
+        }
+    }
+
     const deleteGalleryByID = async (gallery_id) => {
         try {
             return database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
@@ -256,6 +266,8 @@ export const AuthProvider = ({children}) => {
         getCategoryByID,
         getStorageImagesByID,
         getStorageImagesThumbnailByID,
+
+        updateGalleryByID,
 
         deleteGalleryByID,
         deleteStorageImagesByID,
