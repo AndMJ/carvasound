@@ -184,7 +184,7 @@ const Gallery = () => {
             dataArray.push({
                 id: row.$id,
                 //category_id: row.category.$id,
-                category: row.category,//row.category.name !== null ? row.category.name : "Sem categoria",
+                category: row.category !== null ? row.category.name : "Sem categoria"/*row.category*/,
                 image_id: row.image_id,
                 image: getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
                 /*{image_id: row.image_id, width: row.width}*/
@@ -209,13 +209,13 @@ const Gallery = () => {
         },
         //{ field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'category', headerName: 'Category', width: 180, editable: false,
-            renderCell: (params) => {
+            /*renderCell: (params) => {
                 if(params.row.category === null){
                     return "Sem categoria"
                 } else {
                     return params.row.category.name
                 }
-            }
+            }*/
         },
         { field: 'createdAt', headerName: 'Created At', type:"text", width: 180, editable: false},
         { field: 'updatedAt', headerName: 'Updated At', type:"text", width: 180, editable: false},
@@ -420,7 +420,7 @@ const Gallery = () => {
                                     loadingOverlay: LinearProgress,
                                 }}
                                 checkboxSelection//={checkboxSelectionState}
-                                disableRowSelectionOnClick
+                                //disableRowSelectionOnClick
                                 disableColumnSelector
                                 //disableColumnMenu
                             ></DataGrid>
