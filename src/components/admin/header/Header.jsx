@@ -200,7 +200,7 @@ const Header = () => {
                         <div className="dropdown-menu dropdown-menu-end shadow animated--grow-in" aria-labelledby="userDropdown">
                             <a className="dropdown-item" href="#">
                                 <i className="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                Profile
+                                Theme
                             </a>
                             {/*<a className="dropdown-item" href="#">
                                 <i className="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
