@@ -106,6 +106,22 @@ export const AuthProvider = ({children}) => {
         }
     }
 
+    const getGalleryListAdmin = async (pageSize, offset) => {
+        try {
+            return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+                [
+                    Query.limit(pageSize),
+                    Query.orderDesc('$createdAt'),
+                    Query.offset(offset)
+                ]
+            );
+
+        } catch (error) {
+            console.error(error)
+            return error
+        }
+    }
+
     const getGalleryListNoNull = async () => {
         try {
             return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
@@ -259,6 +275,7 @@ export const AuthProvider = ({children}) => {
         addStorageImage,
 
         getGalleryList,
+        getGalleryListAdmin,
         getGalleryListNoNull,
         getGalleryListNextPage,
         getGalleryListPrevPage,

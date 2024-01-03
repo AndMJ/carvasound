@@ -3,7 +3,12 @@ import "./gallery.css"
 import {useEffect, useState} from "react";
 import {FaImages, FaList, FaPlusCircle, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
+import {useOutletContext} from "react-router-dom";
+
 import Fileupload from "../../../components/upload/fileupload.jsx";
+import Category from "../category/Category.jsx";
+
+import client, {COLLECTION_GALLERY_ID, DATABASE_ID} from "../../../appwrite/appwrite.config.jsx";
 
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
@@ -19,8 +24,7 @@ import {
     ToggleButtonGroup
 } from "@mui/material";
 import {DataGrid, GRID_CHECKBOX_SELECTION_COL_DEF, GridActionsCellItem, GridToolbarContainer,} from '@mui/x-data-grid';
-import {useOutletContext} from "react-router-dom";
-import client, {COLLECTION_GALLERY_ID, DATABASE_ID} from "../../../appwrite/appwrite.config.jsx";
+
 
 const ToolbarButtons = () => {
     const [SelectedButton, setSelectedButton] = useState();
@@ -72,30 +76,104 @@ const Gallery = () => {
     let _URL = window.URL || window.webkitURL;
     const [newToastNotif] = useOutletContext()
 
-    const {getGalleryList, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
-
-    const [LoadingState, setLoadingState] = useState(true);
-    const [rows, setRows] = useState([]);
-    //console.log(rows)
+    const {getGalleryListAdmin, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
 
     const [processing, setProcessing] = useState(false);
     const [confirmDialogState, setConfirmDialogState ] = useState({"state": false, "data": {}});
 
     const [checkboxSelectionState, setCheckboxSelectionState] = useState(false)
 
-    useEffect(() =>  {
-        formatGalleryData()
+    const [pageState, setPageState] = useState({
+        isLoading: true,
+        data: [],
+        total: 0,
+        page: 0,
+        pageSize: 10
+    })
+
+    /*useEffect(() =>  {
+        /!*formatGalleryData()
             .then((response) => {
                 if (response.length > 0){
                     setRows(response)
                 }
                 setLoadingState(false)
-            })
+            })*!/
+
+        (async () => {
+
+            let dataArray = {
+                data:[],
+                total: 0
+            }
+
+            const gallery_data = await getGalleryList(pageState.pageSize)
+            dataArray.total = gallery_data.total
+            console.log(gallery_data)
+
+            for (let row of gallery_data.documents) {
+
+                const creAt = new Date(row.$createdAt)
+                const upAt = new Date(row.$updatedAt)
+
+                dataArray.data.push({
+                    id: row.$id,
+                    //category_id: row.category.$id,
+                    category: row.category !== null ? row.category.name : "Sem categoria"/!*row.category*!/,
+                    image_id: row.image_id,
+                    image: getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
+                    /!*{image_id: row.image_id, width: row.width}*!/
+                    createdAt: creAt.toLocaleString('en-GB'),
+                    updatedAt: upAt.toLocaleString('en-GB'),
+                })
+            }
+            //setRows(dataArray)
+            setPageState(old => ({ ...old, isLoading: false, data: dataArray.data, total: dataArray.total }))
+            setLoadingState(false)
+        })();
 
         return () => {
             setRows([]);
         };
-    }, [])
+    }, [])*/
+
+
+
+    const fetchData = async () => {
+        setPageState(old => ({...old, isLoading: true}))
+
+        let dataArray = {
+            data:[],
+            total: 0
+        }
+
+        const nextpage = await getGalleryListAdmin(pageState.pageSize, pageState.pageSize * pageState.page)
+        dataArray.total = nextpage.total
+        console.log(nextpage)
+
+        for (let row of nextpage.documents) {
+
+            const creAt = new Date(row.$createdAt)
+            const upAt = new Date(row.$updatedAt)
+
+            dataArray.data.push({
+                id: row.$id,
+                //category_id: row.category.$id,
+                category: row.category !== null ? row.category.name : "Sem categoria"/*row.category*/,
+                image_id: row.image_id,
+                image: getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
+                /*{image_id: row.image_id, width: row.width}*/
+                createdAt: creAt.toLocaleString('en-GB'),
+                updatedAt: upAt.toLocaleString('en-GB'),
+            })
+        }
+
+        setPageState(old => ({ ...old, isLoading: false, data: dataArray.data, total: dataArray.total }))
+    };
+
+    useEffect(() => {
+        fetchData()
+    }, [pageState.page, pageState.pageSize])
 
     useEffect(() => {
         const subscription = client.subscribe(`databases.${DATABASE_ID}.collections.${COLLECTION_GALLERY_ID}.documents`, response => {
@@ -108,14 +186,7 @@ const Gallery = () => {
             ){
                 console.info("DB TRIGGER: ", response.payload);
 
-                setLoadingState(true)
-                formatGalleryData()
-                    .then((response) => {
-                        if (response.length > 0){
-                            setRows(response)
-                        }
-                        setLoadingState(false)
-                    })
+                fetchData()
             }
         });
 
@@ -171,8 +242,9 @@ const Gallery = () => {
         )
     }
 
-    const formatGalleryData = async () => {
+    /*const formatGalleryData = async () => {
         const gallery_data = await getGalleryList()
+        setRowCountState(gallery_data.total)
         console.log(gallery_data)
 
         let dataArray = []
@@ -184,16 +256,16 @@ const Gallery = () => {
             dataArray.push({
                 id: row.$id,
                 //category_id: row.category.$id,
-                category: row.category !== null ? row.category.name : "Sem categoria"/*row.category*/,
+                category: row.category !== null ? row.category.name : "Sem categoria"/!*row.category*!/,
                 image_id: row.image_id,
                 image: getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
-                /*{image_id: row.image_id, width: row.width}*/
+                /!*{image_id: row.image_id, width: row.width}*!/
                 createdAt: creAt.toLocaleString('en-GB'),
                 updatedAt: upAt.toLocaleString('en-GB'),
             })
         }
         return dataArray
-    }
+    }*/
 
     const columns = [
         {
@@ -343,17 +415,7 @@ const Gallery = () => {
                             </div>
                         </div>
 
-                        <div className="col-lg-4">
-                            <div className="card shadow mb-4">
-                                <div className="card-header py-3 d-flex justify-content-between align-items-center">
-                                    <h6 className="m-0 font-weight-bold text-primary"><span><FaList className={"me-1"}></FaList></span> New category</h6>
-                                    <a href="#" className=" btn btn-success btn-sm text-white">Add</a>
-                                </div>
-                                <div className="card-body">
-                                    categories
-                                </div>
-                            </div>
-                        </div>
+                        <Category></Category>
                     </div>
                 </div>
 
@@ -397,32 +459,33 @@ const Gallery = () => {
                                         color: 'text.primary',
                                     }
                                 }}
-                                initialState={{
-                                    /*sorting: {
-                                        sortModel: [{ field: 'createdAt', sort: 'desc' }],
-                                    },*/
-                                    pagination: { paginationModel: { page: 0, pageSize: 5 } },
-                                }}
-                                pageSizeOptions={[5, 25, 50, 100]}
-                                loading={LoadingState}
+                                loading={pageState.isLoading}
                                 columnVisibilityModel={ {
                                     id: false,
                                     image_id: false,
                                     category_id: false
                                 } }
                                 rowHeight={100}
-                                rows={rows}
                                 columns={columns}
                                 autoHeight
-                                //autoPageSize
                                 slots={{
                                     toolbar: ToolbarButtons,
                                     loadingOverlay: LinearProgress,
                                 }}
                                 checkboxSelection//={checkboxSelectionState}
-                                //disableRowSelectionOnClick
                                 disableColumnSelector
-                                //disableColumnMenu
+                                disableRowSelectionOnClick
+
+                                pagination
+                                paginationModel={pageState}
+                                rows={pageState.data}
+                                rowCount={pageState.total}
+                                pageSizeOptions={[10, 25, 50, 100]}
+                                paginationMode="server"
+                                onPaginationModelChange={modelChange => {
+                                    setPageState(old => ({ ...old, page: modelChange.page, pageSize: modelChange.pageSize }))
+                                }}
+                                keepNonExistentRowsSelected
                             ></DataGrid>
 
                         </div>
