@@ -8,11 +8,16 @@ import {useOutletContext} from "react-router-dom";
 import Fileupload from "../../../components/upload/fileupload.jsx";
 import Category from "../category/Category.jsx";
 
-import client, {COLLECTION_GALLERY_ID, DATABASE_ID} from "../../../appwrite/appwrite.config.jsx";
+import client, {
+    COLLECTION_CATEGORY_ID,
+    COLLECTION_GALLERY_ID,
+    DATABASE_ID
+} from "../../../appwrite/appwrite.config.jsx";
 
 import Button from '@mui/material/Button';
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/DeleteOutlined';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CategoryIcon from '@mui/icons-material/Category';
 import {
     CircularProgress,
     Dialog,
@@ -25,49 +30,6 @@ import {
 } from "@mui/material";
 import {DataGrid, GRID_CHECKBOX_SELECTION_COL_DEF, GridActionsCellItem, GridToolbarContainer,} from '@mui/x-data-grid';
 
-
-const ToolbarButtons = () => {
-    const [SelectedButton, setSelectedButton] = useState();
-
-    const handleSelectedButton = (event, selected) => {
-        setSelectedButton(selected);
-        console.log(selected)
-    };
-
-    const handleNewCategory = () => {
-        alert("add cat")
-    };
-
-    const handleCategoryFilter = () => {
-        alert("filter table")
-    };
-
-    const handleClick = () => {
-        alert("delete all selected")
-    };
-
-
-    return (
-        <>
-            <GridToolbarContainer>
-                {/*<ToggleButtonGroup
-                    color="primary"
-                    value={SelectedButton}
-                    exclusive
-                    onChange={handleSelectedButton}
-                >
-                    <ToggleButton value="Casamentos">Casamentos</ToggleButton>
-                    <ToggleButton value="Batizados">Batizados</ToggleButton>
-                </ToggleButtonGroup>*/}
-
-                <Button color="primary" startIcon={<DeleteIcon />} onClick={handleClick}>
-                    Delete multiple
-                </Button>
-            </GridToolbarContainer>
-        </>
-    );
-}
-
 const Gallery = () => {
     useEffect(() => {
         document.title = "Carvasound - Gallery";
@@ -76,12 +38,35 @@ const Gallery = () => {
     let _URL = window.URL || window.webkitURL;
     const [newToastNotif] = useOutletContext()
 
-    const {getGalleryListAdmin, getStorageImagesByID, getCategoryByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
+    const {addCategory, getCategoryList, getCategoryByID, deleteCategoryByID, getGalleryListAdmin, getStorageImagesByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
 
-    const [processing, setProcessing] = useState(false);
-    const [confirmDialogState, setConfirmDialogState ] = useState({"state": false, "data": {}});
+    const [categoriesList, setCategoriesList] = useState([])
+     const fetchCategories = async () => {
+        const categories = await getCategoryList();
+        setCategoriesList(categories.documents)
+    }
+    useEffect(() => {
+        fetchCategories()
+    }, []);
+    useEffect(() => {
+        const subscription = client.subscribe(`databases.${DATABASE_ID}.collections.${COLLECTION_CATEGORY_ID}.documents`, response => {
+            // Callback will be executed on changes for all files.
 
-    const [checkboxSelectionState, setCheckboxSelectionState] = useState(false)
+            if(
+                response.events.includes("databases.*.collections.*.documents.*.create") ||
+                response.events.includes("databases.*.collections.*.documents.*.update") ||
+                response.events.includes("databases.*.collections.*.documents.*.delete")
+            ){
+                console.info("DB TRIGGER: ", response.payload);
+
+                fetchCategories()
+            }
+        });
+
+        return () => {
+            subscription();
+        };
+    }, []);
 
     const [pageState, setPageState] = useState({
         isLoading: true,
@@ -90,55 +75,6 @@ const Gallery = () => {
         page: 0,
         pageSize: 10
     })
-
-    /*useEffect(() =>  {
-        /!*formatGalleryData()
-            .then((response) => {
-                if (response.length > 0){
-                    setRows(response)
-                }
-                setLoadingState(false)
-            })*!/
-
-        (async () => {
-
-            let dataArray = {
-                data:[],
-                total: 0
-            }
-
-            const gallery_data = await getGalleryList(pageState.pageSize)
-            dataArray.total = gallery_data.total
-            console.log(gallery_data)
-
-            for (let row of gallery_data.documents) {
-
-                const creAt = new Date(row.$createdAt)
-                const upAt = new Date(row.$updatedAt)
-
-                dataArray.data.push({
-                    id: row.$id,
-                    //category_id: row.category.$id,
-                    category: row.category !== null ? row.category.name : "Sem categoria"/!*row.category*!/,
-                    image_id: row.image_id,
-                    image: getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
-                    /!*{image_id: row.image_id, width: row.width}*!/
-                    createdAt: creAt.toLocaleString('en-GB'),
-                    updatedAt: upAt.toLocaleString('en-GB'),
-                })
-            }
-            //setRows(dataArray)
-            setPageState(old => ({ ...old, isLoading: false, data: dataArray.data, total: dataArray.total }))
-            setLoadingState(false)
-        })();
-
-        return () => {
-            setRows([]);
-        };
-    }, [])*/
-
-
-
     const fetchData = async () => {
         setPageState(old => ({...old, isLoading: true}))
 
@@ -170,11 +106,9 @@ const Gallery = () => {
 
         setPageState(old => ({ ...old, isLoading: false, data: dataArray.data, total: dataArray.total }))
     };
-
     useEffect(() => {
         fetchData()
     }, [pageState.page, pageState.pageSize])
-
     useEffect(() => {
         const subscription = client.subscribe(`databases.${DATABASE_ID}.collections.${COLLECTION_GALLERY_ID}.documents`, response => {
             // Callback will be executed on changes for all files.
@@ -194,6 +128,11 @@ const Gallery = () => {
             subscription();
         };
     }, []);
+
+    const [processing, setProcessing] = useState(false);
+    const [confirmDialogState, setConfirmDialogState ] = useState({"state": false, "data": {}});
+
+    const [selectedTableRows, setSelectedTableRows] = useState([])
 
     /*const RenderCellImage = ({image_id, image_width}) => {
         const [image, setImage] = useState()
@@ -241,31 +180,6 @@ const Gallery = () => {
             </div>
         )
     }
-
-    /*const formatGalleryData = async () => {
-        const gallery_data = await getGalleryList()
-        setRowCountState(gallery_data.total)
-        console.log(gallery_data)
-
-        let dataArray = []
-        for (let row of gallery_data.documents) {
-
-            const creAt = new Date(row.$createdAt)
-            const upAt = new Date(row.$updatedAt)
-
-            dataArray.push({
-                id: row.$id,
-                //category_id: row.category.$id,
-                category: row.category !== null ? row.category.name : "Sem categoria"/!*row.category*!/,
-                image_id: row.image_id,
-                image: getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
-                /!*{image_id: row.image_id, width: row.width}*!/
-                createdAt: creAt.toLocaleString('en-GB'),
-                updatedAt: upAt.toLocaleString('en-GB'),
-            })
-        }
-        return dataArray
-    }*/
 
     const columns = [
         {
@@ -391,6 +305,59 @@ const Gallery = () => {
 
     };
 
+    const ToolbarButtons = () => {
+        const [SelectedButton, setSelectedButton] = useState();
+
+        const handleSelectedButton = (event, selected) => {
+            setSelectedButton(selected);
+            console.log(selected)
+        };
+
+        const handleNewCategory = () => {
+            alert("add cat")
+        };
+
+        const handleCategoryFilter = () => {
+            alert("filter table")
+        };
+
+        const handleClickDelete = () => {
+            //alert("delete all selected")
+
+        };
+
+        const handleClickCategorize = () => {
+            alert("categorize")
+        };
+
+        return (
+            <>
+                {selectedTableRows.length > 0 &&
+                    <GridToolbarContainer>
+                        {/*<ToggleButtonGroup
+                        color="primary"
+                        value={SelectedButton}
+                        exclusive
+                        onChange={handleSelectedButton}
+                    >
+                        <ToggleButton value="Casamentos">Casamentos</ToggleButton>
+                        <ToggleButton value="Batizados">Batizados</ToggleButton>
+                    </ToggleButtonGroup>*/}
+
+                        <Button color="primary" startIcon={<DeleteIcon />} onClick={handleClickDelete}>
+                            Apagar
+                        </Button>
+
+                        <Button color="primary" startIcon={<CategoryIcon />} onClick={handleClickCategorize}>
+                            Categorizar
+                        </Button>
+                    </GridToolbarContainer>
+                }
+            </>
+
+        )
+    }
+
     return (
         <>
             {/*// <!-- Page Heading -->*/}
@@ -404,18 +371,18 @@ const Gallery = () => {
 
                 <div className="col-lg-12">
                     <div className="row">
-                        <div className="col-lg-8"> {/*TODO: add max height to the categories box*/}
+                        <div className="col-lg-8"> {/*TODO: add max height to the categories box?*/}
                             <div className="card shadow mb-4">
                                 <div className="card-header py-3">
                                     <h6 className="m-0 font-weight-bold text-primary"><span><FaImages className={"me-1"}></FaImages></span> Upload images</h6>
                                 </div>
                                 <div className="card-body">
-                                    <Fileupload newToastNotif={newToastNotif}></Fileupload>
+                                    <Fileupload categories={categoriesList} newToastNotif={newToastNotif}></Fileupload>
                                 </div>
                             </div>
                         </div>
 
-                        <Category></Category>
+                        <Category newToastNotif={newToastNotif} addCategory={addCategory} categoriesList={categoriesList} deleteCategoryByID={deleteCategoryByID}></Category>
                     </div>
                 </div>
 
@@ -431,21 +398,17 @@ const Gallery = () => {
                                 TransitionProps={{ onEntered: () => {} }}
                                 open={confirmDialogState.state}
                             >
-                                <DialogTitle>Confirm deletion</DialogTitle>
+                                <DialogTitle>Delete Confirmation</DialogTitle>
                                 <DialogContent dividers>
                                     <img src={confirmDialogState.data.image} className="img-thumbnail mb-3" alt={"image thumbnail"}/>
-                                    <h5 className={"mb-1"}>Are you sure?</h5>
-                                    <p className={""}>Pressing 'Yes' will <span className={"text-danger"}>delete</span> this image from the platform.</p>
+                                    <h5 className={"mb-1"}>Are you sure you want to <span className={"text-danger"}>delete</span>?</h5>
+                                    <p className={""}>Pressing 'Yes' will <span className={"text-danger"}>delete</span> this image from system.</p>
                                 </DialogContent>
                                 <DialogActions>
                                     <Button onClick={handle_ConfirmDialog_No}>No</Button>
                                     <Button onClick={() => {handle_ConfirmDialog_Yes(confirmDialogState.data.id, confirmDialogState.data.image_id)}} disabled={processing} >{processing ? <CircularProgress color="inherit" /> : "Yes" }</Button>
                                 </DialogActions>
                             </Dialog>
-
-
-                            {/*<Button onClick={() => setCheckboxSelectionState(!checkboxSelectionState)} >Categorizar</Button>*/}
-
 
                             <DataGrid
                                 sx={{
@@ -472,7 +435,7 @@ const Gallery = () => {
                                     toolbar: ToolbarButtons,
                                     loadingOverlay: LinearProgress,
                                 }}
-                                checkboxSelection//={checkboxSelectionState}
+                                checkboxSelection
                                 disableColumnSelector
                                 disableRowSelectionOnClick
 
@@ -486,6 +449,10 @@ const Gallery = () => {
                                     setPageState(old => ({ ...old, page: modelChange.page, pageSize: modelChange.pageSize }))
                                 }}
                                 keepNonExistentRowsSelected
+
+                                onRowSelectionModelChange={(selectedRows) => {
+                                    setSelectedTableRows(selectedRows)
+                                }}
                             ></DataGrid>
 
                         </div>
@@ -495,6 +462,7 @@ const Gallery = () => {
             </div>
         </>
     )
+
 }
 
 export default Gallery;

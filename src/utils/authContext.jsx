@@ -196,6 +196,16 @@ export const AuthProvider = ({children}) => {
      * Database > Production
      * Collection > category
      */
+    const addCategory = async (category_json) => {
+        try {
+            return database.createDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, GenerateID, category_json);
+
+        } catch (error) {
+            console.error(error)
+            return error
+        }
+    }
+
     const getCategoryList = async () => {
         try {
             return database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID,
@@ -216,6 +226,16 @@ export const AuthProvider = ({children}) => {
                 //     Query.limit(100),
                 // ]
             );
+
+        } catch (error) {
+            console.error(error)
+            return error
+        }
+    }
+
+    const deleteCategoryByID = async (category_id) => {
+        try {
+            return database.deleteDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id)
 
         } catch (error) {
             console.error(error)
@@ -272,6 +292,7 @@ export const AuthProvider = ({children}) => {
         handleLogout,
 
         addGalleryImages,
+        addCategory,
         addStorageImage,
 
         getGalleryList,
@@ -287,6 +308,7 @@ export const AuthProvider = ({children}) => {
         updateGalleryByID,
 
         deleteGalleryByID,
+        deleteCategoryByID,
         deleteStorageImagesByID,
     }
 

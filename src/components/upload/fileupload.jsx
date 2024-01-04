@@ -10,12 +10,12 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import {useAuth} from "../../utils/authContext.jsx";
 import {CircularProgress, LinearProgress} from "@mui/material";
 
-function Fileupload({newToastNotif}) {
+function Fileupload({newToastNotif, categories}) {
     let _URL = window.URL || window.webkitURL;
     const {addGalleryImages, addStorageImage, getCategoryList} = useAuth();
 
     const [files, setFiles] = useState([])
-    const [categories, setCategories] = useState([])
+    //const [categories, setCategories] = useState([])
 
     const [uploading, setUploading] = useState(false)
 
@@ -33,7 +33,7 @@ function Fileupload({newToastNotif}) {
         }
     })
 
-    useEffect(() => {
+    /*useEffect(() => {
         getCategories()
             .then((response) => {
                 setCategories(response)
@@ -47,7 +47,7 @@ function Fileupload({newToastNotif}) {
     const getCategories = async () => {
         const categories = await getCategoryList()
         return categories.documents
-    }
+    }*/
 
 
     const imageDimensions = file =>
