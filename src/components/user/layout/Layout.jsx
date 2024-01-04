@@ -1,7 +1,7 @@
 import Header from "../header/Header.jsx";
 import {Outlet} from "react-router-dom";
 import Footer from "../footer/Footer.jsx";
-import {useEffect, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import { motion } from "framer-motion"
 
 function Layout(){

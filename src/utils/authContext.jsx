@@ -23,19 +23,10 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null)
 
     useEffect(() => {
-        getUserOnLoad() //TODO: session cookies giving an error
-            /*.then((response) => {
-                if (response) {
-                    setUser(response)
-                    setLoading(false)
-                }
-            }, (error) => {
-                console.log(error)
-            })*/
-        //setLoading(false)
+        getUserOnLoad() //TODO: session cookies giving an error?, not anymore i think
     },[])
 
-    const getUserOnLoad = async () => { //TODO: handle all possible errors from API, like its done here
+    const getUserOnLoad = async () => {
         try {
             const userdata = await account.get()
             setUser(userdata)
@@ -47,7 +38,7 @@ export const AuthProvider = ({children}) => {
         setLoading(false)
     }
 
-    const handleLogin = async (event, credentials) => {
+    const handleLogin = async (event, credentials) => { //TODO: handle all possible errors from API, like its done here, try{}catch{} await
         event.preventDefault()
 
         try {
@@ -57,7 +48,7 @@ export const AuthProvider = ({children}) => {
 
             navigate("/admin")
         } catch (error) {
-            console.error(error)
+            //console.error(error)
             return error
         }
     }

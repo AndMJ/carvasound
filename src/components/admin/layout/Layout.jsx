@@ -4,7 +4,6 @@ import {Navigate, Outlet} from "react-router-dom";
 import Header from "../header/Header.jsx";
 import Sidebar from "../sidebar/Sidebar.jsx";
 import Footer from "../Footer/Footer.jsx";
-import {useEffect, useState} from "react";
 import {useAuth} from "../../../utils/authContext.jsx";
 
 import { ToastContainer, toast } from 'react-toastify';
@@ -29,7 +28,7 @@ function Layout(){
         if (type === "error") {
             toast.error(message, {
                 position: "top-right",
-                autoClose: 10000,
+                autoClose: 10000, //TODO: change delay to normal
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,

@@ -22,7 +22,6 @@ TODO: [GENERAL]
  - FIX RENDER.COM IMPORT CHUNKS BIGGER THAN 500Mb, separate admin imports from user, diff files
  - see about translations, and main language has to be Portuguese, see https://react.i18next.com/
  - see React Motion Framer for animations
- - FIX authContext loader
  - appwrite network errors, sometimes it works, some it doesnt ???
 */
 
@@ -34,7 +33,7 @@ TODO: [USER]
 /*
 TODO: [ADMIN]
  - navbar toggle button not working
- - login error message
+ - make a way to save user preferences like theme, login remember password
 */
 
 function App() {
