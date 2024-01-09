@@ -28,7 +28,7 @@ function Layout(){
         if (type === "error") {
             toast.error(message, {
                 position: "top-right",
-                autoClose: 10000, //TODO: change delay to normal
+                autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
