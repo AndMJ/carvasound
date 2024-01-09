@@ -223,13 +223,14 @@ function GalleryBox(){
         <>
             {/*
             TODO:   - pagination is slow, make it so the image becomes a component and loads images from db dynamically
-                    - better "gallery loading each image"
+                    - better "gallery loading each image" animations
                     DONE? - responsive togglebuttons, https://mui.com/material-ui/react-grid/#grid-with-multiple-breakpoints
             */}
             <div className="row gx-4 gx-lg-5 justify-content-center mb-5">
-                <div className="col-lg-8">
+                <div className="col-auto"> {/*col-lg-8*/}
                     <ToggleButtonGroup
                         sx={{
+                            //gap: 1,
                             display: "flex",
                             flexWrap: 'wrap',
                             justifyContent: 'center',
