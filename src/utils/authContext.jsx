@@ -31,9 +31,7 @@ export const AuthProvider = ({children}) => {
             const userdata = await account.get()
             setUser(userdata)
         } catch (error) {
-            console.error(error)
-            //await account.deleteSession("current")
-            //return error
+            //console.error(error)
         }
         setLoading(false)
     }
@@ -226,7 +224,7 @@ export const AuthProvider = ({children}) => {
 
     const deleteCategoryByID = async (category_id) => {
         try {
-            return database.deleteDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id)
+            return await database.deleteDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id)
 
         } catch (error) {
             console.error(error)
