@@ -76,7 +76,6 @@ function Login () {
                                             </div>
                                             <div className="card-body">
                                                 <form onSubmit={(event) => {handleLoginErrors(event)}}>
-                                                {/*<form onSubmit={(event) => {handleLogin(event,credencials)}}>*/}
                                                     <div className="form-floating mb-3">
                                                         <input className="form-control text-black" id="inputEmail" name="email" type="email" placeholder="name@example.com"
                                                                value={credencials.email} onChange={handleInputChange} disabled={isLoading}/>
