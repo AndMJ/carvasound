@@ -208,6 +208,22 @@ export const AuthProvider = ({children}) => {
             return error
         }
     }
+
+    const getCategoryListNotNull = async () => {
+        try {
+            return database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID,
+                [
+                    Query.limit(100),
+                    Query.isNotNull("name"),
+                ]
+            );
+
+        } catch (error) {
+            console.error(error)
+            return error
+        }
+    }
+
     const getCategoryByID = async (category_id) => {
         try {
             return database.getDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id,
@@ -215,6 +231,16 @@ export const AuthProvider = ({children}) => {
                 //     Query.limit(100),
                 // ]
             );
+
+        } catch (error) {
+            console.error(error)
+            return error
+        }
+    }
+
+    const updateCategoryByID = async (id, data) => {
+        try {
+            return database.updateDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, id, data);
 
         } catch (error) {
             console.error(error)
@@ -290,11 +316,13 @@ export const AuthProvider = ({children}) => {
         getGalleryListNextPage,
         getGalleryListPrevPage,
         getCategoryList,
+        //getCategoryListNotNull, //TODO: get only the categories that have at least 1 image associated
         getCategoryByID,
         getStorageImagesByID,
         getStorageImagesThumbnailByID,
 
         updateGalleryByID,
+        updateCategoryByID,
 
         deleteGalleryByID,
         deleteCategoryByID,
