@@ -323,7 +323,7 @@ const Gallery = () => {
 
         const handleClickDelete = () => {
             //alert("delete all selected")
-
+            alert(selectedTableRows)
         };
 
         const handleClickCategorize = () => {
