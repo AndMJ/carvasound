@@ -38,12 +38,15 @@ const Gallery = () => {
     let _URL = window.URL || window.webkitURL;
     const [newToastNotif] = useOutletContext()
 
-    const {addCategory, getCategoryList, getCategoryByID, deleteCategoryByID, getGalleryListAdmin, getStorageImagesByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
+    const {addCategory, getCategoryList, updateCategoryByID, getCategoryByID, deleteCategoryByID, getGalleryListAdmin, getStorageImagesByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
 
     const [categoriesList, setCategoriesList] = useState([])
+    const [IsLoadingCategories, setIsLoadingCategories] = useState(false)
      const fetchCategories = async () => {
+        setIsLoadingCategories(true)
         const categories = await getCategoryList();
         setCategoriesList(categories.documents)
+        setIsLoadingCategories(false)
     }
     useEffect(() => {
         fetchCategories()
@@ -382,7 +385,7 @@ const Gallery = () => {
                             </div>
                         </div>
 
-                        <Category newToastNotif={newToastNotif} addCategory={addCategory} categoriesList={categoriesList} deleteCategoryByID={deleteCategoryByID}></Category>
+                        <Category IsLoadingCategories={IsLoadingCategories} setIsLoadingCategories={setIsLoadingCategories} updateCategoryByID={updateCategoryByID} newToastNotif={newToastNotif} addCategory={addCategory} categoriesList={categoriesList} deleteCategoryByID={deleteCategoryByID}></Category>
                     </div>
                 </div>
 
