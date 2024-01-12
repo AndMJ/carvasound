@@ -5,6 +5,9 @@ import {Link, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useAuth} from "../../../utils/authContext.jsx";
 
+import appLogo from "/logoWhite.png"
+import {FaAngleLeft, FaAngleRight} from "react-icons/fa6";
+
 const Sidebar = () => {
 
     const location = useLocation();
@@ -17,14 +20,20 @@ const Sidebar = () => {
 
     const {user} = useAuth()
 
+    const handleEvent = (e) => {
+        e.preventDefault();
+        //document.body.classList.toggle('sidebar-toggled');
+        document.getElementsByClassName("sidebar")[0].classList.toggle('toggled');
+    }
+
     return (
         <>
             <Nav className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" as="ul" activeKey={url}>
 
                 {/*// <!-- Sidebar - Brand -->*/}
                 <a className="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                    <div className="sidebar-brand-icon rotate-n-15">
-                        <i className="fas fa-laugh-wink"></i>
+                    <div className="sidebar-brand-icon">
+                        <img src={appLogo} width={40} />
                     </div>
                     <div className="sidebar-brand-text mx-3">Carvasound</div>
                 </a>
@@ -58,11 +67,11 @@ const Sidebar = () => {
                 </Nav.Item>
 
                 {/*// <!-- Divider -->*/}
-                <hr className="sidebar-divider d-none d-md-block"/>
+                {/*<hr className="sidebar-divider d-none d-md-block"/>*/}
 
                 {/*// <!-- Sidebar Toggler (Sidebar) -->*/}
                 {/*<div className="text-center d-none d-md-inline">
-                    <button className="rounded-circle border-0" id="sidebarToggle"></button>
+                    <button onClick={handleEvent} className="rounded-circle border-0" id="sidebarToggle"></button>
                 </div>*/}
 
             </Nav>
