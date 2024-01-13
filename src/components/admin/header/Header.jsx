@@ -9,7 +9,8 @@ const Header = () => {
     const {user, handleLogout} = useAuth()
     const handleEvent = (e) => {
         e.preventDefault();
-        document.body.classNameList.toggle('sb-sidenav-toggled');
+        //document.body.classList.toggle('sidebar-toggled');
+        document.getElementsByClassName("sidebar")[0].classList.toggle('toggled');
     }
 
     return (
@@ -35,7 +36,7 @@ const Header = () => {
             <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                 {/*// <!-- Sidebar Toggle (Topbar) -->*/}
-                <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle mx-3 d-flex justify-content-center align-items-center">
+                <button onClick={handleEvent} id="sidebarToggleTop" className="btn btn-link rounded-circle mx-3 d-flex justify-content-center align-items-center"> {/*d-md-none*/}
                     <FaBars></FaBars>
                 </button>
 

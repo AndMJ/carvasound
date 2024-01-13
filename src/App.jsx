@@ -23,6 +23,7 @@ TODO: [GENERAL]
  - see about translations, and main language has to be Portuguese, see https://react.i18next.com/
  - see React Motion Framer for animations
  - appwrite network errors, sometimes it works, some it doesnt ???
+ - when all finished, comment all .logs and debug code
 */
 
 /*

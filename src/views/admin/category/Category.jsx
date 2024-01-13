@@ -2,8 +2,8 @@ import "./category.css"
 import {FaImages, FaList, FaTable} from "react-icons/fa";
 
 import {useEffect, useState} from "react";
-import {FaX} from "react-icons/fa6";
-import {Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
+import {FaArrowRightLong, FaX} from "react-icons/fa6";
+import {Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress} from "@mui/material";
 import Button from "@mui/material/Button";
 
 
@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
    - modal action confirmation on CRUD
    - make modals look "better"
 */
-const Category = ({addCategory, categoriesList, deleteCategoryByID, newToastNotif}) => {
+const Category = ({addCategory, updateCategoryByID, categoriesList, deleteCategoryByID, newToastNotif, IsLoadingCategories, setIsLoadingCategories}) => {
     const regex = /^[a-zA-Z0-9àáãâÀÁÃÂèéêÈÉÊìíîÌÍÎòóõôÒÓÕÔùúûÙÚÛ]*$/
 
     const [processing, setProcessing] = useState(false)
@@ -25,7 +25,20 @@ const Category = ({addCategory, categoriesList, deleteCategoryByID, newToastNoti
     const [editCategoryData, setEditCategoryData] = useState([])
 
     async function handleCategoryAdd() {
+        console.log(addCategoryName.length)
         setProcessing(true)
+        if(addCategoryName === "" || addCategoryName.length === 0){
+            newToastNotif("error", "Name cannot be empty.")
+            setProcessing(false)
+            return
+        }
+
+        if(addCategoryName.length >= 30){
+            newToastNotif("error", "Name cannot be larger than 30 letters.")
+            setProcessing(false)
+            return
+        }
+
         const res = await addCategory({name: addCategoryName})
         console.log(res)
         setProcessing(false)
@@ -37,6 +50,32 @@ const Category = ({addCategory, categoriesList, deleteCategoryByID, newToastNoti
         newToastNotif("success", "Created with success.")
         setAddModalShown(false)
 
+    }
+
+    async function handleCategoryUpdate(category_id) {
+        setProcessing(true)
+        if(editNewCategoryName === "" || editNewCategoryName.length === 0){
+            newToastNotif("error", "Name cannot be empty.")
+            setProcessing(false)
+            return
+        }
+
+        if(editNewCategoryName.length >= 30){
+            newToastNotif("error", "Name cannot be larger than 30 letters.")
+            setProcessing(false)
+            return
+        }
+
+        const res = await updateCategoryByID(category_id, {name: editNewCategoryName})
+        console.log(res)
+        setProcessing(false)
+
+        if(res.code === (403 || 401)){ //forbidden
+            newToastNotif("error", res.message)
+            return
+        }
+        newToastNotif("success", "Category edited with success.")
+        setEditModalShown(false)
     }
 
     async function handleCategoryDelete(category_id) {
@@ -58,7 +97,7 @@ const Category = ({addCategory, categoriesList, deleteCategoryByID, newToastNoti
         <>
             {/*ADD CATEGORY MODAL/DIALOG*/}
             <Dialog
-                maxWidth="xs"
+                maxWidth={"xs"}
                 TransitionProps={{ onEntered: () => {}, onExited: () => {setAddCategoryName("")} }}
                 open={addModalshown}
             >
@@ -76,13 +115,13 @@ const Category = ({addCategory, categoriesList, deleteCategoryByID, newToastNoti
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setAddModalShown(false)}>Cancel</Button>
-                    <Button onClick={() => handleCategoryAdd()} disabled={processing} >{processing ? <CircularProgress color="inherit" /> : "Add" }</Button>
+                    <Button onClick={() => handleCategoryAdd()} disabled={processing} >{processing ? <CircularProgress size={24} color="inherit"  /> : "Add" }</Button>
                 </DialogActions>
             </Dialog>
 
             {/*EDIT CATEGORY MODAL/DIALOG*/}
             <Dialog
-                maxWidth="xs"
+                maxWidth={"xs"}
                 TransitionProps={{ onEntered: () => {}, onExited: () => {setEditNewCategoryName("")} }}
                 open={editModalshown}
             >
@@ -93,6 +132,11 @@ const Category = ({addCategory, categoriesList, deleteCategoryByID, newToastNoti
                             <Chip
                                 //color={"primary"}
                                 label={editCategoryData.name}
+                            />
+                            <FaArrowRightLong className={"mx-3"}/>
+                            <Chip
+                                //color={"primary"}
+                                label={editNewCategoryName}
                             />
                         </div>
 
@@ -106,8 +150,8 @@ const Category = ({addCategory, categoriesList, deleteCategoryByID, newToastNoti
                     </div>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setEditModalShown(false)}>No</Button>
-                    {/*<Button onClick={() => } disabled={processing} >{processing ? <CircularProgress color="inherit" /> : "Yes" }</Button>*/}
+                    <Button onClick={() => setEditModalShown(false)}>Cancel</Button>
+                    <Button onClick={() => handleCategoryUpdate(editCategoryData.$id)} disabled={processing} >{processing ? <CircularProgress size={24} color="inherit" /> : "Save" }</Button>
                 </DialogActions>
             </Dialog>
 
@@ -119,6 +163,7 @@ const Category = ({addCategory, categoriesList, deleteCategoryByID, newToastNoti
                         {/*<a onClick={() => handleCategoryAdd()} className="btn btn-success btn-sm text-white">Add</a>*/}
                         {/*<input onChange={(e) => setCatName(e.target.value)} value={catName}/>*/}
                     </div>
+                    {IsLoadingCategories && <LinearProgress color={"primary"}></LinearProgress>}
                     <div className="card-body">
                         <div className="row g-1">
                             {categoriesList?.map((category, index) => {
