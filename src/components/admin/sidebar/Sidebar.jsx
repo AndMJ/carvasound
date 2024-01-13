@@ -26,9 +26,28 @@ const Sidebar = () => {
         document.getElementsByClassName("sidebar")[0].classList.toggle('toggled');
     }
 
+    /*const [toggleClass, setToggleClass] = useState(false)
+    useEffect(() => {
+        const handleResize = () => {
+            // Adjust the condition based on your needs
+            setToggleClass(window.innerWidth <= 768); //md
+        };
+
+        // Attach the event listener
+        window.addEventListener('resize', handleResize);
+
+        // Call it once to set the initial state
+        handleResize();
+
+        // Detach the event listener on component unmount
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);*/
+
     return (
         <>
-            <Nav className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar" as="ul" activeKey={url}>
+            <Nav className={"navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"} id="accordionSidebar" as="ul" activeKey={url}> {/*+ (toggleClass ? "toggled" : "")*/}
 
                 {/*// <!-- Sidebar - Brand -->*/}
                 <a className="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
