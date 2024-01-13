@@ -19,16 +19,16 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CategoryIcon from '@mui/icons-material/Category';
 import {
+    Chip,
     CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle,
     LinearProgress,
-    ToggleButton,
-    ToggleButtonGroup
 } from "@mui/material";
 import {DataGrid, GRID_CHECKBOX_SELECTION_COL_DEF, GridActionsCellItem, GridToolbarContainer,} from '@mui/x-data-grid';
+import {FaArrowRightLong} from "react-icons/fa6";
 
 const Gallery = () => {
     useEffect(() => {
@@ -38,7 +38,7 @@ const Gallery = () => {
     let _URL = window.URL || window.webkitURL;
     const [newToastNotif] = useOutletContext()
 
-    const {addCategory, getCategoryList, updateCategoryByID, getCategoryByID, deleteCategoryByID, getGalleryListAdmin, getStorageImagesByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
+    const {addCategory, getCategoryList, updateCategoryByID, getCategoryByID, deleteCategoryByID, getGalleryListAdmin, getStorageImagesByID, updateGalleryByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
 
     const [categoriesList, setCategoriesList] = useState([])
     const [IsLoadingCategories, setIsLoadingCategories] = useState(false)
@@ -237,8 +237,9 @@ const Gallery = () => {
 
     /*TODO: implement https://mui.com/x/react-data-grid/editing/#full-featured-crud*/
 
-    const handleEditClick = (id, category) => () => {
-        alert("edit " + id + " cat " + category)
+    const handleEditClick = (id, category_name) => () => {
+        //alert("edit " + id + " cat " + category_name)
+        setEditModalShown(true)
     };
 
     const handleDeleteClick = (id, image_id, imagePromise) => async () => {
@@ -307,6 +308,34 @@ const Gallery = () => {
         newToastNotif("success", "Image deleted.")
 
     };
+
+    const [editGallery_CategoryName, setEditGallery_CategoryName] = useState("")
+    const [editModalShown, setEditModalShown] = useState(false)
+    const handleGalleryUpdate = async (category_id) => {
+        setProcessing(true)
+        if(editGallery_CategoryName === "" || editGallery_CategoryName.length === 0){
+            newToastNotif("error", "Name cannot be empty.")
+            setProcessing(false)
+            return
+        }
+
+        if(editGallery_CategoryName.length >= 30){
+            newToastNotif("error", "Name cannot be larger than 30 letters.")
+            setProcessing(false)
+            return
+        }
+
+        const res = await updateGalleryByID(category_id, {name: editGallery_CategoryName})
+        console.log(res)
+        setProcessing(false)
+
+        if(res.code === (403 || 401)){ //forbidden
+            newToastNotif("error", res.message)
+            return
+        }
+        newToastNotif("success", "Category edited with success.")
+        setEditModalShown(false)
+    }
 
     const ToolbarButtons = () => {
         const [SelectedButton, setSelectedButton] = useState();
@@ -410,6 +439,26 @@ const Gallery = () => {
                                 <DialogActions>
                                     <Button onClick={handle_ConfirmDialog_No}>No</Button>
                                     <Button onClick={() => {handle_ConfirmDialog_Yes(confirmDialogState.data.id, confirmDialogState.data.image_id)}} disabled={processing} >{processing ? <CircularProgress color="inherit" /> : "Yes" }</Button>
+                                </DialogActions>
+                            </Dialog>
+
+                            {/*EDIT GALLERY-CATEGORY MODAL/DIALOG*/}
+                            <Dialog
+                                maxWidth={"xs"}
+                                TransitionProps={{ onEntered: () => {}, onExited: () => {setEditGallery_CategoryName("")} }}
+                                open={editModalShown}
+                            >
+                                <DialogTitle>Edit Category</DialogTitle>
+                                <DialogContent > {/*dividers*/}
+                                    <div className="row g-3">
+                                        <div className="col-12">
+                                            dropdown with categories
+                                        </div>
+                                    </div>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={() => setEditModalShown(false)}>Cancel</Button>
+                                    {/*<Button onClick={() => handleGalleryUpdate(editCategoryData.$id)} disabled={processing} >{processing ? <CircularProgress size={24} color="inherit" /> : "Save" }</Button>*/}
                                 </DialogActions>
                             </Dialog>
 
