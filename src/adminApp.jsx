@@ -21,17 +21,17 @@ const AdminApp = () => (
 
         {/*ADMIN PRIVATE ROUTES*/}
         <Route element={<AdminLayout/>}> {/*path={"/admin/"}*/}
-            <Route index element={
+            {/*<Route index element={
                 <Suspense fallback={<Loader />}>
                     <AdminDashboard />
                 </Suspense>
-            } />
-            <Route path={"/users"} element={
+            } />*/}
+            {/*<Route path={"/users"} element={
                 <Suspense fallback={<Loader />}>
                     <AdminUsers />
                 </Suspense>
-            }></Route>
-            <Route path={"/gallery"} element={
+            }></Route>*/}
+            {/*path={"/gallery"}*/}<Route index element={
                 <Suspense fallback={<Loader />}>
                     <AdminGallery />
                 </Suspense>
