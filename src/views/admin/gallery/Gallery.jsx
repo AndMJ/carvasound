@@ -28,7 +28,13 @@ import {
     DialogTitle, FormControl, InputLabel,
     LinearProgress, MenuItem, Select,
 } from "@mui/material";
-import {DataGrid, GRID_CHECKBOX_SELECTION_COL_DEF, GridActionsCellItem, GridToolbarContainer,} from '@mui/x-data-grid';
+import {
+    DataGrid,
+    GRID_CHECKBOX_SELECTION_COL_DEF,
+    GridActionsCellItem,
+    GridToolbar,
+    GridToolbarContainer,
+} from '@mui/x-data-grid';
 import {FaArrowRightLong} from "react-icons/fa6";
 
 const Gallery = () => {
@@ -452,7 +458,7 @@ const Gallery = () => {
                                 </DialogActions>
                             </Dialog>
 
-                            <DataGrid
+                            <DataGrid //TODO: see about server side filtration to show all from the database, not from the currently shown page
                                 sx={{
                                     //height: 700,
                                     width: '100%',
@@ -474,9 +480,14 @@ const Gallery = () => {
                                 columns={columns}
                                 autoHeight
                                 slots={{
-                                    toolbar: ToolbarButtons,
+                                    toolbar: ToolbarButtons /*GridToolbar*/,
                                     loadingOverlay: LinearProgress,
                                 }}
+                                /*slotProps={{
+                                    toolbar: {
+                                        showQuickFilter: true,
+                                    },
+                                }}*/
                                 checkboxSelection
                                 disableColumnSelector
                                 disableRowSelectionOnClick
