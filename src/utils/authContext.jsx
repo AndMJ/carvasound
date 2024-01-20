@@ -40,7 +40,7 @@ export const AuthProvider = ({children}) => {
         event.preventDefault()
 
         try {
-            const response = await account.createEmailSession(credentials.email, credentials.password)
+            await account.createEmailSession(credentials.email, credentials.password)
             const userdata = await account.get()
             setUser(userdata)
 

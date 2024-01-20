@@ -1,12 +1,11 @@
 import "./sidebar.css"
-import {FaColumns, FaImage, FaList, FaTachometerAlt, FaUpload, FaUser} from "react-icons/fa";
+import {FaImage} from "react-icons/fa";
 import {Nav} from "react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
-import {useAuth} from "../../../utils/authContext.jsx";
+//import {useAuth} from "../../../utils/authContext.jsx";
 
 import appLogo from "/logoWhite.png"
-import {FaAngleLeft, FaAngleRight} from "react-icons/fa6";
 
 const Sidebar = () => {
 
@@ -18,13 +17,13 @@ const Sidebar = () => {
         //console.log(location.pathname)
     }, [location]);
 
-    const {user} = useAuth()
+    //const {user} = useAuth()
 
-    const handleEvent = (e) => {
+    /*const handleEvent = (e) => {
         e.preventDefault();
         //document.body.classList.toggle('sidebar-toggled');
         document.getElementsByClassName("sidebar")[0].classList.toggle('toggled');
-    }
+    }*/
 
     /*const [toggleClass, setToggleClass] = useState(false)
     useEffect(() => {
@@ -52,7 +51,7 @@ const Sidebar = () => {
                 {/*// <!-- Sidebar - Brand -->*/}
                 <div className="sidebar-brand d-flex align-items-center justify-content-center">
                     <div className="sidebar-brand-icon">
-                        <img src={appLogo} width={40} />
+                        <img src={appLogo} width={40} alt={"Carvasound Logo"}/>
                     </div>
                     <div className="sidebar-brand-text mx-3">Carvasound</div>
                 </div>

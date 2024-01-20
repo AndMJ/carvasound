@@ -1,8 +1,8 @@
 import "./category.css"
-import {FaImages, FaList, FaTable} from "react-icons/fa";
+import {FaList} from "react-icons/fa";
 
 import {useEffect, useState} from "react";
-import {FaArrowRightLong, FaX} from "react-icons/fa6";
+import {FaArrowRightLong} from "react-icons/fa6";
 import {Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress} from "@mui/material";
 import Button from "@mui/material/Button";
 

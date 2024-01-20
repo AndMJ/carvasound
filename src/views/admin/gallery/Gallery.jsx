@@ -1,7 +1,7 @@
 import "./gallery.css"
 
 import {useEffect, useState} from "react";
-import {FaImages, FaList, FaPlusCircle, FaTable} from "react-icons/fa";
+import {FaImages, FaTable} from "react-icons/fa";
 import {useAuth} from "../../../utils/authContext.jsx";
 import {useOutletContext} from "react-router-dom";
 
@@ -20,7 +20,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CategoryIcon from '@mui/icons-material/Category';
 import {
     Box,
-    Chip,
     CircularProgress,
     Dialog,
     DialogActions,
@@ -35,14 +34,12 @@ import {
     GridToolbar,
     GridToolbarContainer,
 } from '@mui/x-data-grid';
-import {FaArrowRightLong} from "react-icons/fa6";
 
 const Gallery = () => {
     useEffect(() => {
         document.title = "Carvasound - Gallery";
     },[])
 
-    let _URL = window.URL || window.webkitURL;
     const [newToastNotif] = useOutletContext()
 
     const {addCategory, getCategoryList, updateCategoryByID, getCategoryByID, deleteCategoryByID, getGalleryListAdmin, getStorageImagesByID, updateGalleryByID, deleteGalleryByID, deleteStorageImagesByID, getStorageImagesThumbnailByID } = useAuth();
@@ -139,7 +136,7 @@ const Gallery = () => {
         };
     }, []);
 
-    const RenderCellImage = ({imagePromise}) => {
+    /*const RenderCellImage = ({imagePromise}) => {
         const [image, setImage] = useState()
         console.log(image)
 
@@ -155,10 +152,10 @@ const Gallery = () => {
 
         return (
             <div className={"w-100 p-1"} onClick={handleImgClick}>
-                <img src={image} width={"100%"} height={"100%"}/>
+                <img src={image} width={"100%"} height={"100%"} alt="image"/>
             </div>
         )
-    }
+    }*/
 
     const columns = [
         {
@@ -171,7 +168,7 @@ const Gallery = () => {
                 //<RenderCellImage image_id={params.row.image.image_id} image_width={params.row.image.width}></RenderCellImage>
                 //<RenderCellImage imagePromise={params.row.image}></RenderCellImage>
                 <div className={"w-100 p-1"} >
-                    <img src={params.row.image} width={"100%"} height={"100%"}/>
+                    <img src={params.row.image} width={"100%"} height={"100%"} alt={"image thumbnail"}/>
                 </div>
             )//onClick={handleImgClick}
         },
@@ -250,10 +247,9 @@ const Gallery = () => {
             setShowConfirmDialog( false);
         }
 
-        let response;
         setProcessing(true)
         try {
-            response = await deleteGalleryByID(id)
+            await deleteGalleryByID(id)
             //console.log(response)
             //newToastNotif("success", "Image deleted.")
         } catch (error) {
@@ -267,7 +263,7 @@ const Gallery = () => {
         }
 
         try {
-            response = await deleteStorageImagesByID(image_id)
+            await deleteStorageImagesByID(image_id)
             //console.log(response)
             //newToastNotif("success", "Image deleted.")
         } catch (error) {
@@ -317,7 +313,7 @@ const Gallery = () => {
 
     const [selectedTableRows, setSelectedTableRows] = useState([])
     const ToolbarButtons = () => {
-        const [SelectedButton, setSelectedButton] = useState();
+        /*const [SelectedButton, setSelectedButton] = useState();
 
         const handleSelectedButton = (event, selected) => {
             setSelectedButton(selected);
@@ -330,7 +326,7 @@ const Gallery = () => {
 
         const handleCategoryFilter = () => {
             alert("filter table")
-        };
+        };*/
 
         const handleClickDelete = () => {
             //alert("delete all selected")
