@@ -283,7 +283,7 @@ export const AuthProvider = ({children}) => {
 
     const getStorageImagesThumbnailByID = async (image_id, width, percentage) => {
         try {
-            return await storage.getFilePreview(STORAGE_BUCKET_ID, image_id, Math.round(width * percentage)/*, Math.round(height * proportion)*/);
+            return await storage.getFilePreview(STORAGE_BUCKET_ID, image_id, Math.round(width * percentage));
 
         } catch (error) {
             console.error(error)
