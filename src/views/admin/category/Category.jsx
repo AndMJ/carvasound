@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
    - make modals look "better"
 */
 const Category = ({addCategory, updateCategoryByID, categoriesList, deleteCategoryByID, newToastNotif, IsLoadingCategories, setIsLoadingCategories}) => {
-    const regex = /^[a-zA-Z0-9àáãâÀÁÃÂèéêÈÉÊìíîÌÍÎòóõôÒÓÕÔùúûÙÚÛ]*$/
+    const regex = /^[a-zA-Z0-9àáãâÀÁÃÂèéêÈÉÊìíîÌÍÎòóõôÒÓÕÔùúûÙÚÛ ]*$/
 
     const [processing, setProcessing] = useState(false)
 
