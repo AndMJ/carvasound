@@ -89,7 +89,7 @@ const Gallery = () => {
 
         const nextpage = await getGalleryListAdmin(pageState.pageSize, pageState.pageSize * pageState.page)
         dataArray.total = nextpage.total
-        console.log(nextpage)
+        //console.log(nextpage)
 
         for (let row of nextpage.documents) {
 
@@ -101,7 +101,7 @@ const Gallery = () => {
                 category_id: row.category !== null ? row.category.$id : "null",
                 category: row.category !== null ? row.category.name : "Sem categoria"/*row.category*/,
                 image_id: row.image_id,
-                image: getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
+                image: `https://cloud.appwrite.io/v1/storage/buckets/64c66ab828ead21c0093/files/${row.image_id}/preview?width=${Math.round(row.width * 0.10)}&project=64c40c5c8f44c3862248`,//getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
                 /*{image_id: row.image_id, width: row.width}*/
                 createdAt: creAt.toLocaleString('en-GB'),
                 updatedAt: upAt.toLocaleString('en-GB'),
@@ -133,44 +133,13 @@ const Gallery = () => {
         };
     }, []);
 
-    const [processing, setProcessing] = useState(false);
-    const [confirmDialogState, setConfirmDialogState ] = useState({"state": false, "data": {}});
-
-    const [selectedTableRows, setSelectedTableRows] = useState([])
-
-    /*const RenderCellImage = ({image_id, image_width}) => {
-        const [image, setImage] = useState()
-        //console.log(image)
-
-        const handleImgClick = () => {
-            alert("zoom image")
-        }
-
-        /!*useEffect(() => {
-            getImage()
-                .then((response) => {
-                    setImage(response)
-                })
-        }, []);
-
-        const getImage = async () => {
-            return await getStorageImagesThumbnailByID(image_id, image_width, 0.10)
-        }*!/
-
-        return (
-            <div className={"w-100 p-1"} onClick={handleImgClick}>
-                <img src={image} width={"100%"} height={"100%"}/>
-            </div>
-        )
-    }*/
-
     const RenderCellImage = ({imagePromise}) => {
         const [image, setImage] = useState()
-        //console.log(image)
+        console.log(image)
 
         useEffect(() => {
             imagePromise.then((res) => {
-                setImage(res)
+                setImage(res.href)
             })
         }, []);
 
@@ -194,8 +163,11 @@ const Gallery = () => {
         { field: 'image', headerName: 'Image', width: 100, editable: false, filterable: false, sortable: false, disableColumnMenu: true,
             renderCell: (params) => (
                 //<RenderCellImage image_id={params.row.image.image_id} image_width={params.row.image.width}></RenderCellImage>
-                <RenderCellImage imagePromise={params.row.image}></RenderCellImage>
-            )
+                //<RenderCellImage imagePromise={params.row.image}></RenderCellImage>
+                <div className={"w-100 p-1"} >
+                    <img src={params.row.image} width={"100%"} height={"100%"}/>
+                </div>
+            )//onClick={handleImgClick}
         },
         { field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'category', headerName: 'Category', width: 180, editable: false,
@@ -221,7 +193,7 @@ const Gallery = () => {
                         icon={<EditIcon />}
                         label="Edit"
                         className="textPrimary"
-                        onClick={handleEditClick(row.id, row.category_id)}
+                        onClick={handleEditClick(row.id, row.category_id, row.image)}
                         color="inherit"
                     />,
                     <GridActionsCellItem
@@ -238,9 +210,13 @@ const Gallery = () => {
 
     /*TODO: implement https://mui.com/x/react-data-grid/editing/#full-featured-crud*/
 
-    const handleDeleteClick = (id, image_id, imagePromise) => async () => {
-        imagePromise.then((imageResponse) => {
-            setConfirmDialogState( (prevState) => {
+    const [processing, setProcessing] = useState(false);
+    const [showConfirmDialog, setShowConfirmDialog ] = useState(false);
+    const [galleryToDelete, setGalleryToDelete] = useState("") // "" because <img src=/> cannot be null
+
+    const handleDeleteClick = (id, image_id, image) => async () => {
+        /*imagePromise.then((imageResponse) => {
+            setShowConfirmDialog( (prevState) => {
                 let dataRowToDel = {
                     id: id,
                     image_id: image_id,
@@ -248,25 +224,28 @@ const Gallery = () => {
                 }
                 return {...prevState, state: true, data: dataRowToDel}
             });
+        })*/
+
+        setShowConfirmDialog(true)
+        setGalleryToDelete({
+            id: id,
+            image_id: image_id,
+            image: image
         })
     };
 
     const handle_ConfirmDialog_No = () => {
-        setConfirmDialogState( (prevState) => {
-            return {...prevState, state: false, data: {}}
-        });
+        setShowConfirmDialog( false);
     };
 
     const handle_ConfirmDialog_Yes = async (id, image_id) => {
         function closeDialog(){
-            setProcessing(() => {return false})
-            setConfirmDialogState( (prevState) => {
-                return {...prevState, state: false, data: {}}
-            });
+            setProcessing(false)
+            setShowConfirmDialog( false);
         }
 
         let response;
-        setProcessing(() => {return true})
+        setProcessing(true)
         try {
             response = await deleteGalleryByID(id)
             //console.log(response)
@@ -295,24 +274,20 @@ const Gallery = () => {
             //newToastNotif("error", error.message)
         }
 
-        /*setRows(prevState => {
-            return prevState.filter(row => row.id !== response.payload.$id)
-        })*/
-
         closeDialog()
 
-        newToastNotif("success", "Image deleted.")
+        newToastNotif("success", "Image deleted with success.")
 
     };
 
 
-    const [galleryToUpdate, setGalleryToUpdate] = useState(null)
+    const [galleryToUpdate, setGalleryToUpdate] = useState({id: null, image: ""})
     const [updateGalleryCategory, setUpdateGalleryCategory] = useState("")
     const [editModalShown, setEditModalShown] = useState(false)
 
-    const handleEditClick = (id, category_id) => () => {
+    const handleEditClick = (id, category_id, image) => () => {
         //console.log(category_id)
-        setGalleryToUpdate(id)
+        setGalleryToUpdate({id: id, image: image})
         setUpdateGalleryCategory(category_id)
         setEditModalShown(true)
     };
@@ -320,7 +295,7 @@ const Gallery = () => {
     const handleGalleryUpdate = async () => {
         setProcessing(true)
 
-        const res = await updateGalleryByID(galleryToUpdate, {category: updateGalleryCategory})
+        const res = await updateGalleryByID(galleryToUpdate.id, {category: updateGalleryCategory})
         console.log(res)
         setProcessing(false)
 
@@ -333,6 +308,8 @@ const Gallery = () => {
         setEditModalShown(false)
     }
 
+
+    const [selectedTableRows, setSelectedTableRows] = useState([])
     const ToolbarButtons = () => {
         const [SelectedButton, setSelectedButton] = useState();
 
@@ -425,30 +402,31 @@ const Gallery = () => {
                             {/*DELETE CONFIRMATION MODAL/DIALOG*/}
                             <Dialog
                                 maxWidth="xs"
-                                TransitionProps={{ onEntered: () => {} }}
-                                open={confirmDialogState.state}
+                                TransitionProps={{ onEntered: () => {}, onExited: () => {setGalleryToDelete("")} }}
+                                open={showConfirmDialog}
                             >
                                 <DialogTitle>Delete Confirmation</DialogTitle>
                                 <DialogContent dividers>
-                                    <img src={confirmDialogState.data.image} className="img-thumbnail mb-3" alt={"image thumbnail"}/>
+                                    <img src={galleryToDelete.image} className="img-thumbnail mb-3 w-100" alt={"image thumbnail"}/>
                                     <h5 className={"mb-1"}>Are you sure you want to <span className={"text-danger"}>delete</span>?</h5>
                                     <p className={""}>Pressing 'Yes' will <span className={"text-danger"}>delete</span> this image from system.</p>
                                 </DialogContent>
                                 <DialogActions>
                                     <Button onClick={handle_ConfirmDialog_No}>No</Button>
-                                    <Button onClick={() => {handle_ConfirmDialog_Yes(confirmDialogState.data.id, confirmDialogState.data.image_id)}} disabled={processing} >{processing ? <CircularProgress color="inherit" /> : "Yes" }</Button>
+                                    <Button onClick={() => {handle_ConfirmDialog_Yes(galleryToDelete.id, galleryToDelete.image_id)}} disabled={processing} >{processing ? <CircularProgress color="inherit" /> : "Yes" }</Button>
                                 </DialogActions>
                             </Dialog>
 
                             {/*EDIT GALLERY-CATEGORY MODAL/DIALOG*/}
                             <Dialog
                                 maxWidth={"xs"}
-                                TransitionProps={{ onEntered: () => {}, onExited: () => {setUpdateGalleryCategory(""); setGalleryToUpdate(null)} }}
+                                TransitionProps={{ onEntered: () => {}, onExited: () => {setUpdateGalleryCategory(""); setGalleryToUpdate({id: null, image: ""})} }}
                                 open={editModalShown}
                             >
                                 <DialogTitle>Edit Category</DialogTitle>
                                 <DialogContent > {/*dividers*/}
-                                    <Box sx={{ marginTop: 2, minWidth: 250 }}>
+                                    <Box sx={{marginTop: 2, minWidth: 250}}>
+                                        <img src={galleryToUpdate.image} className="img-thumbnail mb-3 w-100" alt={"image thumbnail"}/>
                                         <FormControl fullWidth>
                                             <InputLabel id="labelCategory">Category</InputLabel>
                                             <Select
