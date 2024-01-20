@@ -19,13 +19,14 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CategoryIcon from '@mui/icons-material/Category';
 import {
+    Box,
     Chip,
     CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogTitle,
-    LinearProgress,
+    DialogTitle, FormControl, InputLabel,
+    LinearProgress, MenuItem, Select,
 } from "@mui/material";
 import {DataGrid, GRID_CHECKBOX_SELECTION_COL_DEF, GridActionsCellItem, GridToolbarContainer,} from '@mui/x-data-grid';
 import {FaArrowRightLong} from "react-icons/fa6";
@@ -97,7 +98,7 @@ const Gallery = () => {
 
             dataArray.data.push({
                 id: row.$id,
-                //category_id: row.category.$id,
+                category_id: row.category !== null ? row.category.$id : "null",
                 category: row.category !== null ? row.category.name : "Sem categoria"/*row.category*/,
                 image_id: row.image_id,
                 image: getStorageImagesThumbnailByID(row.image_id, row.width, 0.10),
@@ -196,7 +197,7 @@ const Gallery = () => {
                 <RenderCellImage imagePromise={params.row.image}></RenderCellImage>
             )
         },
-        //{ field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
+        { field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'category', headerName: 'Category', width: 180, editable: false,
             /*renderCell: (params) => {
                 if(params.row.category === null){
@@ -220,7 +221,7 @@ const Gallery = () => {
                         icon={<EditIcon />}
                         label="Edit"
                         className="textPrimary"
-                        onClick={handleEditClick(row.id, row.category)}
+                        onClick={handleEditClick(row.id, row.category_id)}
                         color="inherit"
                     />,
                     <GridActionsCellItem
@@ -236,11 +237,6 @@ const Gallery = () => {
     ];
 
     /*TODO: implement https://mui.com/x/react-data-grid/editing/#full-featured-crud*/
-
-    const handleEditClick = (id, category_name) => () => {
-        //alert("edit " + id + " cat " + category_name)
-        setEditModalShown(true)
-    };
 
     const handleDeleteClick = (id, image_id, imagePromise) => async () => {
         imagePromise.then((imageResponse) => {
@@ -309,31 +305,31 @@ const Gallery = () => {
 
     };
 
-    const [editGallery_CategoryName, setEditGallery_CategoryName] = useState("")
+
+    const [galleryToUpdate, setGalleryToUpdate] = useState(null)
+    const [updateGalleryCategory, setUpdateGalleryCategory] = useState("")
     const [editModalShown, setEditModalShown] = useState(false)
-    const handleGalleryUpdate = async (category_id) => {
+
+    const handleEditClick = (id, category_id) => () => {
+        //console.log(category_id)
+        setGalleryToUpdate(id)
+        setUpdateGalleryCategory(category_id)
+        setEditModalShown(true)
+    };
+
+    const handleGalleryUpdate = async () => {
         setProcessing(true)
-        if(editGallery_CategoryName === "" || editGallery_CategoryName.length === 0){
-            newToastNotif("error", "Name cannot be empty.")
-            setProcessing(false)
-            return
-        }
 
-        if(editGallery_CategoryName.length >= 30){
-            newToastNotif("error", "Name cannot be larger than 30 letters.")
-            setProcessing(false)
-            return
-        }
-
-        const res = await updateGalleryByID(category_id, {name: editGallery_CategoryName})
+        const res = await updateGalleryByID(galleryToUpdate, {category: updateGalleryCategory})
         console.log(res)
         setProcessing(false)
 
-        if(res.code === (403 || 401)){ //forbidden
+        if(res.code === (400 || 403 || 401)){
             newToastNotif("error", res.message)
             return
         }
-        newToastNotif("success", "Category edited with success.")
+
+        newToastNotif("success", "Category updated with success.")
         setEditModalShown(false)
     }
 
@@ -390,6 +386,7 @@ const Gallery = () => {
         )
     }
 
+
     return (
         <>
             {/*// <!-- Page Heading -->*/}
@@ -425,6 +422,7 @@ const Gallery = () => {
                         </div>
                         <div className="card-body gallery-table">
 
+                            {/*DELETE CONFIRMATION MODAL/DIALOG*/}
                             <Dialog
                                 maxWidth="xs"
                                 TransitionProps={{ onEntered: () => {} }}
@@ -445,20 +443,34 @@ const Gallery = () => {
                             {/*EDIT GALLERY-CATEGORY MODAL/DIALOG*/}
                             <Dialog
                                 maxWidth={"xs"}
-                                TransitionProps={{ onEntered: () => {}, onExited: () => {setEditGallery_CategoryName("")} }}
+                                TransitionProps={{ onEntered: () => {}, onExited: () => {setUpdateGalleryCategory(""); setGalleryToUpdate(null)} }}
                                 open={editModalShown}
                             >
                                 <DialogTitle>Edit Category</DialogTitle>
                                 <DialogContent > {/*dividers*/}
-                                    <div className="row g-3">
-                                        <div className="col-12">
-                                            dropdown with categories
-                                        </div>
-                                    </div>
+                                    <Box sx={{ marginTop: 2, minWidth: 250 }}>
+                                        <FormControl fullWidth>
+                                            <InputLabel id="labelCategory">Category</InputLabel>
+                                            <Select
+                                                labelId="labelCategory"
+                                                id="selectCategory"
+                                                value={updateGalleryCategory}
+                                                label="Category"
+                                                onChange={(event) => setUpdateGalleryCategory(event.target.value)}
+                                            >
+                                                <MenuItem value={"null"}>Sem Categoria</MenuItem>
+                                                {categoriesList?.map((category, index) => {
+                                                    return (
+                                                        <MenuItem key={index} value={category.$id}>{category.name}</MenuItem>
+                                                    )
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </Box>
                                 </DialogContent>
                                 <DialogActions>
                                     <Button onClick={() => setEditModalShown(false)}>Cancel</Button>
-                                    {/*<Button onClick={() => handleGalleryUpdate(editCategoryData.$id)} disabled={processing} >{processing ? <CircularProgress size={24} color="inherit" /> : "Save" }</Button>*/}
+                                    <Button onClick={() => handleGalleryUpdate()} disabled={processing} >{processing ? <CircularProgress size={24} color="inherit" /> : "Save" }</Button>
                                 </DialogActions>
                             </Dialog>
 
