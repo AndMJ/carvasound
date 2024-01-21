@@ -31,7 +31,6 @@ import {
     DataGrid,
     GRID_CHECKBOX_SELECTION_COL_DEF,
     GridActionsCellItem,
-    GridToolbar,
     GridToolbarContainer, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarQuickFilter,
 } from '@mui/x-data-grid';
 
@@ -136,27 +135,6 @@ const Gallery = () => {
         };
     }, []);
 
-    /*const RenderCellImage = ({imagePromise}) => {
-        const [image, setImage] = useState()
-        console.log(image)
-
-        useEffect(() => {
-            imagePromise.then((res) => {
-                setImage(res.href)
-            })
-        }, []);
-
-        const handleImgClick = () => {
-            alert("zoom image")
-        }
-
-        return (
-            <div className={"w-100 p-1"} onClick={handleImgClick}>
-                <img src={image} width={"100%"} height={"100%"} alt="image"/>
-            </div>
-        )
-    }*/
-
     const columns = [
         {
             ...GRID_CHECKBOX_SELECTION_COL_DEF,
@@ -218,17 +196,6 @@ const Gallery = () => {
     const [galleryToDelete, setGalleryToDelete] = useState("") // "" because <img src=/> cannot be null
 
     const handleDeleteClick = (id, image_id, image) => async () => {
-        /*imagePromise.then((imageResponse) => {
-            setShowConfirmDialog( (prevState) => {
-                let dataRowToDel = {
-                    id: id,
-                    image_id: image_id,
-                    image: imageResponse
-                }
-                return {...prevState, state: true, data: dataRowToDel}
-            });
-        })*/
-
         setShowConfirmDialog(true)
         setGalleryToDelete({
             id: id,
