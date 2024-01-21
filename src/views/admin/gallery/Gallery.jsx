@@ -343,7 +343,7 @@ const Gallery = () => {
 
                 <div className="col-lg-12">
                     <div className="row">
-                        <div className="col-lg-8"> {/*TODO: add max height to the categories box?*/}
+                        <div className="col-xl-8" > {/*TODO: add max height to the categories box?*/} {/*style={{minWidth:"991px"}}*/}
                             <div className="card shadow mb-4">
                                 <div className="card-header py-3">
                                     <h6 className="m-0 font-weight-bold text-primary"><span><FaImages className={"me-1"}></FaImages></span> Upload images</h6>
@@ -353,8 +353,12 @@ const Gallery = () => {
                                 </div>
                             </div>
                         </div>
+                        <div className="col"> {/*col-xl-4*/}
+                            <div className="card shadow mb-4">
+                                <Category IsLoadingCategories={IsLoadingCategories} setIsLoadingCategories={setIsLoadingCategories} updateCategoryByID={updateCategoryByID} newToastNotif={newToastNotif} addCategory={addCategory} categoriesList={categoriesList} deleteCategoryByID={deleteCategoryByID}></Category>
+                            </div>
+                        </div>
 
-                        <Category IsLoadingCategories={IsLoadingCategories} setIsLoadingCategories={setIsLoadingCategories} updateCategoryByID={updateCategoryByID} newToastNotif={newToastNotif} addCategory={addCategory} categoriesList={categoriesList} deleteCategoryByID={deleteCategoryByID}></Category>
                     </div>
                 </div>
 

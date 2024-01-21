@@ -155,44 +155,36 @@ const Category = ({addCategory, updateCategoryByID, categoriesList, deleteCatego
                 </DialogActions>
             </Dialog>
 
-            <div className="col-lg-4">
-                <div className="card shadow mb-4">
-                    <div className="card-header py-3 d-flex justify-content-between align-items-center">
-                        <h6 className="m-0 font-weight-bold text-primary"><span><FaList className={"me-1"}></FaList></span> New category</h6>
-                        <a onClick={() => setAddModalShown(true)} className="btn btn-success btn-sm text-white">Add</a>
-                        {/*<a onClick={() => handleCategoryAdd()} className="btn btn-success btn-sm text-white">Add</a>*/}
-                        {/*<input onChange={(e) => setCatName(e.target.value)} value={catName}/>*/}
-                    </div>
-                    {IsLoadingCategories && <LinearProgress color={"primary"}></LinearProgress>}
-                    <div className="card-body">
-                        <div className="row g-1">
-                            {categoriesList?.map((category, index) => {
-                                return (
-                                    <div key={index} className="col-auto">
-                                        {/*<a className={"btn btn-primary btn-icon-split text-white"}>
-                                            <span onClick={() => handleCategoryDelete(category.$id)} className={"icon"}><FaX></FaX></span>
-                                            <span className={"text"}>{category.name}</span>
-                                        </a>*/}
+            <>
+                <div className="card-header py-3 d-flex justify-content-between align-items-center">
+                    <h6 className="m-0 font-weight-bold text-primary"><span><FaList className={"me-1"}></FaList></span> New category</h6>
+                    <a onClick={() => setAddModalShown(true)} className="btn btn-success btn-sm text-white">Add</a>
+                </div>
+                {IsLoadingCategories && <LinearProgress color={"primary"}></LinearProgress>}
 
-                                        <Chip
-                                            //color={"primary"}
-                                            label={category.name}
-                                            onClick={() => {
-                                                setEditCategoryData(category)
-                                                setEditModalShown(true)
-                                            }}
-                                            onDelete={() => handleCategoryDelete(category.$id)}
-                                        />
-                                    </div>
-                                )
-                            })}
-
-
-                        </div>
+                <div className="card-body">
+                    <div className="row g-1">
+                        {categoriesList?.map((category, index) => {
+                            return (
+                                <div key={index} className="col-auto">
+                                    <Chip
+                                        //color={"primary"}
+                                        label={category.name}
+                                        onClick={() => {
+                                            setEditCategoryData(category)
+                                            setEditModalShown(true)
+                                        }}
+                                        onDelete={() => handleCategoryDelete(category.$id)}
+                                    />
+                                </div>
+                            )
+                        })}
 
                     </div>
                 </div>
-            </div>
+
+            </>
+
         </>
     )
 }
