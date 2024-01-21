@@ -1,5 +1,5 @@
 import "./landingPage.css"
-import eventImage_casamento from "../../../assets/img/events/casamento.jpg"
+
 import {useOutletContext} from "react-router-dom";
 import {useEffect} from "react";
 
