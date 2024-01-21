@@ -40,7 +40,7 @@ export const AuthProvider = ({children}) => {
         event.preventDefault()
 
         try {
-            const response = await account.createEmailSession(credentials.email, credentials.password)
+            await account.createEmailSession(credentials.email, credentials.password)
             const userdata = await account.get()
             setUser(userdata)
 
@@ -72,7 +72,7 @@ export const AuthProvider = ({children}) => {
      */
     const addGalleryImages = async (image_json) => {
         try {
-            return database.createDocument(DATABASE_ID, COLLECTION_GALLERY_ID, GenerateID, image_json);
+            return await database.createDocument(DATABASE_ID, COLLECTION_GALLERY_ID, GenerateID, image_json);
 
         } catch (error) {
             console.error(error)
@@ -82,7 +82,7 @@ export const AuthProvider = ({children}) => {
 
     const getGalleryList = async () => {
         try {
-            return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+            return await database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
                     Query.limit(100),
                     Query.orderDesc('$createdAt'),
@@ -97,7 +97,7 @@ export const AuthProvider = ({children}) => {
 
     const getGalleryListAdmin = async (pageSize, offset) => {
         try {
-            return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+            return await database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
                     Query.limit(pageSize),
                     Query.orderDesc('$createdAt'),
@@ -113,7 +113,7 @@ export const AuthProvider = ({children}) => {
 
     const getGalleryListNoNull = async () => {
         try {
-            return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+            return await database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
                     Query.limit(100),
                     Query.isNotNull("category"),
@@ -129,7 +129,7 @@ export const AuthProvider = ({children}) => {
 
     const getGalleryListNextPage = async (last_item_id) => {
         try {
-            return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+            return await database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
                     Query.limit(100),
                     Query.isNotNull("category"),
@@ -146,7 +146,7 @@ export const AuthProvider = ({children}) => {
 
     const getGalleryListPrevPage = async (first_item_id) => {
         try {
-            return database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
+            return await database.listDocuments(DATABASE_ID, COLLECTION_GALLERY_ID,
                 [
                     Query.limit(100),
                     Query.isNotNull("category"),
@@ -163,7 +163,7 @@ export const AuthProvider = ({children}) => {
 
     const updateGalleryByID = async (id, data) => {
         try {
-            return database.updateDocument(DATABASE_ID, COLLECTION_GALLERY_ID, id, data);
+            return await database.updateDocument(DATABASE_ID, COLLECTION_GALLERY_ID, id, data);
 
         } catch (error) {
             console.error(error)
@@ -173,7 +173,7 @@ export const AuthProvider = ({children}) => {
 
     const deleteGalleryByID = async (gallery_id) => {
         try {
-            return database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
+            return await database.deleteDocument(DATABASE_ID, COLLECTION_GALLERY_ID, gallery_id)
 
         } catch (error) {
             console.error(error)
@@ -187,7 +187,7 @@ export const AuthProvider = ({children}) => {
      */
     const addCategory = async (category_json) => {
         try {
-            return database.createDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, GenerateID, category_json);
+            return await database.createDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, GenerateID, category_json);
 
         } catch (error) {
             console.error(error)
@@ -197,7 +197,7 @@ export const AuthProvider = ({children}) => {
 
     const getCategoryList = async () => {
         try {
-            return database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID,
+            return await database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID,
                 [
                         Query.limit(100),
                     ]
@@ -211,7 +211,7 @@ export const AuthProvider = ({children}) => {
 
     const getCategoryListNotNull = async () => {
         try {
-            return database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID,
+            return await database.listDocuments(DATABASE_ID, COLLECTION_CATEGORY_ID,
                 [
                     Query.limit(100),
                     Query.isNotNull("name"),
@@ -226,7 +226,7 @@ export const AuthProvider = ({children}) => {
 
     const getCategoryByID = async (category_id) => {
         try {
-            return database.getDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id,
+            return await database.getDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, category_id,
                 // [
                 //     Query.limit(100),
                 // ]
@@ -240,7 +240,7 @@ export const AuthProvider = ({children}) => {
 
     const updateCategoryByID = async (id, data) => {
         try {
-            return database.updateDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, id, data);
+            return await database.updateDocument(DATABASE_ID, COLLECTION_CATEGORY_ID, id, data);
 
         } catch (error) {
             console.error(error)
@@ -263,7 +263,7 @@ export const AuthProvider = ({children}) => {
      */
     const addStorageImage = async (image) => {
         try {
-            return storage.createFile(STORAGE_BUCKET_ID, GenerateID, image);
+            return await storage.createFile(STORAGE_BUCKET_ID, GenerateID, image);
 
         } catch (error) {
             console.error(error)
@@ -273,7 +273,7 @@ export const AuthProvider = ({children}) => {
 
     const getStorageImagesByID = async (image_id) => {
         try {
-            return storage.getFileView(STORAGE_BUCKET_ID, image_id);
+            return await storage.getFileView(STORAGE_BUCKET_ID, image_id);
 
         } catch (error) {
             console.error(error)
@@ -283,7 +283,7 @@ export const AuthProvider = ({children}) => {
 
     const getStorageImagesThumbnailByID = async (image_id, width, percentage) => {
         try {
-            return storage.getFilePreview(STORAGE_BUCKET_ID, image_id, Math.round(width * percentage)/*, Math.round(height * proportion)*/);
+            return await storage.getFilePreview(STORAGE_BUCKET_ID, image_id, Math.round(width * percentage));
 
         } catch (error) {
             console.error(error)
@@ -293,7 +293,7 @@ export const AuthProvider = ({children}) => {
 
     const deleteStorageImagesByID = async (image_id) => {
         try {
-            return storage.deleteFile(STORAGE_BUCKET_ID, image_id);
+            return await storage.deleteFile(STORAGE_BUCKET_ID, image_id);
 
         } catch (error) {
             console.error(error)

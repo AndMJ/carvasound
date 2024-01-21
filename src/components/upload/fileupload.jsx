@@ -3,12 +3,12 @@ import "./fileupload.css"
 import {useDropzone} from 'react-dropzone'
 import {useCallback, useEffect, useRef, useState} from "react";
 import {FaArrowUp, FaImages, FaTrashAlt, FaUpload} from "react-icons/fa";
-import {RiCheckLine, RiFileWarningLine} from "react-icons/ri";
+import {RiFileWarningLine} from "react-icons/ri";
 
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import {useAuth} from "../../utils/authContext.jsx";
-import {CircularProgress, LinearProgress} from "@mui/material";
+import {CircularProgress} from "@mui/material";
 
 function Fileupload({newToastNotif, categories}) {
     let _URL = window.URL || window.webkitURL;
@@ -32,23 +32,6 @@ function Fileupload({newToastNotif, categories}) {
             'image/png': []
         }
     })
-
-    /*useEffect(() => {
-        getCategories()
-            .then((response) => {
-                setCategories(response)
-            })
-
-        return () => {
-            setCategories([]);
-        };
-    }, []);
-
-    const getCategories = async () => {
-        const categories = await getCategoryList()
-        return categories.documents
-    }*/
-
 
     const imageDimensions = file =>
         new Promise((resolve, reject) => {
@@ -143,6 +126,8 @@ function Fileupload({newToastNotif, categories}) {
         );
     }
 
+    // const [updateGalleryCategory, setUpdateGalleryCategory] = useState(null)
+
     return (
         <>
             <div {...getRootProps()}>
@@ -181,7 +166,7 @@ function Fileupload({newToastNotif, categories}) {
                                 {files.length > 1 &&
                                     <select disabled={uploading} ref={selectAllCategoryRef} onChange={(e) => {handleSetAllCategory(e)}} defaultValue="null" className="form-select" aria-label="select category">
                                         <option value="null">Sem Categoria</option>
-                                        {/*TODO: - validate if there is no categories, do something*/}
+                                        {/*TODO: - validate if there is no categories?? */}
                                         {categories?.map((category, index) => {
                                             return (
                                                 <option key={index} value={category.$id}>{category.name}</option>
@@ -197,7 +182,7 @@ function Fileupload({newToastNotif, categories}) {
 
                 <div className="singular-select-wrapper" ref={selectEachImageListRef}>
                     {   //TODO: - send a alert when a file is not supported and remove it from list
-                        //      - upload list of files container need adjusting
+                        //      - upload list of files container need style adjusting
                         files?.map((fWrapper, index) => {
                         if (fWrapper.errors?.length > 0){
                             return (
@@ -225,19 +210,21 @@ function Fileupload({newToastNotif, categories}) {
                             )
                         }
                         return (
-                            <div key={index} className="row my-3 d-flex justify-content-between text-black">
-                                <div className="col-auto d-flex justify-content-start align-items-center">
+                            <div key={index} className="row my-5 my-md-4 d-flex justify-content-between text-black">
+                                <div className="col-12 col-md d-flex justify-content-start align-items-center">
                                     <div className="image-wrapper">
                                         <img src={_URL.createObjectURL(fWrapper.file)} height={52} alt=""/>
                                     </div>
                                     <div className="ms-3">
                                         <p className={"m-0 " + (uploading && "text-muted")}>{fWrapper.file.name}</p>
-                                        {uploading && <CircularProgress size={24} color="primary" /> }
+                                        {uploading && <CircularProgress size={24} color="primary"/>}
                                     </div>
                                 </div>
 
-                                <div className="col-auto d-flex justify-content-end align-items-center flex-shrink-0">
-                                    <select disabled={uploading} ref={eachImageSelectRef} onChange={(e) => {handleUpdateEachImageCategory(e, fWrapper.file)}} defaultValue="null" className="form-select" aria-label="select category">
+                                <div
+                                    className="col-12 col-md d-flex justify-content-end align-items-center flex-shrink-0 pt-2 pt-md-0">
+                                    <select disabled={uploading} ref={eachImageSelectRef} onChange={(e) => {
+                                        handleUpdateEachImageCategory(e, fWrapper.file)}} defaultValue="null" className="form-select" aria-label="select category">
                                         <option value="null">Sem Categoria</option>
                                         {categories?.map((category, index) => {
                                             return (
@@ -247,9 +234,37 @@ function Fileupload({newToastNotif, categories}) {
                                     </select>
                                     <button disabled={uploading} className={"btn btn-danger text-white ms-3"} onClick={() => {handleImageDelete(fWrapper.file)}}><FaTrashAlt></FaTrashAlt></button>
                                 </div>
+
+
+
+                                {/*<Box sx={{display:"flex"}}>
+                                    <img src={_URL.createObjectURL(fWrapper.file)} height={52} alt=""/>
+                                    <div className="ms-3">
+                                        <p className={"m-0 " + (uploading && "text-muted")}>{fWrapper.file.name}</p>
+                                        {uploading && <CircularProgress size={24} color="primary"/>}
+                                    </div>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="labelCategory">Category</InputLabel>
+                                        <Select
+                                            labelId="labelCategory"
+                                            id="selectCategory"
+                                            value={updateGalleryCategory}
+                                            label="Category"
+                                            onChange={(event) => setUpdateGalleryCategory(event.target.value)}
+                                        >
+                                            <MenuItem value={"null"}>Sem Categoria</MenuItem>
+                                            {categories?.map((category, index) => {
+                                                return (
+                                                    <MenuItem key={index}
+                                                              value={category.$id}>{category.name}</MenuItem>
+                                                )
+                                            })}
+                                        </Select>
+                                    </FormControl>
+                                </Box>*/}
                             </div>
                         )
-                    })}
+                        })}
                 </div>
             </div>
 

@@ -1,0 +1,8 @@
+.dropdown-item.logout.active, .dropdown-item.logout:active {
+    background-color: rgba(245, 245, 245, 0.6) !important;
+    color: rgb(231, 74, 59);
+}
+
+.topbar .dropdown .dropdown-menu{
+    width: unset;
+}
