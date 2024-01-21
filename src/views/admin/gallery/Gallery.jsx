@@ -32,7 +32,7 @@ import {
     GRID_CHECKBOX_SELECTION_COL_DEF,
     GridActionsCellItem,
     GridToolbar,
-    GridToolbarContainer,
+    GridToolbarContainer, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarQuickFilter,
 } from '@mui/x-data-grid';
 
 const Gallery = () => {
@@ -80,7 +80,7 @@ const Gallery = () => {
         data: [],
         total: 0,
         page: 0,
-        pageSize: 10
+        pageSize: 100
     })
     const fetchData = async () => {
         setPageState(old => ({...old, isLoading: true}))
@@ -90,7 +90,7 @@ const Gallery = () => {
             total: 0
         }
 
-        const nextpage = await getGalleryListAdmin(pageState.pageSize, pageState.pageSize * pageState.page)
+        const nextpage = await getGalleryListAdmin(pageState.pageSize, pageState.pageSize * pageState.page) /*pageState.pageSize * pageState.page = the database page offset*/
         dataArray.total = nextpage.total
         //console.log(nextpage)
 
@@ -339,27 +339,24 @@ const Gallery = () => {
 
         return (
             <>
-                {selectedTableRows.length > 0 &&
-                    <GridToolbarContainer>
-                        {/*<ToggleButtonGroup
-                        color="primary"
-                        value={SelectedButton}
-                        exclusive
-                        onChange={handleSelectedButton}
-                    >
-                        <ToggleButton value="Casamentos">Casamentos</ToggleButton>
-                        <ToggleButton value="Batizados">Batizados</ToggleButton>
-                    </ToggleButtonGroup>*/}
 
-                        <Button color="primary" startIcon={<DeleteIcon />} onClick={handleClickDelete}>
-                            Apagar
-                        </Button>
+                <GridToolbarContainer>
+                    {selectedTableRows.length > 0 && (
+                        <>
+                            <Button color="primary" startIcon={<DeleteIcon />} onClick={handleClickDelete}>
+                                Apagar
+                            </Button>
 
-                        <Button color="primary" startIcon={<CategoryIcon />} onClick={handleClickCategorize}>
-                            Categorizar
-                        </Button>
-                    </GridToolbarContainer>
-                }
+                            <Button color="primary" startIcon={<CategoryIcon />} onClick={handleClickCategorize}>
+                                Categorizar
+                            </Button>
+                        </>
+                    )}
+
+                    <GridToolbarFilterButton />
+                    <GridToolbarDensitySelector />
+                    <GridToolbarQuickFilter />
+                </GridToolbarContainer>
             </>
 
         )
@@ -408,7 +405,7 @@ const Gallery = () => {
                                 open={showConfirmDialog}
                             >
                                 <DialogTitle>Delete Confirmation</DialogTitle>
-                                <DialogContent dividers>
+                                <DialogContent>
                                     <img src={galleryToDelete.image} className="img-thumbnail mb-3 w-100" alt={"image thumbnail"}/>
                                     <h5 className={"mb-1"}>Are you sure you want to <span className={"text-danger"}>delete</span>?</h5>
                                     <p className={""}>Pressing 'Yes' will <span className={"text-danger"}>delete</span> this image from system.</p>
@@ -427,7 +424,7 @@ const Gallery = () => {
                             >
                                 <DialogTitle>Edit Category</DialogTitle>
                                 <DialogContent > {/*dividers*/}
-                                    <Box sx={{marginTop: 2, minWidth: 250}}>
+                                    <Box sx={{ minWidth: 250}}>
                                         <img src={galleryToUpdate.image} className="img-thumbnail mb-3 w-100" alt={"image thumbnail"}/>
                                         <FormControl fullWidth>
                                             <InputLabel id="labelCategory">Category</InputLabel>
@@ -454,7 +451,7 @@ const Gallery = () => {
                                 </DialogActions>
                             </Dialog>
 
-                            <DataGrid //TODO: see about server side filtration to show all from the database, not from the currently shown page
+                            <DataGrid
                                 sx={{
                                     //height: 700,
                                     width: '100%',
@@ -476,14 +473,9 @@ const Gallery = () => {
                                 columns={columns}
                                 autoHeight
                                 slots={{
-                                    toolbar: ToolbarButtons /*GridToolbar*/,
+                                    toolbar: ToolbarButtons,
                                     loadingOverlay: LinearProgress,
                                 }}
-                                /*slotProps={{
-                                    toolbar: {
-                                        showQuickFilter: true,
-                                    },
-                                }}*/
                                 checkboxSelection
                                 disableColumnSelector
                                 disableRowSelectionOnClick
@@ -492,7 +484,7 @@ const Gallery = () => {
                                 paginationModel={pageState}
                                 rows={pageState.data}
                                 rowCount={pageState.total}
-                                pageSizeOptions={[10, 25, 50, 100]}
+                                pageSizeOptions={[100]}
                                 paginationMode="server"
                                 onPaginationModelChange={modelChange => {
                                     setPageState(old => ({ ...old, page: modelChange.page, pageSize: modelChange.pageSize }))
