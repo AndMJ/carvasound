@@ -173,8 +173,7 @@ function Fileupload({newToastNotif, categories}) {
                         <div className="row my-4 d-flex justify-content-between align-items-center">
 
                             <div className="col-8 d-flex justify-content-start align-items-center">
-                                <button disabled={uploading} className={"d-flex align-items-center btn btn-success text-white"}
-                                        onClick={() => {handleImageUpload(files) }}>
+                                <button disabled={uploading} className={"d-flex align-items-center btn btn-success text-white"} onClick={() => {handleImageUpload(files) }}>
                                     <FaUpload className={"me-2"}></FaUpload> {uploading ? "Uploading" : "Upload"}
                                 </button>
                             </div>
@@ -233,7 +232,7 @@ function Fileupload({newToastNotif, categories}) {
                         return (
                             <Fragment key={index}>
 
-                                <div className="row my-4 d-flex justify-content-between text-black"> {/*key={index}*/}
+                                {/*<div className="row my-4 d-flex justify-content-between text-black">
                                     <div className="col-12 col-md-7 d-flex justify-content-start align-items-center">
                                         <div className="image-wrapper">
                                             <img src={_URL.createObjectURL(fWrapper.file)} height={52} alt=""/>
@@ -262,7 +261,7 @@ function Fileupload({newToastNotif, categories}) {
                                             <FaTrashAlt></FaTrashAlt>
                                         </button>
                                     </div>
-                                </div>
+                                </div>*/}
 
                                 <Stack mb={3} spacing={3} direction={{xs: "column", sm: "row"}} alignItems="center" justifyContent="space-between">
                                     <Stack width={"100%"} spacing={2} direction="row" alignItems="center" justifyContent="start">
@@ -271,7 +270,8 @@ function Fileupload({newToastNotif, categories}) {
                                             alt={""}
                                             src={_URL.createObjectURL(fWrapper.file)}
                                             sx={{
-                                                width: "64px",
+                                                borderRadius: 0.8,
+                                                width: 100,
                                                 objectFit: 'cover'
                                             }}
                                         />
@@ -296,8 +296,8 @@ function Fileupload({newToastNotif, categories}) {
                                             </Select>
                                         </FormControl>
 
-                                        <IconButton onClick={() => {}} size={"medium"} color="error"><DeleteIcon/></IconButton>
-                                        {/*<Button size={"medium"} color="error">REMOVE</Button>*/}
+                                        {/*<IconButton onClick={() => {}} size={"medium"} color="error"><DeleteIcon/></IconButton>*/}
+                                        <Button size={"medium"} variant="contained" color="error">REMOVE</Button>
                                     </Stack>
                                 </Stack>
 
