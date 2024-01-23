@@ -5,8 +5,10 @@ import {useAuth} from "../../../utils/authContext.jsx";
 import {useEffect, useState} from "react";
 
 import user_avatar from "../../../assets/img/avatar/avatar.png"
+import MenuIcon from "@mui/icons-material/Menu.js";
+import {IconButton} from "@mui/material";
 
-const Header = () => {
+const Header = ({handleDrawerToggle}) => {
     const {user, handleLogout} = useAuth()
     const handleEvent = (e) => {
         e.preventDefault();
@@ -20,7 +22,7 @@ const Header = () => {
         setConfirm(true)
     }
 
-    useEffect(() => { //on dropdown hide, reset logout confirmation
+    /*useEffect(() => { //on dropdown hide, reset logout confirmation
         const userDropdown = document.getElementById('userDropdown')
         const handleEventListener = () => {
             setConfirm(false)
@@ -30,16 +32,29 @@ const Header = () => {
         return () => {
             userDropdown.removeEventListener('scroll', handleEventListener);
         };
-    }, []);
+    }, []);*/
 
     return (
         <>
             <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                 {/*// <!-- Sidebar Toggle (Topbar) -->*/}
-                <button onClick={handleEvent} id="sidebarToggleTop" className="btn btn-link rounded-circle mx-3 d-flex justify-content-center align-items-center"> {/*d-md-none*/}
+                {/*<button onClick={handleEvent} id="sidebarToggleTop" className="btn btn-link rounded-circle mx-3 d-flex justify-content-center align-items-center"> d-md-none
                     <FaBars></FaBars>
-                </button>
+                </button>*/}
+
+                <IconButton
+                    color="primary"
+                    aria-label="open drawer"
+                    //edge="start"
+                    onClick={handleDrawerToggle}
+                    sx={{
+                        ml: 1,
+                        //display: { lg: 'none' }
+                    }}
+                >
+                    <MenuIcon />
+                </IconButton>
 
                 {/*// <!-- Topbar Navbar -->*/}
                 <ul className="navbar-nav ms-auto">
@@ -47,7 +62,7 @@ const Header = () => {
                     <li className="nav-item dropdown no-arrow">
                         <button className="nav-link dropdown-toggle" id="userDropdown" role="button"
                            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-                            <span className="mx-2 d-none d-lg-inline text-gray-600 small">{user ? user.name : "user"}</span>
+                            <span className="mx-2 d-inline text-gray-600 small">{user ? user.name : "user"}</span>
                             <img className="img-profile rounded-circle" src={user_avatar} alt={"User Avatar"}/>
                         </button>
                         {/*// <!-- Dropdown - User Information -->*/}
