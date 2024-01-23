@@ -5,7 +5,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin: 10px auto;
+    /*margin: 10px auto;*/
 
     cursor: pointer;
 }
@@ -19,9 +19,3 @@
     color: grey;
     margin: 10px 0 15px 0;
 }
-
-
-
-/*@media (min-width: 768px) {
-    
-}*/
