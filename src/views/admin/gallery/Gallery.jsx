@@ -28,11 +28,14 @@ import {
     LinearProgress, MenuItem, Select,
 } from "@mui/material";
 import {
+    gridClasses,
     DataGrid,
     GRID_CHECKBOX_SELECTION_COL_DEF,
     GridActionsCellItem,
     GridToolbarContainer, GridToolbarDensitySelector, GridToolbarFilterButton, GridToolbarQuickFilter,
 } from '@mui/x-data-grid';
+
+//--------------------------------------------------------------------------------------------------------------------
 
 const Gallery = () => {
     useEffect(() => {
@@ -141,11 +144,11 @@ const Gallery = () => {
         },
         { field: 'id', headerName: 'ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'image_id', headerName: 'Image ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
-        { field: 'image', headerName: 'Image', width: 100, editable: false, filterable: false, sortable: false, disableColumnMenu: true,
+        { field: 'image', headerName: 'Image', width: 120, editable: false, filterable: false, sortable: false, disableColumnMenu: true,
             renderCell: (params) => (
                 //<RenderCellImage image_id={params.row.image.image_id} image_width={params.row.image.width}></RenderCellImage>
                 //<RenderCellImage imagePromise={params.row.image}></RenderCellImage>
-                <div className={"w-100 p-1"} >
+                <div className={"w-100"} >
                     <img src={params.row.image} width={"100%"} height={"100%"} alt={"image thumbnail"}/>
                 </div>
             )//onClick={handleImgClick}
@@ -310,11 +313,11 @@ const Gallery = () => {
                 <GridToolbarContainer>
                     {selectedTableRows.length > 0 && (
                         <>
-                            <Button color="primary" startIcon={<DeleteIcon />} onClick={handleClickDelete}>
+                            <Button size={"small"} color="primary" startIcon={<DeleteIcon />} onClick={handleClickDelete}>
                                 Apagar
                             </Button>
 
-                            <Button color="primary" startIcon={<CategoryIcon />} onClick={handleClickCategorize}>
+                            <Button size={"small"} color="primary" startIcon={<CategoryIcon />} onClick={handleClickCategorize}>
                                 Categorizar
                             </Button>
                         </>
@@ -341,9 +344,9 @@ const Gallery = () => {
             {/*// <!-- Content Row -->*/}
             <div className="row">
 
-                <div className="col-lg-12">
+                <div className="col-lg-12" >
                     <div className="row">
-                        <div className="col-xl-8" > {/*TODO: add max height to the categories box?*/} {/*style={{minWidth:"991px"}}*/}
+                        <div className="col-xxl-8" > {/*TODO: add max height to the categories box?*/} {/*style={{minWidth:"991px"}}*/}
                             <div className="card shadow mb-4">
                                 <div className="card-header py-3">
                                     <h6 className="m-0 font-weight-bold text-primary"><span><FaImages className={"me-1"}></FaImages></span> Upload images</h6>
@@ -432,7 +435,15 @@ const Gallery = () => {
                                     },
                                     '& .textPrimary': {
                                         color: 'text.primary',
-                                    }
+                                    },
+
+                                    /*remove the cell blue outline when chicked*/
+                                    [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
+                                        outline: 'none',
+                                    },
+                                    [`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
+                                        outline: 'none',
+                                    },
                                 }}
                                 loading={pageState.isLoading}
                                 columnVisibilityModel={ {
