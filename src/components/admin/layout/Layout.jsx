@@ -8,6 +8,7 @@ import {useAuth} from "../../../utils/authContext.jsx";
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {useState} from "react";
 
 function Layout(){
     const {user} = useAuth()
@@ -39,16 +40,35 @@ function Layout(){
         }
     };
 
+    const drawerWidth = 240;
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [isClosing, setIsClosing] = useState(false);
+
+    const handleDrawerClose = () => {
+        setIsClosing(true);
+        setMobileOpen(false);
+    };
+
+    const handleDrawerTransitionEnd = () => {
+        setIsClosing(false);
+    };
+
+    const handleDrawerToggle = () => {
+        if (!isClosing) {
+            setMobileOpen(!mobileOpen);
+        }
+    };
+
     return(
         <>
             {user ?
                     <>
                         <div id="wrapper">
-                            <Sidebar></Sidebar>
+                            <Sidebar drawerWidth={drawerWidth} mobileOpen={mobileOpen} handleDrawerToggle={handleDrawerToggle} handleDrawerTransitionEnd={handleDrawerTransitionEnd} handleDrawerClose={handleDrawerClose}></Sidebar>
 
                             <div id="content-wrapper" className="d-flex flex-column">
                                 <div id="content">
-                                    <Header></Header>
+                                    <Header handleDrawerToggle={handleDrawerToggle}></Header>
 
                                     <div className="container-fluid">
                                         <ToastContainer containerId={"appNotifications-container"} className="position-fixed end-0 me-4"></ToastContainer>

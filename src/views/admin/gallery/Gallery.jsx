@@ -20,12 +20,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CategoryIcon from '@mui/icons-material/Category';
 import {
     Box,
-    CircularProgress,
+    CircularProgress, createTheme,
     Dialog,
     DialogActions,
     DialogContent,
     DialogTitle, FormControl, InputLabel,
-    LinearProgress, MenuItem, Select,
+    LinearProgress, MenuItem, Select, ThemeProvider,
 } from "@mui/material";
 import {
     gridClasses,
@@ -36,6 +36,12 @@ import {
 } from '@mui/x-data-grid';
 
 //--------------------------------------------------------------------------------------------------------------------
+
+const dataTableTheme = createTheme({
+    typography: {
+        fontSize: 14, // Adjust the font size as needed
+    },
+});
 
 const Gallery = () => {
     useEffect(() => {
@@ -425,6 +431,7 @@ const Gallery = () => {
                                 </DialogActions>
                             </Dialog>
 
+                            <ThemeProvider theme={dataTableTheme}>
                             <DataGrid
                                 sx={{
                                     //height: 700,
@@ -477,7 +484,7 @@ const Gallery = () => {
                                     setSelectedTableRows(selectedRows)
                                 }}
                             ></DataGrid>
-
+                            </ThemeProvider>
                         </div>
                     </div>
                 </div>
