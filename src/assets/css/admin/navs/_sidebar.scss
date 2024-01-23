@@ -1,6 +1,6 @@
 // Sidebar
 .sidebar {
-    width: $sidebar-base-width !important;
+    //width: $sidebar-base-width !important;
     min-height: 100vh;
 
     .nav-item {
@@ -14,18 +14,18 @@
             display: block;
             width: 100%;
             text-align: left;
-            padding: 1rem;
+            //padding: 1rem;
             width: $sidebar-base-width;
 
-            .icon {
+            /*.icon {
                 font-size: 1rem;
                 margin-right: 0.25rem;
-            }
+            }*/
 
-            span {
+            /*span {
                 font-size: 0.85rem;
                 display: inline;
-            }
+            }*/
 
             &.active {
                 color: $white;
@@ -211,19 +211,6 @@
                 }
             }
 
-            // Accordion
-            &[data-toggle="collapse"]::after {
-                color: $gray-500;
-            }
-
-            &.active {
-                color: $gray-700;
-
-                .icon {
-                    color: $gray-700;
-                }
-            }
-
         }
 
         /*&.active {
@@ -267,10 +254,10 @@
 
     .nav-item {
         .nav-link {
-            color: fade-out($white, 0.2);
+            color: fade-out($white, 0.5);
 
             .icon {
-                color: fade-out($white, 0.7);
+                color: fade-out($white, 0.5);
             }
 
             &:active,
