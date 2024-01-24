@@ -1,5 +1,5 @@
 import "./sidebar.css"
-import {FaImage} from "react-icons/fa";
+//import {FaImage} from "react-icons/fa";
 import {Nav} from "react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
 import {useEffect, useState} from "react";
@@ -16,9 +16,8 @@ import {
     ListItemText,
     ThemeProvider
 } from "@mui/material";
-import MenuIcon from '@mui/icons-material/Menu';
 import CollectionsIcon from '@mui/icons-material/Collections';
-import GroupIcon from '@mui/icons-material/Group';
+//import GroupIcon from '@mui/icons-material/Group';
 
 //-----------------------------------------------------------------------------------
 
