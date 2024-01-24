@@ -148,19 +148,39 @@ const Gallery = () => {
         {
             ...GRID_CHECKBOX_SELECTION_COL_DEF,
         },
-        { field: 'id', headerName: 'ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
-        { field: 'image_id', headerName: 'Image ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
+        { field: 'id', headerName: 'ID', editable: false, filterable: false, sortable: false, disableColumnMenu: true},
+        { field: 'image_id', headerName: 'Image ID', editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'image', headerName: 'Image', width: 120, editable: false, filterable: false, sortable: false, disableColumnMenu: true,
             renderCell: (params) => (
                 //<RenderCellImage image_id={params.row.image.image_id} image_width={params.row.image.width}></RenderCellImage>
                 //<RenderCellImage imagePromise={params.row.image}></RenderCellImage>
-                <div className={"w-100"} >
+                /*<div className={"w-100"} >
                     <img src={params.row.image} width={"100%"} height={"100%"} alt={"image thumbnail"}/>
-                </div>
+                </div>*/
+
+                <Box sx={{
+                    minWidth: 100,
+                    minHeight: 100,
+                    width: 100,
+                    height: 100,
+                    p: 0.5
+                }} >
+                    <Box
+                        component={"img"}
+                        alt={"image thumbnail"}
+                        src={params.row.image}
+                        sx={{
+                            borderRadius: 0.8,
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                        }}
+                    />
+                </Box>
             )//onClick={handleImgClick}
         },
-        { field: 'category_id', headerName: 'Category ID', width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
-        { field: 'category', headerName: 'Category', width: 180, editable: false,
+        { field: 'category_id', headerName: 'Category ID', flex: 1, width: 180, editable: false, filterable: false, sortable: false, disableColumnMenu: true},
+        { field: 'category', headerName: 'Category', flex: 1, width: 180, editable: false,
             /*renderCell: (params) => {
                 if(params.row.category === null){
                     return "Sem categoria"
@@ -169,8 +189,8 @@ const Gallery = () => {
                 }
             }*/
         },
-        { field: 'createdAt', headerName: 'Created At', type:"text", width: 180, editable: false},
-        { field: 'updatedAt', headerName: 'Updated At', type:"text", width: 180, editable: false},
+        { field: 'createdAt', headerName: 'Created At', type:"text", flex: 1, width: 180, editable: false},
+        { field: 'updatedAt', headerName: 'Updated At', type:"text", flex: 1, width: 180, editable: false},
         {
             field: 'actions',
             type: 'actions',
@@ -350,9 +370,9 @@ const Gallery = () => {
             {/*// <!-- Content Row -->*/}
             <div className="row">
 
-                <div className="col-lg-12" >
+                <div className="col-12 col-xl-4 order-md-0 order-xl-2">
                     <div className="row">
-                        <div className="col-xxl-8" > {/*TODO: add max height to the categories box?*/} {/*style={{minWidth:"991px"}}*/}
+                        <div className="col-12 order-1" > {/*TODO: add max height to the categories box?*/} {/* col-xxl-8  style={{minWidth:"991px"}}*/}
                             <div className="card shadow mb-4">
                                 <div className="card-header py-3">
                                     <h6 className="m-0 font-weight-bold text-primary"><span><FaImages className={"me-1"}></FaImages></span> Upload images</h6>
@@ -362,7 +382,7 @@ const Gallery = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col"> {/*col-xl-4*/}
+                        <div className="col-12 order-0"> {/*col-xl-4*/}
                             <div className="card shadow mb-4">
                                 <Category IsLoadingCategories={IsLoadingCategories} setIsLoadingCategories={setIsLoadingCategories} updateCategoryByID={updateCategoryByID} newToastNotif={newToastNotif} addCategory={addCategory} categoriesList={categoriesList} deleteCategoryByID={deleteCategoryByID}></Category>
                             </div>
@@ -371,7 +391,7 @@ const Gallery = () => {
                     </div>
                 </div>
 
-                <div className="col-lg-12">
+                <div className="col-12 col-xl-8">
                     <div className="card shadow mb-4">
                         <div className="card-header py-3">
                             <h6 className="m-0 font-weight-bold text-primary"><span><FaTable className={"me-1"}></FaTable></span> Gallery table</h6>
@@ -431,10 +451,11 @@ const Gallery = () => {
                                 </DialogActions>
                             </Dialog>
 
-                            <ThemeProvider theme={dataTableTheme}>
+                            <ThemeProvider theme={dataTableTheme}> {/*TODO: tooltip with current clicked cell data*/}
                             <DataGrid
                                 sx={{
-                                    //height: 700,
+                                    height: 900,
+                                    //overflowX: "auto",
                                     width: '100%',
                                     border: 0,
                                     '& .actions': {
@@ -444,7 +465,7 @@ const Gallery = () => {
                                         color: 'text.primary',
                                     },
 
-                                    /*remove the cell blue outline when chicked*/
+                                    /*remove the cell blue outline when clicked*/
                                     [`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
                                         outline: 'none',
                                     },
@@ -460,7 +481,7 @@ const Gallery = () => {
                                 } }
                                 rowHeight={100}
                                 columns={columns}
-                                autoHeight
+                                //autoHeight
                                 slots={{
                                     toolbar: ToolbarButtons,
                                     loadingOverlay: LinearProgress,
