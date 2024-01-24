@@ -11,16 +11,17 @@ import {useAuth} from "../../utils/authContext.jsx";
 import {
     Box,
     CircularProgress,
-    Container,
+    Container, createTheme,
     FormControl, Grid,
     IconButton,
     InputLabel,
     MenuItem,
     Select,
-    Stack, Typography
+    Stack, ThemeProvider, Typography
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
+import UploadIcon from '@mui/icons-material/Upload';
 
 // ----------------------------------------------------------------------
 
@@ -140,6 +141,7 @@ function Fileupload({newToastNotif, categories}) {
         );
     }
 
+    //TODO: implement a total in array because of DB 60 querys limit
     const [updateGalleryCategory, setUpdateGalleryCategory] = useState("null")
 
     return (
@@ -149,19 +151,30 @@ function Fileupload({newToastNotif, categories}) {
                 {
                     isDragActive ?
                         <>
-                            <div className={"container-fluid drag-area active"}>
+                            {/*<div className={"container-fluid drag-area active"}>
                                 <FaArrowUp size={64}></FaArrowUp>
                                 <p>Drop the files here ...</p>
-                            </div>
+                            </div>*/}
+
+                            <Box className={"drag-area active"}>
+                                <FaArrowUp size={64}></FaArrowUp>
+                                <p>Drop the files here ...</p>
+                            </Box>
 
                         </>
                         :
                         <>
-                            <div className={"container-fluid drag-area"}>
+                            {/*<div className={"container-fluid drag-area"}>
                                 <FaImages size={64}></FaImages>
-                                <p>Drag & drop some files here, or click to select files</p>
+                                <p>Drag & drop, or click to select files</p>
                                 <span className="support">Supports: JPEG, JPG, PNG</span>
-                            </div>
+                            </div>*/}
+
+                            <Box className={"drag-area"}>
+                                <FaImages size={64}></FaImages>
+                                <p>Drag & drop, or click to select files</p>
+                                <span className="support">Supports: JPEG, JPG, PNG</span>
+                            </Box>
                         </>
                 }
             </div>
@@ -170,7 +183,7 @@ function Fileupload({newToastNotif, categories}) {
             <div className="container-fluid">
                 {files.length > 0 &&
                     <>
-                        <div className="row my-4 d-flex justify-content-between align-items-center">
+                        {/*<div className="row my-4 d-flex justify-content-between align-items-center">
 
                             <div className="col-8 d-flex justify-content-start align-items-center">
                                 <button disabled={uploading} className={"d-flex align-items-center btn btn-success text-white"} onClick={() => {handleImageUpload(files) }}>
@@ -182,8 +195,7 @@ function Fileupload({newToastNotif, categories}) {
                                     <select disabled={uploading} ref={selectAllCategoryRef}
                                             onChange={(e) => {handleSetAllCategory(e) }} defaultValue="null" className="form-select" aria-label="select category">
                                         <option value="null">Sem Categoria</option>
-                                        {/*TODO: - validate if there is no categories?? */}
-                                        {categories?.map((category, index) => {
+                                        {categories?.map((category, index) => { //TODO: - validate if there is no categories??
                                             return (
                                                 <option key={index} value={category.$id}>{category.name}</option>
                                             )
@@ -196,11 +208,39 @@ function Fileupload({newToastNotif, categories}) {
                                 </button>
                             </div>
 
-                        </div>
+                        </div>*/}
+
+                        <Stack width={"100%"} my={3} spacing={2} direction={"row"} alignContent={"center"} justifyContent={"start"}>
+                            <Button sx={{ flexShrink: 0 }} size={"small"} color={"success"} variant={"contained"} startIcon={<UploadIcon />}>
+                                Upload
+                            </Button>
+                            <Button sx={{ flexShrink: 0 }} size={"small"} color={"error"} variant={"contained"} startIcon={<DeleteIcon />}>
+                                Cancel
+                            </Button>
+                            {files.length > 1 &&
+                                <FormControl fullWidth sx={{minWidth: 200, maxWidth: 300}} size={"small"}>
+                                    <InputLabel id="labelCategory">Category</InputLabel>
+                                    <Select
+                                        labelId="labelCategory"
+                                        id="selectCategory"
+                                        value={updateGalleryCategory}
+                                        label="Category"
+                                        onChange={(event) => setUpdateGalleryCategory(event.target.value)}
+                                    >
+                                        <MenuItem value={"null"}>Sem Categoria</MenuItem>
+                                        {categories?.map((category, index) => {
+                                            return (
+                                                <MenuItem key={index} value={category.$id}>{category.name}</MenuItem>
+                                            )
+                                        })}
+                                    </Select>
+                                </FormControl>
+                            }
+                        </Stack>
                     </>
                 }
 
-                <div className="singular-select-wrapper" ref={selectEachImageListRef}>
+                <div className="singular-select-wrapper" ref={selectEachImageListRef}> {/*style={{maxHeight: "900px", overflowY: "auto"}}*/}
                     {   //TODO: - send a alert when a file is not supported and remove it from list
                         //      - upload list of files container need style adjusting
                         files?.map((fWrapper, index) => {
@@ -231,7 +271,7 @@ function Fileupload({newToastNotif, categories}) {
                         }
                         return (
                             <Fragment key={index}>
-
+                                {/*<ThemeProvider theme={theme}>*/}
                                 {/*<div className="row my-4 d-flex justify-content-between text-black">
                                     <div className="col-12 col-md-7 d-flex justify-content-start align-items-center">
                                         <div className="image-wrapper">
@@ -265,43 +305,58 @@ function Fileupload({newToastNotif, categories}) {
 
                                 <Stack mb={3} spacing={3} direction={{xs: "column", sm: "row"}} alignItems="center" justifyContent="space-between">
                                     <Stack width={"100%"} spacing={2} direction="row" alignItems="center" justifyContent="start">
-                                        <Box
-                                            component={"img"}
-                                            alt={""}
-                                            src={_URL.createObjectURL(fWrapper.file)}
-                                            sx={{
-                                                borderRadius: 0.8,
-                                                width: 100,
-                                                objectFit: 'cover'
-                                            }}
-                                        />
-                                        <Typography>{fWrapper.file.name}</Typography>
-                                    </Stack>
-                                    <Stack width={"100%"} spacing={2} direction="row" alignItems="center" justifyContent="end">
-                                        <FormControl fullWidth sx={{minWidth: 200}} size={"small"}>
-                                            <InputLabel id="labelCategory">Category</InputLabel>
-                                            <Select
-                                                labelId="labelCategory"
-                                                id="selectCategory"
-                                                value={updateGalleryCategory}
-                                                label="Category"
-                                                onChange={(event) => setUpdateGalleryCategory(event.target.value)}
-                                            >
-                                                <MenuItem value={"null"}>Sem Categoria</MenuItem>
-                                                {categories?.map((category, index) => {
-                                                    return (
-                                                        <MenuItem key={index} value={category.$id}>{category.name}</MenuItem>
-                                                    )
-                                                })}
-                                            </Select>
-                                        </FormControl>
+                                        <Box sx={{
+                                            minWidth: 100,
+                                            minHeight: 100,
+                                            width: 100,
+                                            height: 100,
+                                        }} >
+                                            <Box
+                                                component={"img"}
+                                                alt={""}
+                                                src={_URL.createObjectURL(fWrapper.file)}
+                                                sx={{
+                                                    borderRadius: 0.8,
+                                                    width: "100%",
+                                                    height: "100%",
+                                                    objectFit: "cover",
+                                                }}
+                                            />
+                                        </Box>
 
-                                        {/*<IconButton onClick={() => {}} size={"medium"} color="error"><DeleteIcon/></IconButton>*/}
-                                        <Button size={"medium"} variant="contained" color="error">REMOVE</Button>
+                                        <Stack width={"100%"} spacing={2} direction="column" justifyContent="start">
+                                            <Typography sx={{fontSize: "0.9rem"}}>{fWrapper.file.name}</Typography>
+                                            <Stack width={"100%"} spacing={2} direction="row" alignItems="center" >
+                                                <FormControl fullWidth sx={{minWidth: 200, maxWidth: 300}} size={"small"}>
+                                                    <InputLabel id="labelCategory">Category</InputLabel>
+                                                    <Select
+                                                        labelId="labelCategory"
+                                                        id="selectCategory"
+                                                        value={updateGalleryCategory}
+                                                        label="Category"
+                                                        onChange={(event) => setUpdateGalleryCategory(event.target.value)}
+                                                    >
+                                                        <MenuItem value={"null"}>Sem Categoria</MenuItem>
+                                                        {categories?.map((category, index) => {
+                                                            return (
+                                                                <MenuItem key={index} value={category.$id}>{category.name}</MenuItem>
+                                                            )
+                                                        })}
+                                                    </Select>
+                                                </FormControl>
+
+                                                <Button sx={{ flexShrink: 0 }} size={"small"} variant="contained" color="error">REMOVE</Button>
+                                            </Stack>
+                                        </Stack>
+
                                     </Stack>
+                                    {/*<Stack width={"50%"} spacing={2} direction="row" alignItems="center" justifyContent="end">*/}
+                                        {/*<IconButton onClick={() => {}} size={"medium"} color="error"><DeleteIcon/></IconButton>*/}
+                                        {/*<Button size={"medium"} variant="contained" color="error">REMOVE</Button>*/}
+                                    {/*</Stack>*/}
                                 </Stack>
 
-
+                                {/*</ThemeProvider>*/}
                             </Fragment>
                         )
                         })}
