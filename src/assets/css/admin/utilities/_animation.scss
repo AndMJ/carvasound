@@ -12,6 +12,7 @@
   }
 }
 
+//noinspection CssInvalidPropertyValue
 .animated--grow-in {
   animation-name: growIn;
   animation-duration: 200ms;
@@ -28,6 +29,7 @@
   }
 }
 
+//noinspection CssInvalidPropertyValue
 .animated--fade-in {
   animation-name: fadeIn;
   animation-duration: 200ms;
