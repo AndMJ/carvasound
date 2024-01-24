@@ -51,8 +51,8 @@ export const AuthProvider = ({children}) => {
         }
     }
 
-    const handleLogout = async (event) => {
-        event.preventDefault()
+    const handleLogout = async (/*event*/) => {
+        //event.preventDefault()
 
         try {
             await account.deleteSession("current")
