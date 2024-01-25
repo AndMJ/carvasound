@@ -71,19 +71,16 @@ function App() {
     });
 
   return (
-      <>
-          <ThemeProvider theme={theme}>
-              <AnimatePresence mode={"wait"}>
-                  <AuthProvider>
-                      <Routes>
-                          <Route path={"/*"} element={<UserApp></UserApp>}></Route>
-                          <Route path={"/admin/*"} element={<AdminApp></AdminApp>}></Route>
-                      </Routes>
-                  </AuthProvider>
-              </AnimatePresence>
-          </ThemeProvider>
-
-      </>
+      <ThemeProvider theme={theme}>
+          <AnimatePresence mode={"sync"}>
+              <AuthProvider>
+                  <Routes>
+                      <Route path={"/*"} element={<UserApp></UserApp>}></Route>
+                      <Route path={"/admin/*"} element={<AdminApp></AdminApp>}></Route>
+                  </Routes>
+              </AuthProvider>
+          </AnimatePresence>
+      </ThemeProvider>
   )
 }
 
