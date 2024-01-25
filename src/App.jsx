@@ -5,6 +5,7 @@ import React, {Suspense} from 'react'
 
 //Authentication + DB queries
 import {AuthProvider} from "./utils/authContext.jsx";
+import {createTheme, ThemeProvider} from "@mui/material";
 
 //components/views
 const Loader = React.lazy(()=> import("./components/loader/Loader.jsx"))
@@ -39,9 +40,39 @@ TODO: [ADMIN]
 
 function App() {
 
+    const darkTheme = createTheme({
+        palette: {
+            mode: 'dark',
+        },
+    });
+
+    const theme = createTheme({
+        components: {
+            MuiChip: {
+                styleOverrides: {
+                    root: {
+                        fontSize: "0.9rem"
+                    }
+                }
+            },
+        },
+        typography: {
+            fontFamily: '"Nunito", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", !default',
+        },
+        breakpoints: {
+            values: {
+                xs: 0,
+                sm: 768,
+                md: 576,
+                lg: 992,
+                xl: 1200,
+            },
+        },
+    });
+
   return (
-      <>
-          <AnimatePresence mode={"wait"}>
+      <ThemeProvider theme={theme}>
+          <AnimatePresence mode={"sync"}>
               <AuthProvider>
                   <Routes>
                       <Route path={"/*"} element={<UserApp></UserApp>}></Route>
@@ -49,8 +80,7 @@ function App() {
                   </Routes>
               </AuthProvider>
           </AnimatePresence>
-
-      </>
+      </ThemeProvider>
   )
 }
 

@@ -36,7 +36,7 @@ function Login () {
         setIsLoading(true)
 
         let response = await handleLogin(event, credencials)
-        console.error(response)
+        //console.error(response)
 
         if (response !== undefined){ //has an error
             toast.error(response.message, {

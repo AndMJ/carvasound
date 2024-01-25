@@ -1,26 +1,46 @@
 import "./fileupload.css"
 
 import {useDropzone} from 'react-dropzone'
-import {useCallback, useEffect, useRef, useState} from "react";
-import {FaArrowUp, FaImages, FaTrashAlt, FaUpload} from "react-icons/fa";
+import {Fragment, useCallback, useEffect, useRef, useState} from "react";
+import {FaArrowUp, FaImages, FaTrashAlt} from "react-icons/fa";
 import {RiFileWarningLine} from "react-icons/ri";
 
 import Tooltip from 'react-bootstrap/Tooltip';
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import {useAuth} from "../../utils/authContext.jsx";
-import {CircularProgress} from "@mui/material";
+import {
+    Box,
+    Container, createTheme,
+    FormControl, Grid,
+    IconButton,
+    InputLabel, LinearProgress,
+    MenuItem,
+    Select,
+    Stack, Typography
+} from "@mui/material";
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import UploadIcon from '@mui/icons-material/Upload';
+import {AnimatePresence, motion, usePresence} from "framer-motion"
+
+// ----------------------------------------------------------------------
 
 function Fileupload({newToastNotif, categories}) {
     let _URL = window.URL || window.webkitURL;
     const {addGalleryImages, addStorageImage, getCategoryList} = useAuth();
 
     const [files, setFiles] = useState([])
-    //const [categories, setCategories] = useState([])
+    //console.log(files)
 
     const [uploading, setUploading] = useState(false)
+    const [selectChangeAll_Value, setSelectChangeAll_Value] = useState("placeholder")
 
     const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
-        const mappedAcceptedFiles = acceptedFiles.map((file) => ({file, category: undefined}))
+        const mappedAcceptedFiles = acceptedFiles.map( (file) => ({
+            file,
+            category: "null",
+            preview: _URL.createObjectURL(file)
+        }))
         //const mappedRejectedFiles = rejectedFiles.map((file) => ({file, errors: []}))
         setFiles((curr) => [...curr, ...mappedAcceptedFiles, ...rejectedFiles])
     }, [])
@@ -39,8 +59,8 @@ function Fileupload({newToastNotif, categories}) {
 
             // the following handler will fire after a successful loading of the image
             img.onload = () => {
-                const { naturalWidth: width, naturalHeight: height } = img
-                resolve({ width, height })
+                const {naturalWidth: width, naturalHeight: height} = img
+                resolve({width, height})
             }
 
             // and this handler will fire if there was an error with the image (like if it's not really an image or a corrupted one)
@@ -54,15 +74,16 @@ function Fileupload({newToastNotif, categories}) {
     async function handleImageUpload(files) {
         //TODO: - validate errors from appwrite
         //      DONE - on wrong file upload, send notif of error and show what file it was
-        for(let fWrapper of files){
-            if(!fWrapper.errors){
+        //      - implement a total in array because of DB 60 querys limit
+        for (let fWrapper of files) {
+            if (!fWrapper.errors) {
                 setUploading(true)
 
                 const img_dim = await imageDimensions(fWrapper.file)
                 console.log(img_dim)
 
                 const img_storage_resp = await addStorageImage(fWrapper.file)
-                console.log(img_storage_resp)
+                //console.log(img_storage_resp)
 
                 const payload = {
                     image_id: img_storage_resp.$id,
@@ -72,8 +93,8 @@ function Fileupload({newToastNotif, categories}) {
                 }
 
                 const resp = await addGalleryImages(JSON.parse(JSON.stringify(payload)))
-                console.log(resp)
-                
+                //console.log(resp)
+
                 setUploading(false)
 
                 //newToastNotif("success", "Image uploaded.")
@@ -88,109 +109,134 @@ function Fileupload({newToastNotif, categories}) {
 
     }
 
-    function handleImageDelete(file){
+    const handleClearFileArray = () => {
+        setFiles([])
+        setSelectChangeAll_Value("placeholder")
+    }
+
+    function handleImageDelete(file) {
         setFiles(curr => curr.filter(f => (f.file !== file)))
     }
 
-    const selectAllCategoryRef = useRef(null);
-    const selectEachImageListRef = useRef(null);
-    const handleSetAllCategory = (e) => {
-        let allSelect = selectAllCategoryRef.current //ref to the select "category for all"
-        let selectList = selectEachImageListRef.current.querySelectorAll('select'); //get the list of select from the ref wrapper
-
-        for (let select of selectList){
-            select.value = allSelect.options[allSelect.selectedIndex].value
-        }
-
-        setFiles((currentFiles) =>
-            currentFiles.map((currentFile) => {
-                //console.log({ ...currentFile, category: e.target.value})
-                return { ...currentFile, category: e.target.value};
-            })
-        );
-    }
-
-    const eachImageSelectRef = useRef(null);
-    const handleUpdateEachImageCategory = (e, file) => {
-        //let select = eachImageSelectRef.current
-        console.log(e.target.value)
-
-        setFiles((currentFiles) =>
-            currentFiles.map((currentFile) => {
-                if (currentFile.file === file) {
-                    console.log({ ...currentFile, category: e.target.value})
-                    return { ...currentFile, category: e.target.value};
+    const handleSelectChange = (event, file) => {
+        setFiles((currentFileArray) =>
+            currentFileArray.map((fWrapper) => {
+                if (fWrapper.file === file) {
+                    //console.log({ ...fWrapper, category: event.target.value})
+                    return {...fWrapper, category: event.target.value};
                 }
-                return currentFile;
+                return fWrapper;
             })
         );
+
+        const res = new Set(files.map(item => item.category)).size === 1
+        console.log("all equal?", res)
+
+        if (res) {
+            setSelectChangeAll_Value("placeholder")
+        }
     }
 
-    // const [updateGalleryCategory, setUpdateGalleryCategory] = useState(null)
+    const handleSelectChangeAll = (event) => {
+        setSelectChangeAll_Value(event.target.value)
+
+        if (event.target.value !== "placeholder") {
+            setFiles((currentFileArray) =>
+                currentFileArray.map((fWrapper) => {
+                    console.log({...fWrapper, category: event.target.value})
+                    return {...fWrapper, category: event.target.value};
+                })
+            );
+        }
+    }
 
     return (
         <>
             <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 {
-                    isDragActive ?
-                        <>
-                            <div className={"container-fluid drag-area active"}>
-                                <FaArrowUp size={64}></FaArrowUp>
-                                <p>Drop the files here ...</p>
-                            </div>
+                    !uploading && (
+                        isDragActive ?
+                            <>
+                                <Box className={"drag-area active"}>
+                                    <FaArrowUp size={64}></FaArrowUp>
+                                    <p>Drop the files here ...</p>
+                                </Box>
+                            </>
+                            :
+                            <>
+                                <Box className={"drag-area"}>
+                                    <FaImages size={64}></FaImages>
+                                    <p>Drag & drop, or click to select files</p>
+                                    <span className="support">Supports: JPEG, JPG, PNG</span>
+                                </Box>
+                            </>
+                    )
 
-                        </>
-                        :
-                        <>
-                            <div className={"container-fluid drag-area"}>
-                                <FaImages size={64}></FaImages>
-                                <p>Drag & drop some files here, or click to select files</p>
-                                <span className="support">Supports: JPEG, JPG, PNG</span>
-                            </div>
-                        </>
                 }
             </div>
 
 
-            <div className="container-fluid">
+            <Container disableGutters>
                 {files.length > 0 &&
-                    <>
-                        <div className="row my-4 d-flex justify-content-between align-items-center">
-                            <div className="col-auto d-flex justify-content-start align-items-center">
-                                <button disabled={uploading} className={"d-flex align-items-center btn btn-success text-white"} onClick={() => {handleImageUpload(files)}}>
-                                    <FaUpload className={"me-2"}></FaUpload> {uploading ? "Uploading" : "Upload" }
-                                </button>
-                            </div>
-                            <div className="col-auto d-flex justify-content-end align-items-center ms-auto">
-                                {files.length > 1 &&
-                                    <select disabled={uploading} ref={selectAllCategoryRef} onChange={(e) => {handleSetAllCategory(e)}} defaultValue="null" className="form-select" aria-label="select category">
-                                        <option value="null">Sem Categoria</option>
-                                        {/*TODO: - validate if there is no categories?? */}
-                                        {categories?.map((category, index) => {
-                                            return (
-                                                <option key={index} value={category.$id}>{category.name}</option>
-                                            )
-                                        })}
-                                    </select>
-                                }
-                                <button disabled={uploading} className={"d-flex align-items-center btn btn-danger text-white ms-3"} onClick={() => {setFiles([])}}><FaTrashAlt className={"me-2"}></FaTrashAlt> All</button>
-                            </div>
-                        </div>
-                    </>
+                    <Stack hidden={uploading} width={"100%"} my={3} spacing={2} direction={"row"}
+                           alignContent={"center"} justifyContent={"start"}>
+                        <Button sx={{flexShrink: 0}} size={"medium"} color={"success"} variant={"contained"}
+                                startIcon={<UploadIcon/>}
+                                onClick={() => {
+                                    handleImageUpload(files)
+                                }}
+                        >
+                            Upload
+                        </Button>
+                        <Button sx={{flexShrink: 0}} size={"medium"} color={"error"} variant={"contained"}
+                                startIcon={<DeleteIcon/>}
+                                onClick={() => {
+                                    handleClearFileArray()
+                                }}
+                        >
+                            Cancel
+                        </Button>
+                        {files.length > 1 &&
+                            <FormControl fullWidth sx={{minWidth: 200, maxWidth: 300}} size={"small"}>
+                                <InputLabel id="labelCategory">Category</InputLabel>
+                                <Select
+                                    labelId="labelCategory"
+                                    id="selectCategory"
+                                    value={selectChangeAll_Value}
+                                    label="Category"
+                                    onChange={(event) => handleSelectChangeAll(event)}
+                                >
+                                    <MenuItem disabled placeholder value={"placeholder"}>Categorizar
+                                        todos</MenuItem>
+                                    <MenuItem value={"null"}>Sem Categoria</MenuItem>
+                                    {categories?.map((category, index) => {
+                                        return (
+                                            <MenuItem key={index} value={category.$id}>{category.name}</MenuItem>
+                                        )
+                                    })}
+                                </Select>
+                            </FormControl>
+                        }
+                    </Stack>
                 }
 
-                <div className="singular-select-wrapper" ref={selectEachImageListRef}>
-                    {   //TODO: - send a alert when a file is not supported and remove it from list
-                        //      - upload list of files container need style adjusting
-                        files?.map((fWrapper, index) => {
-                        if (fWrapper.errors?.length > 0){
+                {/*TODO: send a alert when a file is not supported and remove it from list
+                         upload list of files container need style adjusting
+
+                 */}
+
+                {/*<AnimatePresence mode={'popLayout'}>*/}
+                {
+                    files?.map((fWrapper, index) => {
+                        if (fWrapper.errors?.length > 0) {
                             return (
-                                <div key={index} className="row d-flex justify-content-between align-items-center text-danger">
+                                <div key={index}
+                                     className="row d-flex justify-content-between align-items-center text-danger">
                                     <div className="col-auto d-flex justify-content-start align-items-center">
                                         <div className="me-3">
                                             <OverlayTrigger
-                                                delay={{ hide: 0, show: 0 }}
+                                                delay={{hide: 0, show: 0}}
                                                 overlay={(props) => (
                                                     <Tooltip className={"tooltip-color"} {...props}>
                                                         <span>Wrong file type!</span>
@@ -203,73 +249,94 @@ function Fileupload({newToastNotif, categories}) {
                                         </div>
                                         <p className={"m-0"}>{fWrapper.file.name}</p>
                                     </div>
-                                    <div className="col-auto d-flex justify-content-end align-items-center ms-auto">
-                                        <button className={"btn btn-danger text-white"} onClick={() => {handleImageDelete(fWrapper.file)}}><FaTrashAlt></FaTrashAlt></button>
+                                    <div
+                                        className="col-auto d-flex justify-content-end align-items-center ms-auto">
+                                        <button className={"btn btn-danger text-white"} onClick={() => {
+                                            handleImageDelete(fWrapper.file)
+                                        }}><FaTrashAlt></FaTrashAlt></button>
                                     </div>
                                 </div>
                             )
                         }
                         return (
-                            <div key={index} className="row my-5 my-md-4 d-flex justify-content-between text-black">
-                                <div className="col-12 col-md d-flex justify-content-start align-items-center">
-                                    <div className="image-wrapper">
-                                        <img src={_URL.createObjectURL(fWrapper.file)} height={52} alt=""/>
-                                    </div>
-                                    <div className="ms-3">
-                                        <p className={"m-0 " + (uploading && "text-muted")}>{fWrapper.file.name}</p>
-                                        {uploading && <CircularProgress size={24} color="primary"/>}
-                                    </div>
-                                </div>
+                            <motion.div
+                                key={index*485689}
+                                layout
+                                initial={{ opacity: 0, x: -50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: 50 }}
+                                transition={{ type: 'spring', stiffness: 500, damping: 50, mass: 1 }}
+                            >
+                                <Stack key={index} mb={3} spacing={3} direction={{xs: "column", sm: "row"}} alignItems="center" justifyContent="space-between">
+                                <Stack width={"100%"} spacing={2} direction="row" alignItems="center"
+                                       justifyContent="start">
+                                    <Box sx={{
+                                        minWidth: 100,
+                                        minHeight: 100,
+                                        width: 100,
+                                        height: 100,
+                                    }}>
+                                        <Box
+                                            component={"img"}
+                                            alt={""}
+                                            src={fWrapper.preview}
+                                            sx={{
+                                                borderRadius: 0.8,
+                                                width: "100%",
+                                                height: "100%",
+                                                objectFit: "cover",
+                                            }}
+                                        />
+                                    </Box>
 
-                                <div
-                                    className="col-12 col-md d-flex justify-content-end align-items-center flex-shrink-0 pt-2 pt-md-0">
-                                    <select disabled={uploading} ref={eachImageSelectRef} onChange={(e) => {
-                                        handleUpdateEachImageCategory(e, fWrapper.file)}} defaultValue="null" className="form-select" aria-label="select category">
-                                        <option value="null">Sem Categoria</option>
-                                        {categories?.map((category, index) => {
-                                            return (
-                                                <option key={index} value={category.$id}>{category.name}</option>
-                                            )
-                                        })}
-                                    </select>
-                                    <button disabled={uploading} className={"btn btn-danger text-white ms-3"} onClick={() => {handleImageDelete(fWrapper.file)}}><FaTrashAlt></FaTrashAlt></button>
-                                </div>
+                                    <Stack width={"100%"} spacing={2} direction="column"
+                                           justifyContent="start">
+                                        <Typography
+                                            sx={{fontSize: "0.9rem"}}>{fWrapper.file.name}</Typography>
+                                        <Stack width={"100%"} spacing={2} direction="row"
+                                               alignItems="center"
+                                               justifyContent="start">
+                                            <FormControl hidden={uploading} fullWidth
+                                                         sx={{minWidth: 200, maxWidth: 300}} size={"small"}>
+                                                <InputLabel id="labelCategory">Category</InputLabel>
+                                                <Select
+                                                    labelId="labelCategory"
+                                                    id="selectCategory"
+                                                    value={fWrapper.category}
+                                                    label="Category"
+                                                    onChange={(event) => handleSelectChange(event, fWrapper.file)}
+                                                >
+                                                    <MenuItem value={"null"}>Sem Categoria</MenuItem>
+                                                    {categories?.map((category, index) => {
+                                                        return (
+                                                            <MenuItem key={index}
+                                                                      value={category.$id}>{category.name}</MenuItem>
+                                                        )
+                                                    })}
+                                                </Select>
+                                            </FormControl>
 
+                                            <Button hidden={uploading} sx={{flexShrink: 0}} size={"small"}
+                                                    variant="contained" color="error" onClick={() => {
+                                                handleImageDelete(fWrapper.file)
+                                            }}>REMOVE</Button>
 
+                                            <Box hidden={!uploading} sx={{width: '100%'}}>
+                                                <LinearProgress/>
+                                            </Box>
+                                        </Stack>
+                                    </Stack>
 
-                                {/*<Box sx={{display:"flex"}}>
-                                    <img src={_URL.createObjectURL(fWrapper.file)} height={52} alt=""/>
-                                    <div className="ms-3">
-                                        <p className={"m-0 " + (uploading && "text-muted")}>{fWrapper.file.name}</p>
-                                        {uploading && <CircularProgress size={24} color="primary"/>}
-                                    </div>
-                                    <FormControl fullWidth>
-                                        <InputLabel id="labelCategory">Category</InputLabel>
-                                        <Select
-                                            labelId="labelCategory"
-                                            id="selectCategory"
-                                            value={updateGalleryCategory}
-                                            label="Category"
-                                            onChange={(event) => setUpdateGalleryCategory(event.target.value)}
-                                        >
-                                            <MenuItem value={"null"}>Sem Categoria</MenuItem>
-                                            {categories?.map((category, index) => {
-                                                return (
-                                                    <MenuItem key={index}
-                                                              value={category.$id}>{category.name}</MenuItem>
-                                                )
-                                            })}
-                                        </Select>
-                                    </FormControl>
-                                </Box>*/}
-                            </div>
-                        )
-                        })}
-                </div>
-            </div>
-
+                                </Stack>
+                            </Stack>
+                            </motion.div>
+                        );
+                    })
+                }
+                {/*</AnimatePresence>*/}
+            </Container>
         </>
-    )
+)
 }
 
 export default Fileupload;
