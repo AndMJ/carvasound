@@ -6,10 +6,9 @@ import {FaArrowUp, FaImages, FaTrashAlt} from "react-icons/fa";
 import {RiFileWarningLine} from "react-icons/ri";
 
 import Tooltip from 'react-bootstrap/Tooltip';
-import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import {useAuth} from "../../utils/authContext.jsx";
 import {
-    Box,
+    Box, CardContent, CardMedia,
     Container, createTheme,
     FormControl, Grid,
     IconButton,
@@ -22,6 +21,8 @@ import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UploadIcon from '@mui/icons-material/Upload';
 import {AnimatePresence, motion, usePresence} from "framer-motion"
+import {Card} from "react-bootstrap";
+import WarningIcon from '@mui/icons-material/Warning';
 
 // ----------------------------------------------------------------------
 
@@ -109,13 +110,13 @@ function Fileupload({newToastNotif, categories}) {
 
     }
 
+    function handleImageDelete(file) {
+        setFiles(curr => curr.filter(f => (f.file !== file)))
+    }
+
     const handleClearFileArray = () => {
         setFiles([])
         setSelectChangeAll_Value("placeholder")
-    }
-
-    function handleImageDelete(file) {
-        setFiles(curr => curr.filter(f => (f.file !== file)))
     }
 
     const handleSelectChange = (event, file) => {
@@ -150,8 +151,10 @@ function Fileupload({newToastNotif, categories}) {
         }
     }
 
+    const [arrayTest, setArrayTest] = useState(["bertber", "gtre4", "e645e","bre64","ena5","nae46","ndzn","n567sne","dfznfg","r534w","d45n","er6","dr5h","e4sazsw4","brdtn4","nr567dsr56",])
+
     return (
-        <>
+        <Box>
             <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 {
@@ -177,7 +180,7 @@ function Fileupload({newToastNotif, categories}) {
             </div>
 
 
-            <Container disableGutters>
+            <Container>
                 {files.length > 0 &&
                     <Stack hidden={uploading} width={"100%"} my={3} spacing={2} direction={"row"}
                            alignContent={"center"} justifyContent={"start"}>
@@ -221,55 +224,102 @@ function Fileupload({newToastNotif, categories}) {
                     </Stack>
                 }
 
-                {/*TODO: send a alert when a file is not supported and remove it from list
-                         upload list of files container need style adjusting
+                {/*TODO: - send a alert when a file is not supported and remove it from list
+                         - upload list of files container need style adjusting
 
                  */}
 
-                {/*<AnimatePresence mode={'popLayout'}>*/}
-                {
-                    files?.map((fWrapper, index) => {
-                        if (fWrapper.errors?.length > 0) {
-                            return (
-                                <div key={index}
-                                     className="row d-flex justify-content-between align-items-center text-danger">
-                                    <div className="col-auto d-flex justify-content-start align-items-center">
-                                        <div className="me-3">
-                                            <OverlayTrigger
-                                                delay={{hide: 0, show: 0}}
-                                                overlay={(props) => (
-                                                    <Tooltip className={"tooltip-color"} {...props}>
-                                                        <span>Wrong file type!</span>
-                                                    </Tooltip>
-                                                )}
-                                                placement="top"
-                                            >
-                                                <div><RiFileWarningLine size={24}></RiFileWarningLine></div>
-                                            </OverlayTrigger>
-                                        </div>
-                                        <p className={"m-0"}>{fWrapper.file.name}</p>
-                                    </div>
-                                    <div
-                                        className="col-auto d-flex justify-content-end align-items-center ms-auto">
-                                        <button className={"btn btn-danger text-white"} onClick={() => {
-                                            handleImageDelete(fWrapper.file)
-                                        }}><FaTrashAlt></FaTrashAlt></button>
-                                    </div>
-                                </div>
-                            )
-                        }
+                {files?.map((fWrapper, index) => {
+
+                    if (fWrapper.errors?.length > 0) {
                         return (
-                            <motion.div
-                                key={index*485689}
-                                layout
-                                initial={{ opacity: 0, x: -50 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: 50 }}
-                                transition={{ type: 'spring', stiffness: 500, damping: 50, mass: 1 }}
-                            >
-                                <Stack key={index} mb={3} spacing={3} direction={{xs: "column", sm: "row"}} alignItems="center" justifyContent="space-between">
-                                <Stack width={"100%"} spacing={2} direction="row" alignItems="center"
-                                       justifyContent="start">
+                            /*<div key={index} className="row d-flex justify-content-between align-items-center text-danger">
+                                <div className="col-auto d-flex justify-content-start align-items-center">
+                                    <div className="me-3">
+                                        <OverlayTrigger
+                                            delay={{hide: 0, show: 0}}
+                                            overlay={(props) => (
+                                                <Tooltip className={"tooltip-color"} {...props}>
+                                                    <span>Wrong file type!</span>
+                                                </Tooltip>
+                                            )}
+                                            placement="top"
+                                        >
+                                            <div><RiFileWarningLine size={24}></RiFileWarningLine></div>
+                                        </OverlayTrigger>
+                                    </div>
+                                    <p className={"m-0"}>{fWrapper.file.name}</p>
+                                </div>
+                                <div
+                                    className="col-auto d-flex justify-content-end align-items-center ms-auto">
+                                    <button className={"btn btn-danger text-white"} onClick={() => {
+                                        handleImageDelete(fWrapper.file)
+                                    }}><FaTrashAlt></FaTrashAlt></button>
+                                </div>
+                            </div>*/
+                            <Stack sx={{display: "block"}} mb={3} spacing={3} direction={{xs: "column", sm: "row"}} alignItems="center" justifyContent="space-between">
+                                <Stack width={"100%"} spacing={2} direction="row" alignItems="center" justifyContent="start">
+
+                                    <Box sx={{
+                                        minWidth: 100,
+                                        minHeight: 100,
+                                        width: 100,
+                                        height: 100,
+                                    }}>
+                                        <WarningIcon color={"error"} sx={{
+                                            borderRadius: 0.8,
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "cover",
+                                        }}></WarningIcon>
+                                    </Box>
+
+                                    <Stack width={"100%"} spacing={2} direction="column"
+                                           justifyContent="start">
+                                        <Typography
+                                            sx={{fontSize: "0.9rem"}}>{fWrapper.file.name}</Typography>
+                                        <Stack width={"100%"} spacing={2} direction="row"
+                                               alignItems="center"
+                                               justifyContent="start">
+                                            <FormControl hidden={uploading} fullWidth
+                                                         sx={{minWidth: 200, maxWidth: 300}} size={"small"}>
+                                                <InputLabel id="labelCategory">Category</InputLabel>
+                                                <Select
+                                                    labelId="labelCategory"
+                                                    id="selectCategory"
+                                                    value={fWrapper.category}
+                                                    label="Category"
+                                                    onChange={(event) => handleSelectChange(event, fWrapper.file)}
+                                                >
+                                                    <MenuItem value={"null"}>Sem Categoria</MenuItem>
+                                                    {categories?.map((category, index) => {
+                                                        return (
+                                                            <MenuItem key={index}
+                                                                      value={category.$id}>{category.name}</MenuItem>
+                                                        )
+                                                    })}
+                                                </Select>
+                                            </FormControl>
+
+                                            <Button hidden={uploading} sx={{flexShrink: 0}} size={"small"}
+                                                    variant="contained" color="error" onClick={() => {
+                                                handleImageDelete(fWrapper.file)
+                                            }}>REMOVE</Button>
+
+                                            <Box hidden={!uploading} sx={{width: '100%'}}>
+                                                <LinearProgress/>
+                                            </Box>
+                                        </Stack>
+                                    </Stack>
+
+                                </Stack>
+                            </Stack>
+                        )
+                    }
+
+                    <Stack sx={{display: "block"}} mb={3} spacing={3} direction={{xs: "column", sm: "row"}} alignItems="center" justifyContent="space-between">
+                                <Stack width={"100%"} spacing={2} direction="row" alignItems="center" justifyContent="start">
+
                                     <Box sx={{
                                         minWidth: 100,
                                         minHeight: 100,
@@ -329,14 +379,11 @@ function Fileupload({newToastNotif, categories}) {
 
                                 </Stack>
                             </Stack>
-                            </motion.div>
-                        );
-                    })
-                }
-                {/*</AnimatePresence>*/}
-            </Container>
-        </>
-)
-}
 
+                })}
+
+            </Container>
+        </Box>
+    )
+}
 export default Fileupload;

@@ -152,12 +152,6 @@ const Gallery = () => {
         { field: 'image_id', headerName: 'Image ID', editable: false, filterable: false, sortable: false, disableColumnMenu: true},
         { field: 'image', headerName: 'Image', width: 120, editable: false, filterable: false, sortable: false, disableColumnMenu: true,
             renderCell: (params) => (
-                //<RenderCellImage image_id={params.row.image.image_id} image_width={params.row.image.width}></RenderCellImage>
-                //<RenderCellImage imagePromise={params.row.image}></RenderCellImage>
-                /*<div className={"w-100"} >
-                    <img src={params.row.image} width={"100%"} height={"100%"} alt={"image thumbnail"}/>
-                </div>*/
-
                 <Box sx={{
                     minWidth: 100,
                     minHeight: 100,
@@ -451,7 +445,7 @@ const Gallery = () => {
                                 </DialogActions>
                             </Dialog>
 
-                            <ThemeProvider theme={dataTableTheme}> {/*TODO: tooltip with current clicked cell data*/}
+                            <ThemeProvider theme={dataTableTheme}> {/*TODO: tooltip with current clicked cell data || add a minWidth to each column*/}
                             <DataGrid
                                 sx={{
                                     height: 900,
