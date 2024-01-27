@@ -157,8 +157,6 @@ function Fileupload({newToastNotif, categories}) {
         }
     }
 
-    const [arrayTest, setArrayTest] = useState(["bertber", "gtre4", "e645e","bre64","ena5","nae46","ndzn","n567sne","dfznfg","r534w","d45n","er6","dr5h","e4sazsw4","brdtn4","nr567dsr56",])
-
     return (
         <Box>
             <div {...getRootProps()}>
@@ -236,71 +234,7 @@ function Fileupload({newToastNotif, categories}) {
                  */}
 
                 <Grid container spacing={3}>
-                {files?.map((fWrapper, index) => {
-
-                    /*if (fWrapper.errors?.length > 0) {
-                        return (
-                            <Stack sx={{display: "block"}} mb={3} spacing={3} direction={{xs: "column", sm: "row"}} alignItems="center" justifyContent="space-between">
-                                <Stack width={"100%"} spacing={2} direction="row" alignItems="center" justifyContent="start">
-
-                                    <Box sx={{
-                                        minWidth: 100,
-                                        minHeight: 100,
-                                        width: 100,
-                                        height: 100,
-                                    }}>
-                                        <WarningIcon color={"error"} sx={{
-                                            borderRadius: 0.8,
-                                            width: "100%",
-                                            height: "100%",
-                                            objectFit: "cover",
-                                        }}></WarningIcon>
-                                    </Box>
-
-                                    <Stack width={"100%"} spacing={2} direction="column"
-                                           justifyContent="start">
-                                        <Typography
-                                            sx={{fontSize: "0.9rem"}}>{fWrapper.file.name}</Typography>
-                                        <Stack width={"100%"} spacing={2} direction="row"
-                                               alignItems="center"
-                                               justifyContent="start">
-                                            <FormControl hidden={uploading} fullWidth
-                                                         sx={{minWidth: 200, maxWidth: 300}} size={"small"}>
-                                                <InputLabel id="labelCategory">Category</InputLabel>
-                                                <Select
-                                                    labelId="labelCategory"
-                                                    id="selectCategory"
-                                                    value={fWrapper.category}
-                                                    label="Category"
-                                                    onChange={(event) => handleSelectChange(event, fWrapper.file)}
-                                                >
-                                                    <MenuItem value={"null"}>Sem Categoria</MenuItem>
-                                                    {categories?.map((category, index) => {
-                                                        return (
-                                                            <MenuItem key={index}
-                                                                      value={category.$id}>{category.name}</MenuItem>
-                                                        )
-                                                    })}
-                                                </Select>
-                                            </FormControl>
-
-                                            <Button hidden={uploading} sx={{flexShrink: 0}} size={"small"}
-                                                    variant="contained" color="error" onClick={() => {
-                                                handleImageDelete(fWrapper.file)
-                                            }}>REMOVE</Button>
-
-                                            <Box hidden={!uploading} sx={{width: '100%'}}>
-                                                <LinearProgress/>
-                                            </Box>
-                                        </Stack>
-                                    </Stack>
-
-                                </Stack>
-                            </Stack>
-                        )
-                    }*/
-
-                    return(
+                    {files?.map((fWrapper, index) => (
                         <Grid key={index} xs={12} sm={12} md={6}>
                             <Stack my={2} spacing={2} direction={"row"} alignItems="center" justifyContent="space-between" flexWrap={"wrap"} >
 
@@ -358,14 +292,12 @@ function Fileupload({newToastNotif, categories}) {
 
                             </Stack>
                         </Grid>
-                        )
-
-
-                })}
+                    ))}
                 </Grid>
 
             </Container>
         </Box>
     )
 }
+
 export default Fileupload;
