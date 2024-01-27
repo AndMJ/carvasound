@@ -158,7 +158,7 @@ function Fileupload({newToastNotif, categories}) {
     }
 
     return (
-        <Box>
+        <>
             <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 {
@@ -184,7 +184,7 @@ function Fileupload({newToastNotif, categories}) {
             </div>
 
 
-            <Container>
+
                 {files.length > 0 &&
                     <Stack hidden={uploading} my={3} spacing={2} direction={"row"}
                            alignItems={"center"} justifyContent={"center"} flexWrap={"wrap"}>
@@ -233,7 +233,7 @@ function Fileupload({newToastNotif, categories}) {
 
                  */}
 
-                <Grid container spacing={3}>
+                <Grid container spacing={3} sx={{marginTop: "unset"}}>
                     {files?.map((fWrapper, index) => (
                         <Grid key={index} xs={12} sm={12} md={6}>
                             <Stack my={2} spacing={2} direction={"row"} alignItems="center" justifyContent="space-between" flexWrap={"wrap"} >
@@ -294,9 +294,7 @@ function Fileupload({newToastNotif, categories}) {
                         </Grid>
                     ))}
                 </Grid>
-
-            </Container>
-        </Box>
+        </>
     )
 }
 
