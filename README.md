@@ -4,6 +4,8 @@ Frontend + Backoffice using [Vite](https://vitejs.dev/) with [React](https://rea
 Backend using [Appwrite.io](https://appwrite.io/)
 
 <br>
+# [Project stoped due to client cancellation]
+<br>
 
 ## Carvasound - DJ New
 **DJ Socials:** [Instagram](https://www.instagram.com/carvasound/) | [Facebook](https://www.facebook.com/carvasound/)
