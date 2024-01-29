@@ -158,7 +158,7 @@ function Fileupload({newToastNotif, categories}) {
     }
 
     return (
-        <>
+        <Container disableGutters>
             <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 {
@@ -185,116 +185,123 @@ function Fileupload({newToastNotif, categories}) {
 
 
 
-                {files.length > 0 &&
-                    <Stack hidden={uploading} my={3} spacing={2} direction={"row"}
-                           alignItems={"center"} justifyContent={"center"} flexWrap={"wrap"}>
-                        <Button sx={{flexShrink: 0}} size={"medium"} color={"success"} variant={"contained"}
-                                startIcon={<UploadIcon/>}
-                                onClick={() => {
-                                    handleImageUpload(files)
+            {files.length > 0 &&
+                <Stack hidden={uploading} my={3} spacing={2} direction={"row"}
+                       alignItems={"center"} justifyContent={"center"}>
+                    <Button sx={{flexShrink: 0}} size={"medium"} color={"success"} variant={"contained"}
+                            startIcon={<UploadIcon/>}
+                            onClick={() => {
+                                handleImageUpload(files)
+                            }}
+                    >
+                        Upload
+                    </Button>
+                    <Button sx={{flexShrink: 0}} size={"medium"} color={"error"} variant={"contained"}
+                            startIcon={<DeleteIcon/>}
+                            onClick={() => {
+                                handleClearFileArray()
+                            }}
+                    >
+                        Cancel
+                    </Button>
+                    {files.length > 1 &&
+                        <FormControl sx={{ maxWidth: 300}} size={"small"}>
+                            <InputLabel id="labelCategory">Category</InputLabel>
+                            <Select
+                                labelId="labelCategory"
+                                id="selectCategory"
+                                value={selectChangeAll_Value}
+                                label="Category"
+                                onChange={(event) => handleSelectChangeAll(event)}
+                            >
+                                <MenuItem disabled placeholder value={"placeholder"}>Categorizar
+                                    todos</MenuItem>
+                                <MenuItem value={"null"}>Sem Categoria</MenuItem>
+                                {categories?.map((category, index) => {
+                                    return (
+                                        <MenuItem key={index} value={category.$id}>{category.name}</MenuItem>
+                                    )
+                                })}
+                            </Select>
+                        </FormControl>
+                    }
+                </Stack>
+            }
+
+            {/*TODO: - upload list of files container need style adjusting
+
+             */}
+
+            <Grid container spacing={3} sx={{ marginTop: 'unset', marginLeft: 'unset', width: '100%' }}>
+                {files?.map((fWrapper, index) => (
+                    <Grid key={index} item xs={12} sm={6} md={4} lg={4} xl={6}>
+                        <Stack my={2} direction={'row'} alignItems="center" justifyContent="space-between" flexWrap={'wrap'}>
+                            <Box mb={2} sx={{ minWidth: 100, minHeight: 100, width: '100%', height: '100%' }}>
+                                <Box
+                                    component={'img'}
+                                    alt={''}
+                                    src={fWrapper.preview}
+                                    sx={{
+                                        borderRadius: 0.8,
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                    }}
+                                />
+                            </Box>
+                            <Typography
+                                mb={2}
+                                flexShrink={1}
+                                sx={{
+                                    fontSize: '0.9rem',
+                                    overflow: 'hidden',
+                                    display: '-webkit-box',
+                                    WebkitBoxOrient: 'vertical',
+                                    WebkitLineClamp: 2, // Number of lines to show before truncating
+                                    wordBreak: 'break-word',
                                 }}
-                        >
-                            Upload
-                        </Button>
-                        <Button sx={{flexShrink: 0}} size={"medium"} color={"error"} variant={"contained"}
-                                startIcon={<DeleteIcon/>}
-                                onClick={() => {
-                                    handleClearFileArray()
-                                }}
-                        >
-                            Cancel
-                        </Button>
-                        {files.length > 1 &&
-                            <FormControl sx={{ maxWidth: 300}} size={"small"}>
-                                <InputLabel id="labelCategory">Category</InputLabel>
-                                <Select
-                                    labelId="labelCategory"
-                                    id="selectCategory"
-                                    value={selectChangeAll_Value}
-                                    label="Category"
-                                    onChange={(event) => handleSelectChangeAll(event)}
+                            >
+                                {fWrapper.file.name}
+                            </Typography>
+                            <Stack width={"100%"} spacing={2} direction="column" alignItems="center" justifyContent="end">
+                                <FormControl fullWidth hidden={uploading} sx={{ /*maxWidth: 300*/ }} size={'small'}>
+                                    <InputLabel id="labelCategory">Category</InputLabel>
+                                    <Select
+                                        labelId="labelCategory"
+                                        id="selectCategory"
+                                        value={fWrapper.category}
+                                        label="Category"
+                                        onChange={(event) => handleSelectChange(event, fWrapper.file)}
+                                    >
+                                        <MenuItem value={'null'}>Sem Categoria</MenuItem>
+                                        {categories?.map((category, index) => (
+                                            <MenuItem key={index} value={category.$id}>
+                                                {category.name}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </FormControl>
+                                <Button
+                                    hidden={uploading}
+                                    sx={{ width: '100%', flexShrink: 0, flexFlow: 1 }}
+                                    size={'small'}
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => {
+                                        handleImageDelete(fWrapper.file);
+                                    }}
                                 >
-                                    <MenuItem disabled placeholder value={"placeholder"}>Categorizar
-                                        todos</MenuItem>
-                                    <MenuItem value={"null"}>Sem Categoria</MenuItem>
-                                    {categories?.map((category, index) => {
-                                        return (
-                                            <MenuItem key={index} value={category.$id}>{category.name}</MenuItem>
-                                        )
-                                    })}
-                                </Select>
-                            </FormControl>
-                        }
-                    </Stack>
-                }
-
-                {/*TODO: - send a alert when a file is not supported and remove it from list
-                         - upload list of files container need style adjusting
-
-                 */}
-
-                <Grid container spacing={3} sx={{marginTop: "unset"}}>
-                    {files?.map((fWrapper, index) => (
-                        <Grid key={index} xs={12} sm={12} md={6}>
-                            <Stack my={2} spacing={2} direction={"row"} alignItems="center" justifyContent="space-between" flexWrap={"wrap"} >
-
-                                <Stack spacing={2} direction={"row"} alignItems="center" justifyContent={"start"}>
-                                    <Box sx={{
-                                        minWidth: 100,
-                                        minHeight: 100,
-                                        width: 100,
-                                        height: 100,
-                                    }}>
-                                        <Box
-                                            component={"img"}
-                                            alt={""}
-                                            src={fWrapper.preview}
-                                            sx={{
-                                                borderRadius: 0.8,
-                                                width: "100%",
-                                                height: "100%",
-                                                objectFit: "cover",
-                                            }}
-                                        />
-                                    </Box>
-                                    <Typography sx={{fontSize: "0.9rem"}}>{fWrapper.file.name}</Typography>
-                                </Stack>
-                                <Stack spacing={2} direction="column" alignItems="center" justifyContent="end">
-                                    <FormControl hidden={uploading} sx={{ maxWidth: 300}} size={"small"}>
-                                        <InputLabel id="labelCategory">Category</InputLabel>
-                                        <Select
-                                            labelId="labelCategory"
-                                            id="selectCategory"
-                                            value={fWrapper.category}
-                                            label="Category"
-                                            onChange={(event) => handleSelectChange(event, fWrapper.file)}
-                                        >
-                                            <MenuItem value={"null"}>Sem Categoria</MenuItem>
-                                            {categories?.map((category, index) => {
-                                                return (
-                                                    <MenuItem key={index}
-                                                              value={category.$id}>{category.name}</MenuItem>
-                                                )
-                                            })}
-                                        </Select>
-                                    </FormControl>
-
-                                    <Button hidden={uploading} sx={{width: "100%", flexShrink: 0, flexFlow: 1}} size={"small"}
-                                            variant="contained" color="error" onClick={() => {
-                                        handleImageDelete(fWrapper.file)
-                                    }}>REMOVE</Button>
-
-                                    <Box hidden={!uploading} sx={{width: '100%'}}>
-                                        <LinearProgress/>
-                                    </Box>
-                                </Stack>
-
-
+                                    REMOVE
+                                </Button>
+                                <Box hidden={!uploading} sx={{ width: '100%' }}>
+                                    <LinearProgress />
+                                </Box>
                             </Stack>
-                        </Grid>
-                    ))}
-                </Grid>
-        </>
+                        </Stack>
+                    </Grid>
+                ))}
+            </Grid>
+        </Container>
     )
 }
 
