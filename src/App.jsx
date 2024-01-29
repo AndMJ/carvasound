@@ -46,7 +46,7 @@ function App() {
         },
     });
 
-    const theme = createTheme({
+    const lightTheme = createTheme({
         components: {
             MuiChip: {
                 styleOverrides: {
@@ -62,8 +62,8 @@ function App() {
         breakpoints: {
             values: {
                 xs: 0,
-                sm: 768,
-                md: 576,
+                sm: 576,
+                md: 768,
                 lg: 992,
                 xl: 1200,
             },
@@ -71,7 +71,7 @@ function App() {
     });
 
   return (
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={lightTheme}>
           <AnimatePresence mode={"sync"}>
               <AuthProvider>
                   <Routes>
