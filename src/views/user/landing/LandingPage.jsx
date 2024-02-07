@@ -44,11 +44,11 @@ const LandingPage = () => {
                 <div className="container px-4 px-lg-5 h-100">
                     <div className="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
                         <div className="col-lg-8 align-self-end">
-                            <h1 className="text-white font-weight-bold">Carvasound, Som para todas as ocasiões</h1>
+                            <h1 className="text-white font-weight-bold">Lorem ipsum dolor sit amet, consectetur</h1>
                             <hr className="divider" />
                         </div>
                         <div className="col-lg-8 align-self-baseline">
-                            <p className="text-white-75 mb-5">Cuidamos da parte técnica para que tenha um bom momento. Com som profissional e uma presença contagiante, terá uma experiência única.</p>
+                            <p className="text-white-75 mb-5">Ipsum dolor sit amet consectetur adipiscing elit. Diam quis enim vel eros donec ac. Cras adipiscing enim eu turpis egestas.</p>
                             <a className="btn btn-primary btn-xl" onClick={() => scrollToElement('about')}>Ver Mais</a>
                         </div>
                     </div>
@@ -59,15 +59,15 @@ const LandingPage = () => {
                 <div className="container px-4 px-lg-5">
                     <div className="row gx-4 gx-lg-5 justify-content-center">
                         <div className="col-lg-8 text-center">
-                            <h2 className="text-white mt-0">DJ Profissional para Eventos Inesquecíveis.</h2>
+                            <h2 className="text-white mt-0">Vitae suscipit tellus mauris a diam maecenas</h2>
                             <hr className="divider divider-light" />
                             <p className="text-white-75 mb-4">
-                                Especializados em eventos, nossa missão é criar experiências musicais inesquecíveis para cada ocasião.
-                                Com anos de experiência e um vasto repertório musical, trazemos vida e energia a casamentos, festas de aniversário, batizados, eventos corporativos e muito mais.
+                                Quam pellentesque nec nam aliquam sem et tortor. Malesuada fames ac turpis egestas maecenas pharetra convallis.
+                                Id consectetur purus ut faucibus pulvinar elementum integer. Sed velit dignissim sodales ut eu sem integer. Egestas sit amet cursus sit amet dictum.
                             </p>
                             <p className="text-white-75 mb-4">
-                                Conosco consegue esolher a trilha sonora perfeita, garantindo que sua celebração seja única, emocionante e repleta de momentos especiais.
-                                Deixe-nos transformar sua festa em um espetáculo musical que você e seus convidados lembrarão com carinho por anos a fio.
+                                Id faucibus nisl tincidunt eget nullam non. Volutpat diam ut venenatis tellus in metus vulputate. Felis donec et odio pellentesque diam.
+                                Aliquam faucibus purus in massa tempor nec. Eget mauris pharetra et ultrices neque. Massa placerat duis ultricies lacus sed turpis tincidunt id aliquet.
                             </p>
                             <a className="btn btn-light btn-xl" onClick={() => scrollToElement('services')}>Ver Eventos</a>
                         </div>
@@ -133,7 +133,7 @@ const LandingPage = () => {
                         <div className="col-lg-8 col-xl-6 text-center">
                             <h2 className="mt-0">Galeria</h2>
                             <hr className="divider" />
-                            <p className="text-muted mb-5">Veja a nossa coleção de eventos!</p>
+                            <p className="text-muted mb-5">Volutpat tincidunt vitae semper!</p>
                         </div>
                     </div>
 
@@ -148,7 +148,7 @@ const LandingPage = () => {
                         <div className="col-lg-8 col-xl-6 text-center">
                             <h2 className="mt-0">Contactos</h2>
                             <hr className="divider" />
-                            <p className="text-muted mb-5">Entre em contato conosco agora e vamos juntos dar vida à sua festa!</p>
+                            <p className="text-muted mb-5">Mattis ullamcorper velit sed ullamcorper morbi tincidunt ornare.</p>
                         </div>
                     </div>
                     <div className="row gx-4 gx-lg-5 justify-content-center mb-5">
